@@ -1,6 +1,6 @@
 const ColorMap = {
     default: 'default-ripple', //rgba(0, 0, 0, 0.3);
-    plain: 'plain-ripple', //rgba(0, 0, 0, 0.3);
+    plain: 'plain-ripple', //rgba(255, 255, 255, 0.3);
     primary: 'primary-ripple', //rgba(25, 118, 210, 0.3);
     secondary: 'secondary-ripple', //rgba(220, 0, 78, 0.3);
 }
@@ -74,7 +74,7 @@ export default {
         createRipple(e, isFixed, color, velocity) {
             let target = e.currentTarget;
             //config the father component
-            console.log('createRipple', target, target.style)
+            // console.log('createRipple', target, target.style)
             if (target.style.position !== 'absolute') target.style.position = 'relative'
             target.style.overflow = 'hidden'
             this.setColor(target, color)

@@ -5,12 +5,14 @@
   >
     <section class="container">
       <section class="navigation">
-        <drawer :items="itemsDrawer" :icon="'menu'"></drawer>
+        <drawer :icon="'menu'">
+          <catalog :items="itemsDrawerTest"></catalog>
+        </drawer>
       </section>
       <section class="title"><slot></slot></section>
       <section class="contextual-actions">
         <icon-button
-          v-for="(item,idx) in itemsContext"
+          v-for="(item, idx) in itemsContext"
           :key="idx"
           size="md"
           color="plain"
@@ -18,7 +20,12 @@
         ></icon-button>
       </section>
       <section class="overflow-menu" v-if="itemsOverflowed">
-        <simple-menu :items="itemsOverflowed" :icon="'more2' | sizeAdder('md')" position="right"> </simple-menu>
+        <simple-menu
+          :items="itemsOverflowed"
+          :icon="'more2' | sizeAdder('md')"
+          position="right"
+        >
+        </simple-menu>
       </section>
     </section>
   </section>
@@ -26,27 +33,28 @@
 <script>
 import Navigable from "@/mixins/navigable";
 import Rippleable from "@/mixins/rippleable";
-import Drawer from "../Drawer/Drawer";
+import Drawer from "../Drawer/CustomDrawer";
 import IconButton from "../Button/IconButton";
-import SimpleMenu from "../Menu/Menu"
-const menuItems=[
-        {
-          label: "profile",
-          text: "Profile",
-        },
-        {
-          label: "account",
-          text: "My account",
-        },
-        {
-          label: "logout",
-          text: "Logout",
-        },
-      ]
+import SimpleMenu from "../Menu/Menu";
+import Catalog from "../Catalog/Catalog";
+const menuItems = [
+  {
+    label: "profile",
+    text: "Profile",
+  },
+  {
+    label: "account",
+    text: "My account",
+  },
+  {
+    label: "logout",
+    text: "Logout",
+  },
+];
 export default {
   name: "AppBar",
-  components: { Drawer, IconButton,SimpleMenu },
-  mixins: [Rippleable,Navigable],
+  components: { Drawer, IconButton, SimpleMenu, Catalog },
+  mixins: [Rippleable, Navigable],
   props: {
     dev: {
       type: Boolean,
@@ -64,7 +72,58 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      itemsDrawerTest: [
+        {
+          content: { label: "inputs", text: "Inputs" },
+          children: [
+            { content: { label: "button", text: "Button" } },
+            { content: { label: "checkbox", text: "Checkbox" } },
+            { content: { label: "radio", text: "Radio" } },
+            { content: { label: "select", text: "Select" } },
+            { content: { label: "slider", text: "Slider" } },
+            { content: { label: "textfield", text: "Text Field" } },
+          ],
+        },
+        {
+          content: { label: "navigation", text: "Navigation" },
+          children: [
+            {
+              content: {
+                label: "bottom-navigation",
+                text: "Bottom Navigation",
+              },
+            },
+            { content: { label: "breadcrumbs", text: "Breadcrumbs" } },
+            { content: { label: "drawer", text: "Drawer" } },
+            { content: { label: "menu", text: "Menu" } },
+            { content: { label: "stepper", text: "Stepper" } },
+            { content: { label: "tabs", text: "Tabs" } },
+          ],
+        },
+        {
+          content: { label: "surfaces", text: "Surfaces" },
+          children: [
+            { content: { label: "app-bar", text: "App Bar" } },
+            { content: { label: "card", text: "Card" } },
+          ],
+        },
+        {
+          content: { label: "feedback", text: "Feedback" },
+          children: [
+            { content: { label: "progress", text: "Progress" } },
+            { content: { label: "snackbar", text: "Snackbar" } },
+          ],
+        },
+        {
+          content: { label: "data-display", text: "Data Display" },
+          children: [
+            { content: { label: "badge", text: "Badge" } },
+            { content: { label: "chip", text: "Chip" } },
+          ],
+        },
+      ],
+    };
   },
   computed: {
     itemsOverflowed() {
@@ -80,8 +139,8 @@ export default {
   left: 0;
   z-index: 100;
   width: 100%;
-    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-      0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
   .container {
     //todo margin-right:negative doesnt work in fixed
     height: 64px;
@@ -104,7 +163,7 @@ export default {
       color: white;
       user-select: none;
     }
-    .contextual-actions{
+    .contextual-actions {
       display: flex;
     }
   }
