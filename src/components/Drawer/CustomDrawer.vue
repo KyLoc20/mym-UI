@@ -111,6 +111,7 @@ export default {
   .content-container {
     position: fixed;
     margin: 0;
+    overflow-y: scroll;
     background-color: #fff;
     z-index: 1200;
     box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2),

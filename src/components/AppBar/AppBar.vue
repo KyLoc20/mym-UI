@@ -6,7 +6,7 @@
     <section class="container">
       <section class="navigation">
         <drawer :icon="'menu'">
-          <catalog :items="itemsDrawerTest"></catalog>
+          <catalog :items="itemsDrawer"></catalog>
         </drawer>
       </section>
       <section class="title"><slot></slot></section>
@@ -73,56 +73,6 @@ export default {
   },
   data() {
     return {
-      itemsDrawerTest: [
-        {
-          content: { label: "inputs", text: "Inputs" },
-          children: [
-            { content: { label: "button", text: "Button" } },
-            { content: { label: "checkbox", text: "Checkbox" } },
-            { content: { label: "radio", text: "Radio" } },
-            { content: { label: "select", text: "Select" } },
-            { content: { label: "slider", text: "Slider" } },
-            { content: { label: "textfield", text: "Text Field" } },
-          ],
-        },
-        {
-          content: { label: "navigation", text: "Navigation" },
-          children: [
-            {
-              content: {
-                label: "bottom-navigation",
-                text: "Bottom Navigation",
-              },
-            },
-            { content: { label: "breadcrumbs", text: "Breadcrumbs" } },
-            { content: { label: "drawer", text: "Drawer" } },
-            { content: { label: "menu", text: "Menu" } },
-            { content: { label: "stepper", text: "Stepper" } },
-            { content: { label: "tabs", text: "Tabs" } },
-          ],
-        },
-        {
-          content: { label: "surfaces", text: "Surfaces" },
-          children: [
-            { content: { label: "app-bar", text: "App Bar" } },
-            { content: { label: "card", text: "Card" } },
-          ],
-        },
-        {
-          content: { label: "feedback", text: "Feedback" },
-          children: [
-            { content: { label: "progress", text: "Progress" } },
-            { content: { label: "snackbar", text: "Snackbar" } },
-          ],
-        },
-        {
-          content: { label: "data-display", text: "Data Display" },
-          children: [
-            { content: { label: "badge", text: "Badge" } },
-            { content: { label: "chip", text: "Chip" } },
-          ],
-        },
-      ],
     };
   },
   computed: {
