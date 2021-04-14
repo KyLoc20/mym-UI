@@ -10,7 +10,6 @@
             <section class="title">MyMaterial-UI</section>
             <section class="version">v0.0.1</section>
           </section>
-
           <divider></divider>
           <catalog :items="itemsDrawer"></catalog>
         </drawer>

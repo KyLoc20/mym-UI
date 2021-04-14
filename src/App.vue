@@ -3,7 +3,6 @@
     <section class="header">
       <app-bar :itemsDrawer="drawerItems"></app-bar>
     </section>
-    <section class="navigation"></section>
     <section class="main-container">
       <router-view></router-view>
     </section>
@@ -72,13 +71,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="less">
 #app {
   font-family: "Roboto", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   color: #2c3e50;
-  margin-top: 60px;
+  .main-container {
+    padding: 96px 24px 0;
+    margin: 0 28px;
+    margin-right: calc(100% - 100vw);
+  }
 }
 </style>

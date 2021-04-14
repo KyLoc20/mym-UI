@@ -2,12 +2,14 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import './assets/style.css'
+import './assets/typography.css'
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 
+import StepperExample from "./examples/StepperExample"
 
 const routes = [
-    // { path: '/foo', component: Foo },
+    { path: '/', component: StepperExample },
     // { path: '/boo', component: Boo },
 ]
 
