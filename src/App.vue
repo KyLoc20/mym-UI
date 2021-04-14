@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :style="pageWidth">
     <section class="header">
       <app-bar :itemsDrawer="drawerItems"></app-bar>
     </section>
@@ -16,6 +16,7 @@ export default {
   components: { AppBar },
   data() {
     return {
+      scrollerWidth:null,
       drawerItems: [
         {
           content: { label: "inputs", text: "Inputs" },
@@ -68,6 +69,16 @@ export default {
       ],
     };
   },
+  mounted(){
+    //it varies from browser types 
+    let scrollerWidth=window.innerWidth - document.body.clientWidth
+    this.scrollerWidth=scrollerWidth
+  },
+  computed:{
+    pageWidth(){
+      return {width:`calc(100vw - ${this.scrollerWidth}px)`}
+    },
+  }
 };
 </script>
 
@@ -78,10 +89,25 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   color: #2c3e50;
+  display: flex;
+  justify-content: flex-start;
+  //todo calculate scroller width
+  // margin-right: calc(100% - 100vw); // way1 to not changing scroller show and hide
+  //width: calc(100vw - 17px); // way2 to not changing scroller show and hide
   .main-container {
-    padding: 96px 24px 0;
-    margin: 0 28px;
-    margin-right: calc(100% - 100vw);
+    width: 100%;
+    max-width: 960px;
+    padding-top: 96px; //for header
+    box-sizing: border-box;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  @media (min-width: 600px) {
+    .main-container {
+      width: calc(100% - 175px); //for right navigation
+      padding-left: 24px;
+      padding-right: 24px; // add scroller width
+    }
   }
 }
 </style>
