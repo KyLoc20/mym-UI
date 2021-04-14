@@ -6,6 +6,12 @@
     <section class="container">
       <section class="navigation">
         <drawer :icon="'menu'">
+          <section class="menu-header">
+            <section class="title">MyMaterial-UI</section>
+            <section class="version">v0.0.1</section>
+          </section>
+
+          <divider></divider>
           <catalog :items="itemsDrawer"></catalog>
         </drawer>
       </section>
@@ -37,6 +43,7 @@ import Drawer from "../Drawer/CustomDrawer";
 import IconButton from "../Button/IconButton";
 import SimpleMenu from "../Menu/Menu";
 import Catalog from "../Catalog/Catalog";
+import Divider from "../Divider/Divider";
 const menuItems = [
   {
     label: "profile",
@@ -53,7 +60,7 @@ const menuItems = [
 ];
 export default {
   name: "AppBar",
-  components: { Drawer, IconButton, SimpleMenu, Catalog },
+  components: { Drawer, IconButton, SimpleMenu, Catalog, Divider },
   mixins: [Rippleable, Navigable],
   props: {
     dev: {
@@ -72,8 +79,7 @@ export default {
     },
   },
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     itemsOverflowed() {
@@ -115,6 +121,41 @@ export default {
     }
     .contextual-actions {
       display: flex;
+    }
+    .menu-header {
+      padding: 0 0 0 24px;
+      margin-top: -8px;
+      color: rgba(0, 0, 0, 0.54);
+      min-height: 64px;
+      box-sizing: border-box;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      .title {
+        font-size: 20px;
+        font-weight: 500;
+        max-height:32px;
+        margin-bottom: 4px;
+        color: currentColor;
+        letter-spacing: 0.0075em;
+        cursor: pointer;
+        transition: color 200ms cubic-bezier(0.4, 0.2, 0, 1);
+        &:hover {
+          text-decoration: underline;
+          color: #1976d2;
+        }
+      }
+      .version {
+        font-size: 12px;
+        color: currentColor;
+        letter-spacing: 0.03333em;
+        line-height: 20px;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 }
