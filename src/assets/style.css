@@ -4,21 +4,6 @@ body {
     overflow-x: hidden;
 }
 
-@font-face {
-    font-family: "SF Mono";
-    src: url("/assets/fonts/SFMono.woff") format("woff");
-}
-
-@font-face {
-    font-family: "Roboto";
-    src: url("/assets/fonts/Roboto.woff") format("woff");
-}
-
-@font-face {
-    font-family: "Roboto Light";
-    src: url("/assets/fonts/Roboto-Light.woff") format("woff");
-}
-
 .ripple {
     position: absolute;
     border-radius: 50%;
