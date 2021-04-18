@@ -4,6 +4,26 @@ body {
     overflow-x: hidden;
 }
 
+.bd-1 {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.br-4 {
+    border-radius: 4px;
+}
+
+.bg-gray {
+    background-color: #f5f5f5;
+}
+
+.margin-8>* {
+    margin: 8px;
+}
+
+.margin-r8>* {
+    margin-right: 8px;
+}
+
 .ripple {
     position: absolute;
     border-radius: 50%;

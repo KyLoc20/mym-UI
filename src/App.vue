@@ -5,18 +5,22 @@
     </section>
     <section class="main-container">
       <router-view></router-view>
+      <section class="footer">
+        <divider></divider>
+      </section>
     </section>
   </div>
 </template>
 
 <script>
 import AppBar from "./components/AppBar/AppBar";
+import Divider from "./components/Divider/Divider";
 export default {
   name: "App",
-  components: { AppBar },
+  components: { AppBar, Divider },
   data() {
     return {
-      scrollerWidth:null,
+      scrollerWidth: null,
       drawerItems: [
         {
           content: { label: "inputs", text: "Inputs" },
@@ -69,16 +73,16 @@ export default {
       ],
     };
   },
-  mounted(){
-    //it varies from browser types 
-    let scrollerWidth=window.innerWidth - document.body.clientWidth
-    this.scrollerWidth=scrollerWidth
+  mounted() {
+    //it varies from browser types
+    let scrollerWidth = window.innerWidth - document.body.clientWidth;
+    this.scrollerWidth = scrollerWidth;
   },
-  computed:{
-    pageWidth(){
-      return {width:`calc(100vw - ${this.scrollerWidth}px)`}
+  computed: {
+    pageWidth() {
+      return { width: `calc(100vw - ${this.scrollerWidth}px)` };
     },
-  }
+  },
 };
 </script>
 
@@ -101,6 +105,9 @@ export default {
     box-sizing: border-box;
     padding-left: 16px;
     padding-right: 16px;
+    .footer{
+      margin: 96px 0 30px;
+    }
   }
   @media (min-width: 600px) {
     .main-container {

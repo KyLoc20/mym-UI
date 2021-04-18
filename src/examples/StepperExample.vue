@@ -35,7 +35,7 @@
       >Here is an example of customizing the component. You can learn more about
       this in the overrides documentation page.</typography
     >
-    <section class="group-box box-block">
+    <section class="group-box box-block bg-gray">
       <section class="row">
         <stepper :steps="stepItems" :progress="progress"></stepper>
       </section>
@@ -126,33 +126,7 @@ export default {
 </script>
 <style scoped lang="less">
 .stepper-example {
-  h1 {
-    margin: 16px 0;
-    font-size: 40px;
-    line-height: 46px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.87);
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  }
-  h2 {
-    font-size: 30px;
-    font-weight: 400;
-    line-height: 1.235;
-    margin: 40px 0 16px;
-  }
-  h3 {
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 1.334;
-    margin: 40px 0 16px;
-  }
-  p {
-    margin: 0 0 16px;
-    font-size: 1rem;
-    line-height: 1.5;
-    letter-spacing: 0.00938em;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  }
+
   ul {
     padding-left: 30px;
     margin: 0 0 16px;
@@ -171,12 +145,13 @@ export default {
       margin-top: 16px;
     }
   }
-
+  .bg-gray {
+    background-color: #f5f5f5;
+  }
   .group-box {
     display: flex;
     position: relative;
     padding: 24px;
-    background-color: #f5f5f5;
     p {
       margin: 8px 0;
     }
