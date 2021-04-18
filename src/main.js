@@ -7,9 +7,12 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 import StepperExample from "./examples/StepperExample"
+import AvatarExample from "./examples/AvatarExample"
 
 const routes = [
-    { path: '/', component: StepperExample },
+    { path: '/', component: AvatarExample },
+    { path: '/stepper', component: StepperExample },
+    { path: '/avatar', component: AvatarExample },
     // { path: '/boo', component: Boo },
 ]
 

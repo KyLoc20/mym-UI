@@ -1,14 +1,12 @@
 <template>
-  <section class="stepper-example">
-    <typography variant="h1">Stepper</typography>
+  <section class="avatar-example">
+    <typography variant="h1">Avatar</typography>
     <typography variant="p" :classes="['description']"
-      >Steppers convey progress through numbered steps. It provides a
-      wizard-like workflow.</typography
+      >Avatars are found throughout material design with uses in everything from tables to dialog menus.</typography
     >
+    <typography variant="h2">Image avatars</typography>
     <typography variant="p"
-      >Steppers display progress through a sequence of logical and numbered
-      steps. They may also be used for navigation. Steppers may display a
-      transient feedback message after a step is saved.</typography
+      >Image avatars can be created by passing standard <code>img</code> props <code>src</code> or <code>srcSet</code> to the component.</typography
     >
 
     <ul>
@@ -79,7 +77,7 @@ const tipMap = {
 };
 
 export default {
-  name: "StepperExample",
+  name: "AvatarExample",
   components: { Stepper, Vbutton, Typography },
   data() {
     return {
@@ -152,6 +150,15 @@ export default {
     line-height: 1.5;
     letter-spacing: 0.00938em;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+  code{
+    font-family: Consolas;
+    font-size:.85em;
+    color:#fff;
+    background-color: rgba(255, 229, 100, 0.2);
+    line-height: 1.4;
+    padding: 0 2px;
+    border-radius: 2px;
   }
   ul {
     padding-left: 30px;

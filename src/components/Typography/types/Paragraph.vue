@@ -1,15 +1,15 @@
 <template>
-  <p>{{content}}</p>
+  <p><slot></slot></p>
 </template>
 <script>
 export default {
   name: "Paragraph",
   components: {},
-  props: {
-    content: {
-      type: String,
-    },
-  },
+  // props: {
+  //   content: {
+  //     type: String,
+  //   },
+  // },
 };
 </script>
 <style lang="less" scoped>

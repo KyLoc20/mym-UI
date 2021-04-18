@@ -50,3 +50,10 @@
     font-weight: 800;
     src: url("/assets/fonts/Roboto/Roboto-Black.ttf") format('ttf');
 }
+
+@font-face {
+    font-family: 'Consolas';
+    font-style: normal;
+    font-display: swap;
+    src: url("/assets/fonts/Consolas/Consolas.ttf") format('ttf');
+}
