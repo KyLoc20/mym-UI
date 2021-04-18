@@ -51,17 +51,26 @@ export default {
       required: false,
       type: String,
     },
+    //controller of upper cpts
+    active: {
+      type: Boolean,
+      default: true,
+    },
   },
   watch: {
     toggled() {
       if (this.toggled) {
+        //when the drawer is open
         document.documentElement.style.overflow = "hidden";
-      } else document.documentElement.style.overflow = "auto";
+      } else {
+        //when the drawer is close
+        document.documentElement.style.overflow = "auto";
+      }
     },
   },
   computed: {
     isToggled() {
-      return this.toggled;
+      return this.toggled && this.active;
     },
   },
   data() {
@@ -71,8 +80,15 @@ export default {
   },
   methods: {
     handleToggle(from) {
-      this.toggled = !this.toggled;
-      console.log(from, "handleToggle", this.toggled);
+      //click trigger to open
+      if (from === "button" && !this.active) {
+        //this situation is that the menu last time was closed by the upper cpt due to goto a link
+        //telling the upper cpt to activate the drawer
+        //the this.toggled still true just wait the upper change the prop active to true
+        this.$emit("ready");
+      } else {
+        this.toggled = !this.toggled;
+      }
     },
   },
 };

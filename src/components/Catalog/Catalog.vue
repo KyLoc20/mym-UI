@@ -23,10 +23,14 @@ export default {
     items: {
       type: Array,
     },
+    selectedOne:{
+      type:String,
+      required:false,
+    }
   },
   data() {
     return {
-      selectedLabel: null,
+      selectedLabel: this.selectedOne,
     };
   },
   mounted() {
@@ -46,7 +50,8 @@ export default {
         " current selectedLabel: ",
         this.selectedLabel
       );
-      //go somewhere here
+      //report to the upper cpt to go somewhere
+      this.$emit("select", where);
     },
   },
 };

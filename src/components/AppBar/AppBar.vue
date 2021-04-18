@@ -5,13 +5,21 @@
   >
     <section class="container">
       <section class="navigation">
-        <drawer :icon="'menu'">
+        <drawer
+          :icon="'menu'"
+          :active="isDrawerActive"
+          @ready="handleReadyToOpenDrawer"
+        >
           <section class="menu-header">
             <section class="title">MyMaterial-UI</section>
             <section class="version">v0.0.1</section>
           </section>
           <divider></divider>
-          <catalog :items="itemsDrawer"></catalog>
+          <catalog
+            :items="itemsDrawer"
+            :selectedOne="curSelectedOne"
+            @select="handleSelectFromCatalog"
+          ></catalog>
         </drawer>
       </section>
       <section class="title"><slot></slot></section>
@@ -78,14 +86,46 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      isDrawerActive: true,
+      curSelectedOne: null,
+    };
   },
   computed: {
     itemsOverflowed() {
       return menuItems;
     },
   },
-  methods: {},
+  methods: {
+    handleSelectFromCatalog(where) {
+      //deal with going somewhere
+      console.log("handleSelectFromCatalog", where);
+      let link = where.link;
+      if (link) {
+        this.curSelectedOne = where.label;
+        this.goToLink(link);
+        //control to close the drawer
+        this.closeDrawer();
+      }
+    },
+    handleReadyToOpenDrawer() {
+      this.isDrawerActive = true;
+      //when the drawer is open
+      document.documentElement.style.overflow = "hidden";
+    },
+    closeDrawer() {
+      this.isDrawerActive = false;
+      //when the drawer is close
+      document.documentElement.style.overflow = "auto";
+    },
+    goToLink(link) {
+      if (link) {
+        console.log("------>goToLink: ", this.$route.params, this.$route);
+        //todo check valid link
+        this.$router.push("/" + link);
+      }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -134,7 +174,7 @@ export default {
       .title {
         font-size: 20px;
         font-weight: 500;
-        max-height:32px;
+        max-height: 32px;
         margin-bottom: 4px;
         color: currentColor;
         letter-spacing: 0.0075em;

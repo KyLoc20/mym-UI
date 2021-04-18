@@ -3,7 +3,11 @@
     <div class="content" :style="itemStyle" @click="handleClick">
       {{ content.text }}
     </div>
-    <section class="children" :style="childrenStyle" :class="isChildrenCollapsed?'collapsed':''">
+    <section
+      class="children"
+      :style="childrenStyle"
+      :class="isChildrenCollapsed ? 'collapsed' : ''"
+    >
       <recursive-item
         v-for="(child, idx) in children"
         :key="idx"
@@ -19,10 +23,10 @@
   </section>
 </template>
 <script>
-import Rippleable from '@/mixins/rippleable'
+import Rippleable from "@/mixins/rippleable";
 export default {
   name: "RecursiveItem",
-  mixins:[Rippleable],
+  mixins: [Rippleable],
   props: {
     content: {
       type: Object,
@@ -82,16 +86,21 @@ export default {
   },
   methods: {
     handleClick(e) {
-      this.createRipple(e,false,'default',true)
+      this.createRipple(e, false, "default", true);
       let label = this.content.label;
       let layer = this.layer;
+      let link = this.content.link;
       console.log("handleClick originally from: ", label, layer);
-      this.$emit("select", { label, layer });
-            //whether collapse its childrem items
-      if (this.layer < this.layerNum) {
+      this.$emit("select", { label, layer,link });
+      //whether collapse its childrem items
+      if (this.hasChildren()) {
         this.isChildrenCollapsed = !this.isChildrenCollapsed;
-        console.log('---->',this.isChildrenCollapsed)
+        console.log("---->", this.isChildrenCollapsed);
       }
+    },
+    hasChildren() {
+      //to check whether it has children
+      return this.layer < this.layerNum;
     },
     handleSelect(where) {
       let label = this.content.label;
@@ -120,7 +129,7 @@ export default {
     }
   }
   .children {
-    //todo leave enough space 
+    //todo leave enough space
     max-height: 500vh;
     transition: all 450ms cubic-bezier(0.4, 0, 0.2, 1) 50ms;
     overflow: hidden;
@@ -128,7 +137,6 @@ export default {
   .collapsed {
     max-height: 0;
     padding: 0 !important;
-
   }
 }
 </style>

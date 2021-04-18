@@ -45,7 +45,7 @@ export default {
             { content: { label: "breadcrumbs", text: "Breadcrumbs" } },
             { content: { label: "drawer", text: "Drawer" } },
             { content: { label: "menu", text: "Menu" } },
-            { content: { label: "stepper", text: "Stepper" } },
+            { content: { label: "stepper", text: "Stepper",link:"stepper" } },
             { content: { label: "tabs", text: "Tabs" } },
           ],
         },
@@ -66,6 +66,7 @@ export default {
         {
           content: { label: "data-display", text: "Data Display" },
           children: [
+            { content: { label: "avatar", text: "Avatar",link:"avatar" } },
             { content: { label: "badge", text: "Badge" } },
             { content: { label: "chip", text: "Chip" } },
           ],
@@ -94,7 +95,7 @@ export default {
   text-align: left;
   color: #2c3e50;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   //todo calculate scroller width
   // margin-right: calc(100% - 100vw); // way1 to not changing scroller show and hide
   //width: calc(100vw - 17px); // way2 to not changing scroller show and hide
