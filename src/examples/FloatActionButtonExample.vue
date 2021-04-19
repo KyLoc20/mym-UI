@@ -22,10 +22,61 @@
     <section class="group-box box-inline center margin-8 bd-1 br-4">
       <float-action-button icon="add" color="primary"></float-action-button>
       <float-action-button icon="edit" color="secondary"></float-action-button>
-      <float-action-button icon="compass" color="default" variant="extended" text="Navigate"></float-action-button>
+      <float-action-button
+        icon="compass"
+        color="default"
+        variant="extended"
+        text="Navigate"
+      ></float-action-button>
       <float-action-button icon="favorite" disabled></float-action-button>
     </section>
-
+    <typography variant="h2">Size</typography>
+    <typography variant="p"
+      >Use the <code>size</code> prop for larger or smaller floating action
+      buttons.</typography
+    >
+    <section class="group-box box-block center margin-8 bd-1 br-4">
+      <section class="row ai-center margin-8">
+        <float-action-button
+          icon="add"
+          color="secondary"
+          size="sm"
+        ></float-action-button>
+        <float-action-button
+          icon="add"
+          color="secondary"
+          size="md"
+        ></float-action-button>
+        <float-action-button
+          icon="add"
+          color="secondary"
+          size="lg"
+        ></float-action-button>
+      </section>
+      <section class="row ai-center margin-8">
+        <float-action-button
+          icon="compass"
+          color="primary"
+          variant="extended"
+          size="sm"
+          text="Navigate"
+        ></float-action-button>
+        <float-action-button
+          icon="compass"
+          color="primary"
+          variant="extended"
+          size="md"
+          text="Navigate"
+        ></float-action-button>
+        <float-action-button
+          icon="compass"
+          color="primary"
+          variant="extended"
+          size="lg"
+          text="Navigate"
+        ></float-action-button>
+      </section>
+    </section>
   </section>
 </template>
 <script>
@@ -68,11 +119,22 @@ export default {
       display: flex;
       background: #fff;
       padding: 24px;
-      justify-content: center;
+      flex-wrap: wrap;
+      &.center {
+        justify-content: center;
+        align-items: center;
+      }
+      &.jc-center{
+        justify-content: center;
+      }
+      &.ai-center{
+        align-items: center;
+      }
     }
   }
   .box-inline {
     flex-direction: row;
+    flex-wrap: wrap;
     &.center {
       justify-content: center;
     }
