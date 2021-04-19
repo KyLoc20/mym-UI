@@ -14,7 +14,7 @@ export default {
 </script>
 <style lang="less" scoped>
 p {
-  margin: 0 0 16px;
+  margin-bottom: 16px;
   font-size: 1rem;
   line-height: 1.5;
   letter-spacing: 0.00938em;

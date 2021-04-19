@@ -66,7 +66,7 @@ import Avatar from "../components/Avatar/Avatar";
 // import Vbutton from "../components/Button/Button";
 import Typography from "../components/Typography/Typography";
 export default {
-  name: "AvatarExample",
+  name: "FloatActionButton",
   components: { Avatar, Typography },
   data() {
     return {

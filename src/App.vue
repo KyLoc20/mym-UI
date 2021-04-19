@@ -27,6 +27,13 @@ export default {
           children: [
             { content: { label: "button", text: "Button" } },
             { content: { label: "checkbox", text: "Checkbox" } },
+            {
+              content: {
+                label: "float-action-button",
+                text: "Float Action Button",
+                link: "float-action-button",
+              },
+            },
             { content: { label: "radio", text: "Radio" } },
             { content: { label: "select", text: "Select" } },
             { content: { label: "slider", text: "Slider" } },
@@ -45,7 +52,7 @@ export default {
             { content: { label: "breadcrumbs", text: "Breadcrumbs" } },
             { content: { label: "drawer", text: "Drawer" } },
             { content: { label: "menu", text: "Menu" } },
-            { content: { label: "stepper", text: "Stepper",link:"stepper" } },
+            { content: { label: "stepper", text: "Stepper", link: "stepper" } },
             { content: { label: "tabs", text: "Tabs" } },
           ],
         },
@@ -66,7 +73,7 @@ export default {
         {
           content: { label: "data-display", text: "Data Display" },
           children: [
-            { content: { label: "avatar", text: "Avatar",link:"avatar" } },
+            { content: { label: "avatar", text: "Avatar", link: "avatar" } },
             { content: { label: "badge", text: "Badge" } },
             { content: { label: "chip", text: "Chip" } },
           ],
@@ -106,7 +113,7 @@ export default {
     box-sizing: border-box;
     padding-left: 16px;
     padding-right: 16px;
-    .footer{
+    .footer {
       margin: 96px 0 30px;
     }
   }

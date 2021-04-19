@@ -1,0 +1,126 @@
+<template>
+  <section class="float-action-button br-round" :class="buttonClass">
+    <icon :name="icon" size="md"></icon>
+  </section>
+</template>
+<script>
+import Rippleable from "@/mixins/rippleable";
+import Icon from "../Icon/Icon";
+export default {
+  name: "FloatActionButton",
+  props: {
+    icon: {
+      type: String,
+    },
+    variant: {
+      validator: (v) => {
+        return ["regular", "extended"].indexOf(v) > -1;
+      },
+      default: "regular",
+    },
+    color: {
+      validator: (v) => {
+        return ["default", "primary", "secondary"].indexOf(v) > -1;
+      },
+      default: "default",
+    },
+    size: {
+      validator: (v) => {
+        return ["sm", "md", "lg"].indexOf(v) > -1;
+      },
+      default: "lg",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  components: { Icon },
+  mixins: [Rippleable],
+  data() {
+    return {};
+  },
+  computed: {
+    buttonClass() {
+      let clazz = "";
+      let color = this.color;
+      clazz += color + "-btn ";
+      let disabled = this.disabled;
+      if (disabled) {
+        clazz += "disabled ";
+      }
+      let size = this.size;
+      clazz += size + " ";
+      return clazz;
+    },
+  },
+  methods: {},
+};
+</script>
+<style lang="less" scoped>
+.float-action-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  &:not(.disabled):hover {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+      0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  }
+  //color
+  &.default-btn {
+    color: rgba(0, 0, 0, 0.87);
+    background: #e0e0e0;
+    &:hover {
+      background: #d5d5d5;
+    }
+  }
+  &.primary-btn {
+    color: #fff;
+    background: #1976d2;
+    &:hover {
+      background: #115293;
+    }
+  }
+  &.secondary-btn {
+    color: #fff;
+    background: #dc004e;
+    &:hover {
+      background: #9a0036;
+    }
+  }
+  &.disabled {
+    color: rgba(0, 0, 0, 0.26);
+    background: rgba(0, 0, 0, 0.12);
+    &:hover {
+      color: rgba(0, 0, 0, 0.26);
+      background: rgba(0, 0, 0, 0.12);
+    }
+  }
+  &.sm {
+    width: 40px;
+    height: 40px;
+  }
+  &.md {
+    width: 48px;
+    height: 48px;
+  }
+  &.lg {
+    width: 56px;
+    height: 56px;
+  }
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+.disabled {
+  cursor: default;
+  box-shadow: none;
+}
+</style>

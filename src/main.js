@@ -8,11 +8,13 @@ Vue.use(VueRouter)
 
 import StepperExample from "./examples/StepperExample"
 import AvatarExample from "./examples/AvatarExample"
+import FloatActionButtonExample from "./examples/FloatActionButtonExample"
 
 const routes = [
     { path: '/', component: AvatarExample },
     { path: '/stepper', component: StepperExample },
     { path: '/avatar', component: AvatarExample },
+    { path: '/float-action-button', component: FloatActionButtonExample },
     // { path: '/boo', component: Boo },
 ]
 
