@@ -78,7 +78,7 @@ export default {
     },
     getRippleColor() {
       //default rgba(0, 0, 0, 0.3);
-      //plain rgba(0, 0, 0, 0.3);
+      //plain rgba(255, 255, 255, 0.3);
       //primary rgba(25, 118, 210, 0.3);
       //secondary rgba(220, 0, 78, 0.3);
 

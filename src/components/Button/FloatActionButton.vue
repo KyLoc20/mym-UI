@@ -1,6 +1,11 @@
 <template>
-  <section class="float-action-button br-round" :class="buttonClass">
+  <section
+    class="float-action-button br-round"
+    :class="buttonClass"
+    @click="handleClick"
+  >
     <icon :name="icon" size="md"></icon>
+    <span class="text" v-if="variant === 'extended'">{{ text }}</span>
   </section>
 </template>
 <script>
@@ -17,6 +22,10 @@ export default {
         return ["regular", "extended"].indexOf(v) > -1;
       },
       default: "regular",
+    },
+    text: {
+      type: String,
+      required: false,
     },
     color: {
       validator: (v) => {
@@ -43,6 +52,8 @@ export default {
   computed: {
     buttonClass() {
       let clazz = "";
+      let variant = this.variant;
+      clazz += variant + "-btn ";
       let color = this.color;
       clazz += color + "-btn ";
       let disabled = this.disabled;
@@ -54,7 +65,21 @@ export default {
       return clazz;
     },
   },
-  methods: {},
+  methods: {
+    handleClick(e) {
+      if (!this.disabled) {
+        this.createRippleByAddingLayer(e, false, this.getRippleColor());
+      }
+    },
+    getRippleColor() {
+      //default rgba(0, 0, 0, 0.3);
+      //plain rgba(255, 255, 255, 0.3);
+      //primary rgba(25, 118, 210, 0.3);
+      //secondary rgba(220, 0, 78, 0.3);
+      if(this.color==='default')return 'default'
+      else return 'plain'
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -103,20 +128,54 @@ export default {
     }
   }
   &.sm {
-    width: 40px;
-    height: 40px;
+    &.regular-btn {
+      height: 40px;
+      width: 40px;
+    }
+    &.extended-btn {
+      height: 34px;
+      padding: 0 8px;
+      border-radius: 17px;
+    }
   }
   &.md {
-    width: 48px;
-    height: 48px;
+    &.regular-btn {
+      width: 48px;
+      height: 48px;
+    }
+    &.extended-btn {
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 20px;
+    }
   }
   &.lg {
-    width: 56px;
-    height: 56px;
+    &.regular-btn {
+      width: 56px;
+      height: 56px;
+    }
+    &.extended-btn {
+      height: 48px;
+      padding: 0 16px;
+      border-radius: 24px;
+    }
   }
   .icon {
     width: 24px;
     height: 24px;
+  }
+  &.extended-btn {
+    .icon {
+      margin-right: 8px;
+    }
+  }
+  .text {
+    font-size: 14px;
+    letter-spacing: 0.02857em;
+    font-weight: 600;
+    line-height: 1.75;
+    user-select: none;
+    text-transform: uppercase;
   }
 }
 .disabled {

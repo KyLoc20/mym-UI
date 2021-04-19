@@ -22,7 +22,7 @@
     <section class="group-box box-inline center margin-8 bd-1 br-4">
       <float-action-button icon="add" color="primary"></float-action-button>
       <float-action-button icon="edit" color="secondary"></float-action-button>
-      <float-action-button icon="compass" color="default"></float-action-button>
+      <float-action-button icon="compass" color="default" variant="extended" text="Navigate"></float-action-button>
       <float-action-button icon="favorite" disabled></float-action-button>
     </section>
 
