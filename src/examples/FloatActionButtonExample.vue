@@ -77,24 +77,134 @@
         ></float-action-button>
       </section>
     </section>
+
+    <typography variant="h2">Animation</typography>
+    <typography variant="p"
+      >The floating action button animates onto the screen as an expanding piece
+      of material, by default.</typography
+    >
+    <typography variant="p"
+      >A floating action button that spans multiple lateral screens (such as
+      tabbed screens) should briefly disappear, then reappear if its action
+      changes.</typography
+    >
+    <typography variant="p"
+      >The Zoom transition can be used to achieve this. Note that since both the
+      exiting and entering animations are triggered at the same time, we use
+      a enter delay to allow the outgoing Floating Action Button's animation to
+      finish before the new one enters.</typography
+    >
+
+    <section class="group-box box-inline center bd-1 br-4 bg-gray">
+      <div class="display-container">
+        <tabs
+          :items="tabsItems"
+          class="bg-gray shadow-1"
+          @change="handleTabsChange"
+        ></tabs>
+        <div class="content">{{ displayContent }}</div>
+        <transition>
+          <float-action-button
+            icon="add"
+            color="primary"
+            size="lg"
+            v-show="curTabIndex === 0"
+          ></float-action-button>
+        </transition>
+        <transition>
+          <float-action-button
+            icon="edit"
+            color="secondary"
+            size="lg"
+            v-show="curTabIndex === 1"
+          ></float-action-button>
+        </transition>
+        <transition>
+          <float-action-button
+            icon="up"
+            color="green"
+            size="lg"
+            v-show="curTabIndex === 2"
+          ></float-action-button>
+        </transition>
+      </div>
+    </section>
   </section>
 </template>
 <script>
 import FloatActionButton from "../components/Button/FloatActionButton";
 // import Vbutton from "../components/Button/Button";
+import Tabs from "../components/Tabs/Tabs";
 import Typography from "../components/Typography/Typography";
 export default {
   name: "FloatActionButtonExample",
-  components: { FloatActionButton, Typography },
+  components: { FloatActionButton, Typography, Tabs },
   data() {
-    return {};
+    return {
+      tabsItems: [
+        {
+          label: "one",
+          text: "Item One",
+        },
+        {
+          label: "two",
+          text: "Item Two",
+        },
+        {
+          label: "three",
+          text: "Item Three",
+        },
+      ],
+      curTabIndex: null,
+    };
   },
-  methods: {},
-  computed: {},
+  mounted() {
+    this.curTabIndex = 0;
+  },
+  computed: {
+    displayContent() {
+      if (this.curTabIndex === null) return 0;
+      else return this.tabsItems[this.curTabIndex].text;
+    },
+  },
+  methods: {
+    handleTabsChange(e) {
+      let { last, next } = e;
+      console.log("handleTabsChange", last, next);
+      this.curTabIndex = next.index;
+    },
+  },
 };
 </script>
 <style scoped lang="less">
 .float-action-button-example {
+  .display-container {
+    display: flex;
+    position: relative;
+    background: #fff;
+    width: 500px;
+    height: 200px;
+    flex-direction: column;
+
+    .tabs {
+      /deep/ .anchor {
+        font-weight: 500;
+      }
+      width: 100%;
+      height: 48px;
+    }
+    .content {
+      padding: 24px;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+    }
+    .float-action-button {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+    }
+  }
+
   .quote {
     margin: 24px 0;
     padding: 4px 24px;
@@ -124,10 +234,10 @@ export default {
         justify-content: center;
         align-items: center;
       }
-      &.jc-center{
+      &.jc-center {
         justify-content: center;
       }
-      &.ai-center{
+      &.ai-center {
         align-items: center;
       }
     }
@@ -145,5 +255,15 @@ export default {
       justify-content: center;
     }
   }
+}
+.v-enter-active {
+  transition: transform 251ms cubic-bezier(0.4, 0, 0.2, 1) 200ms;
+}
+.v-leave-active {
+  transition: transform 251ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.v-enter,
+.v-leave-to {
+  transform: scale(0);
 }
 </style>

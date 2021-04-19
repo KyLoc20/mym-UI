@@ -9,7 +9,10 @@ export default {
     data() {
         return {}
     },
-
+    mounted() {
+        //todo the best way to get final style: window.getComputedStyle(this.$el).position
+        // console.log('mount ripple', this.$el, window.getComputedStyle(this.$el).position)
+    },
     methods: {
         setColor(target, color) {
             if (!color) return
@@ -74,8 +77,7 @@ export default {
         createRipple(e, isFixed, color, velocity) {
             let target = e.currentTarget;
             //config the father component
-            // console.log('createRipple', target, target.style)
-            if (target.style.position !== 'absolute') target.style.position = 'relative'
+            if (window.getComputedStyle(target).position !== 'absolute') target.style.position = 'relative'
             target.style.overflow = 'hidden'
             this.setColor(target, color)
             this.setVelocity(target, velocity)

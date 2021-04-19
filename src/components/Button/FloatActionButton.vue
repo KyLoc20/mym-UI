@@ -29,7 +29,7 @@ export default {
     },
     color: {
       validator: (v) => {
-        return ["default", "primary", "secondary"].indexOf(v) > -1;
+        return ["default", "primary", "secondary","green"].indexOf(v) > -1;
       },
       default: "default",
     },
@@ -68,7 +68,7 @@ export default {
   methods: {
     handleClick(e) {
       if (!this.disabled) {
-        this.createRippleByAddingLayer(e, false, this.getRippleColor());
+        this.createRipple(e, false, this.getRippleColor());
       }
     },
     getRippleColor() {
@@ -117,6 +117,13 @@ export default {
     background: #dc004e;
     &:hover {
       background: #9a0036;
+    }
+  }
+  &.green-btn {
+    color: #fff;
+    background: #4caf50;
+    &:hover {
+      background: #43a047;
     }
   }
   &.disabled {
