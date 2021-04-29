@@ -2,16 +2,19 @@
   <section class="scroll-catalog">
     <section class="title">{{ title }}</section>
     <ul class="item-container">
-      <router-link
-        tag="li"
-        class="item"
-        :class="activeAnchor === item.anchor ? 'active' : 'inactive'"
-        active-class="active-selecting"
-        :to="{ path: '/avatar', hash: `#${item.anchor}` }"
+      <li
         v-for="(item, idx) in items"
         :key="idx"
-        >{{ item.text }}</router-link
+        @click="handleSelect(item.anchor, $event)"
       >
+        <router-link
+          tag="div"
+          class="item"
+          :class="activeAnchor === item.anchor ? 'active' : 'inactive'"
+          :to="{ path: '/avatar', hash: `#${item.anchor}` }"
+          >{{ item.text }}</router-link
+        >
+      </li>
     </ul>
   </section>
 </template>
@@ -77,7 +80,12 @@ export default {
       this.throttleTimer = setTimeout(() => {
         this.throttleTimer = null;
         this.activeAnchor = this.locateByScrolling();
+        console.log("activeAnchor", this.activeAnchor);
       }, 100);
+    },
+    handleSelect(anchor, e) {
+      console.log("handleSelect", e, anchor);
+      this.activeAnchor = anchor;
     },
   },
 };
@@ -99,6 +107,9 @@ export default {
   .item-container {
     margin: 0;
     padding: 0;
+    li {
+      list-style: none;
+    }
   }
   .item {
     flex: 1;
@@ -110,7 +121,6 @@ export default {
     border-left: 3px solid transparent;
     margin: 0;
     color: rgba(0, 0, 0, 0.6);
-    list-style: none;
     cursor: pointer;
     user-select: none;
     transition: border 100ms cubic-bezier(0.4, 0, 0.2, 1);
