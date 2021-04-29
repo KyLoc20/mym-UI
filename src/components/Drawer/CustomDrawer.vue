@@ -64,7 +64,7 @@ export default {
         document.documentElement.style.overflow = "hidden";
       } else {
         //when the drawer is close
-        document.documentElement.style.overflow = "auto";
+        document.documentElement.style.overflow = "visible";
       }
     },
   },

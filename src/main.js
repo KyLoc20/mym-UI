@@ -19,7 +19,18 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    routes
+    mode: 'history',
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+        // console.log('scrollBehavior', to.hash, from, savedPosition)
+        if (savedPosition) {
+            //GoForward or GoBack Button in the browser
+            return savedPosition
+        } else {
+            console.log('scrollBehavior', to.hash, from, savedPosition)
+            return { selector: to.hash, offset: { x: 0, y: 70 } }
+        }
+    }
 })
 new Vue({
     router,

@@ -5,7 +5,7 @@
       >Avatars are found throughout material design with uses in everything from
       tables to dialog menus.</typography
     >
-    <typography variant="h2">Image avatars</typography>
+    <typography variant="h2" id="ac-image">Image avatars</typography>
     <typography variant="p"
       >Image avatars can be created by passing <code>src</code> props to the
       component.</typography
@@ -16,7 +16,7 @@
       <avatar src="/avatar3.jpg" size="md"></avatar>
     </section>
 
-    <typography variant="h2">Letter avatars</typography>
+    <typography variant="h2" id="ac-letter">Letter avatars</typography>
     <typography variant="p"
       >Avatars containing simple characters can be created by passing a string
       as <code>children</code>.</typography
@@ -28,8 +28,7 @@
       <avatar color="purple">D</avatar>
       <avatar color="orange">E</avatar>
     </section>
-
-    <typography variant="h2">Sizes</typography>
+    <typography variant="h2" id="ac-sizes">Sizes</typography>
     <typography variant="p"
       >You can change the size of the avatar with the
       <code>size</code> props.</typography
@@ -40,7 +39,7 @@
       <avatar src="/avatar1.jpg" size="lg"></avatar>
     </section>
 
-    <typography variant="h2">With badge</typography>
+    <typography variant="h2" id="ac-badge">With badge</typography>
     <typography variant="p"
       >You can add a badge to the avatar with the
       <code>badge</code> props.</typography

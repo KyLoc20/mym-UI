@@ -10,7 +10,7 @@
       </section>
     </section>
     <section class="right-container">
-      <ScrollCatalog></ScrollCatalog>
+      <ScrollCatalog title="contents" :items="scrollItems"></ScrollCatalog>
     </section>
   </div>
 </template>
@@ -83,6 +83,12 @@ export default {
           ],
         },
       ],
+      scrollItems: [
+        { anchor: "#ac-image", text: "Image avatars" },
+        { anchor: "#ac-letter", text: "Letter avatars" },
+        { anchor: "#ac-sizes", text: "Sizes" },
+        { anchor: "#ac-badge", text: "With badge" },
+      ],
     };
   },
   mounted() {
@@ -120,25 +126,39 @@ export default {
     .footer {
       margin: 96px 0 30px;
     }
-   
   }
-   .right-container {
-      display: none;
-      width: 160px;
-      position: sticky;
-      padding-top: 86px;
-      right: 0;
-      top: 0;
-      bottom: 0;
-    }
+  .right-container {
+    display: none;
+    width: 160px;
+    position: sticky;
+    height: calc(100vh - 70px);
+    top: 0px;
+    // margin-top:70px;
+    padding: 86px 16px 16px 0;
+    box-sizing: border-box;
+  }
   @media (min-width: 600px) {
     .main-container {
       width: calc(100% - 175px); //for right navigation
+      margin-left: auto;
+      margin-right: auto;
       padding-left: 24px;
       padding-right: 24px; // add scroller width
     }
     .right-container {
       display: block;
+    }
+  }
+  @media (min-width: 960px) {
+    .main-container {
+      max-width: 120ch;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .main-container {
+      padding-left: 48px;
+      padding-right: 48px;
     }
   }
 }

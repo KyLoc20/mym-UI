@@ -111,12 +111,14 @@ export default {
     handleReadyToOpenDrawer() {
       this.isDrawerActive = true;
       //when the drawer is open
+      //todo not recommended
       document.documentElement.style.overflow = "hidden";
     },
     closeDrawer() {
       this.isDrawerActive = false;
       //when the drawer is close
-      document.documentElement.style.overflow = "auto";
+      //todo not auto for position:sticky
+      document.documentElement.style.overflow = "visible";
     },
     goToLink(link) {
       if (link) {

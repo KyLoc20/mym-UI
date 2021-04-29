@@ -1,12 +1,16 @@
 <template>
   <section class="scroll-catalog">
-    <section class="title">contents</section>
+    <section class="title">{{ title }}</section>
     <ul class="item-container">
-      <li class="item">image</li>
-      <li class="item">letter</li>
-      <li class="item">size</li>
-      <li class="item">icon</li>
-      <li class="item">API</li>
+      <router-link
+        tag="li"
+        class="item"
+        active-class="active"
+        :to="{ path: '/avatar', hash: item.anchor }"
+        v-for="(item, idx) in items"
+        :key="idx"
+        >{{ item.text }}</router-link
+      >
     </ul>
   </section>
 </template>
@@ -15,13 +19,12 @@ export default {
   name: "ScrollCatalog",
   components: {},
   props: {
-    //[content:Object,children?:[item]]
+    title: {
+      type: String,
+    },
+    //[anchor:hrefString,text:string]
     items: {
       type: Array,
-    },
-    selectedOne: {
-      type: String,
-      required: false,
     },
   },
   data() {
@@ -31,24 +34,19 @@ export default {
   },
   mounted() {
     console.log(this.items);
+    document.addEventListener("scroll", this.handleScroll, true);
+  },
+  destroyed() {
+    document.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
     locateByScrolling() {},
-    handleSelect(current, where) {
-      let label = current.label;
-      let layer = current.layer;
-      this.selectedLabel = where.label;
-      console.log(
-        "Here is: ",
-        label,
-        layer,
-        " handleSelect from: ",
-        where,
-        " current selectedLabel: ",
-        this.selectedLabel
-      );
-      //report to the upper cpt to go somewhere
-      this.$emit("select", where);
+    handleScroll() {
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      console.log("handleScroll", scrollTop);
     },
   },
 };
@@ -67,9 +65,9 @@ export default {
     margin-bottom: 0.35em;
     text-transform: capitalize;
   }
-  .item-container{
-    margin:0;
-    padding:0;
+  .item-container {
+    margin: 0;
+    padding: 0;
   }
   .item {
     flex: 1;
@@ -82,6 +80,19 @@ export default {
     margin: 0;
     color: rgba(0, 0, 0, 0.6);
     list-style: none;
+    cursor:pointer;
+    user-select: none;
+    transition:border 100ms cubic-bezier(.4,0,.2,1);
+    &:hover{
+      border-color: #eeeeee;
+    }
+    &.active{
+      border-color: #e0e0e0;
+      color: rgba(0, 0, 0, 0.87);
+    }
+    a {
+      text-decoration: none;
+    }
   }
 }
 </style>
