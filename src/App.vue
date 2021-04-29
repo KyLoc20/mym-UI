@@ -9,15 +9,19 @@
         <divider></divider>
       </section>
     </section>
+    <section class="right-container">
+      <ScrollCatalog></ScrollCatalog>
+    </section>
   </div>
 </template>
 
 <script>
 import AppBar from "./components/AppBar/AppBar";
 import Divider from "./components/Divider/Divider";
+import ScrollCatalog from "./components//ScrollCatalog/ScrollCatalog";
 export default {
   name: "App",
-  components: { AppBar, Divider },
+  components: { AppBar, Divider, ScrollCatalog },
   data() {
     return {
       scrollerWidth: null,
@@ -103,7 +107,7 @@ export default {
   color: #2c3e50;
   display: flex;
   justify-content: center;
-  //todo calculate scroller width
+  position: relative;
   // margin-right: calc(100% - 100vw); // way1 to not changing scroller show and hide
   //width: calc(100vw - 17px); // way2 to not changing scroller show and hide
   .main-container {
@@ -116,12 +120,25 @@ export default {
     .footer {
       margin: 96px 0 30px;
     }
+   
   }
+   .right-container {
+      display: none;
+      width: 160px;
+      position: sticky;
+      padding-top: 86px;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
   @media (min-width: 600px) {
     .main-container {
       width: calc(100% - 175px); //for right navigation
       padding-left: 24px;
       padding-right: 24px; // add scroller width
+    }
+    .right-container {
+      display: block;
     }
   }
 }

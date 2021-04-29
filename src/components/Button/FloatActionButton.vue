@@ -179,7 +179,7 @@ export default {
   .text {
     font-size: 14px;
     letter-spacing: 0.02857em;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.75;
     user-select: none;
     text-transform: uppercase;
