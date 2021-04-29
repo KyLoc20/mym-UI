@@ -84,10 +84,10 @@ export default {
         },
       ],
       scrollItems: [
-        { anchor: "#ac-image", text: "Image avatars" },
-        { anchor: "#ac-letter", text: "Letter avatars" },
-        { anchor: "#ac-sizes", text: "Sizes" },
-        { anchor: "#ac-badge", text: "With badge" },
+        { anchor: "ac-image", text: "Image avatars" },
+        { anchor: "ac-letter", text: "Letter avatars" },
+        { anchor: "ac-sizes", text: "Sizes" },
+        { anchor: "ac-badge", text: "With badge" },
       ],
     };
   },

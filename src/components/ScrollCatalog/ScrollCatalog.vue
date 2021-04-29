@@ -5,8 +5,9 @@
       <router-link
         tag="li"
         class="item"
-        active-class="active"
-        :to="{ path: '/avatar', hash: item.anchor }"
+        :class="activeAnchor === item.anchor ? 'active' : 'inactive'"
+        active-class="active-selecting"
+        :to="{ path: '/avatar', hash: `#${item.anchor}` }"
         v-for="(item, idx) in items"
         :key="idx"
         >{{ item.text }}</router-link
@@ -30,6 +31,8 @@ export default {
   data() {
     return {
       selectedLabel: this.selectedOne,
+      throttleTimer: null,
+      activeAnchor: null, //when scrolling
     };
   },
   mounted() {
@@ -40,13 +43,41 @@ export default {
     document.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
-    locateByScrolling() {},
+    locateByScrolling() {
+      // let scrollTop =
+      //   window.pageYOffset ||
+      //   document.documentElement.scrollTop ||
+      //   document.body.scrollTop;
+
+      let closestOne = null;
+      let minDistance = Number.MAX_SAFE_INTEGER;
+      for (let item of this.items) {
+        let el = document.getElementById(item.anchor);
+        if (el) {
+          let top = el.getBoundingClientRect().top;
+          //its negative if the el is above the viewport
+          if (top > 0 && top < minDistance) {
+            closestOne = item;
+            minDistance = top;
+          } else {
+            continue;
+          }
+        } else {
+          continue;
+        }
+      }
+      //console.log("locateByScrolling", closestOne.anchor, minDistance);
+      return closestOne ? closestOne.anchor : null;
+    },
     handleScroll() {
-      let scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      console.log("handleScroll", scrollTop);
+      console.log("handleScroll");
+      if (this.throttleTimer) {
+        return;
+      }
+      this.throttleTimer = setTimeout(() => {
+        this.throttleTimer = null;
+        this.activeAnchor = this.locateByScrolling();
+      }, 100);
     },
   },
 };
@@ -80,16 +111,18 @@ export default {
     margin: 0;
     color: rgba(0, 0, 0, 0.6);
     list-style: none;
-    cursor:pointer;
+    cursor: pointer;
     user-select: none;
-    transition:border 100ms cubic-bezier(.4,0,.2,1);
-    &:hover{
+    transition: border 100ms cubic-bezier(0.4, 0, 0.2, 1);
+    &:hover {
       border-color: #eeeeee;
     }
-    &.active{
+    &.active,
+    &.active-selecting:not(.inactive) {
       border-color: #e0e0e0;
       color: rgba(0, 0, 0, 0.87);
     }
+
     a {
       text-decoration: none;
     }
