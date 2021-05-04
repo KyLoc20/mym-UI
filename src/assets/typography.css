@@ -57,3 +57,14 @@
     font-display: swap;
     src: url("/assets/fonts/Consolas/Consolas.ttf") format('truetype');
 }
+
+ul {
+    padding-left: 30px;
+    margin: 0 0 16px;
+}
+
+li {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+}
