@@ -29,7 +29,7 @@ export default {
         {
           content: { label: "inputs", text: "Inputs" },
           children: [
-            { content: { label: "button", text: "Button" } },
+            { content: { label: "button", text: "Button", link: "button" } },
             { content: { label: "checkbox", text: "Checkbox" } },
             {
               content: {

@@ -22,6 +22,12 @@ export default {
         return ["plain", "default", "primary", "secondary"].indexOf(v) !== -1;
       },
     },
+    size: {
+      default: "md",
+      validator: (v) => {
+        return ["sm", "md", "lg"].indexOf(v) !== -1;
+      },
+    },
     flat: {
       default: false,
       type: Boolean,
@@ -47,10 +53,11 @@ export default {
       return !this.disabled;
     },
     classButton() {
-      let clazz = "";
+      let clazz = "btn ";
       let variant = this.variant + "-btn";
       let color = this.color + "-btn";
-      clazz += variant + " " + color;
+      let size = this.size + "-btn";
+      clazz += variant + " " + color + " " + size;
       if (this.disabled) clazz += " disabled";
       if (this.flat) clazz += " flat";
       return clazz;
@@ -108,17 +115,15 @@ export default {
 <style lang="less" scoped>
 button {
   margin: 0;
-  padding: 6px 16px;
   outline: none;
 
   border: none;
   border-radius: 0.25rem;
+  box-sizing: content-box;
 
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  font-size: 14px; //todo weird making button larger than usual
-  line-height: 1.75; //todo weird making button larger than usual
   font-weight: 500;
   background: transparent;
 
@@ -127,6 +132,21 @@ button {
   text-transform: uppercase;
   cursor: pointer;
   user-select: none;
+}
+.sm-btn {
+  padding: 4px 10px;
+  height: 22px;
+  font-size: 13px;
+}
+.md-btn {
+  padding: 6px 16px;
+  height: 24px;
+  font-size: 14px;
+}
+.lg-btn {
+  padding: 8px 22px;
+  height: 26px;
+  font-size: 15px;
 }
 .contained-btn {
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),

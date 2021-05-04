@@ -35,7 +35,7 @@
       >Here is an example of customizing the component. You can learn more about
       this in the overrides documentation page.</typography
     >
-    <section class="group-box box-block bg-gray">
+    <section class="group-box box-block bg-gray padding-24">
       <section class="row">
         <stepper :steps="stepItems" :progress="progress"></stepper>
       </section>

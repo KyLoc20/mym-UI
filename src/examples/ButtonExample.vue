@@ -80,6 +80,38 @@
       <vbutton variant="outlined" color="secondary">secondary</vbutton>
       <vbutton variant="outlined" disabled>disabled</vbutton>
     </section>
+    <typography variant="h2" id="ac-sizes">Sizes</typography>
+    <typography variant="p"
+      >By default the size is medium with the specific padding and height. To
+      use the <code>size</code> prop is to provide the preset paddings and
+      heights.</typography
+    >
+    <section class="group-box box-block bd-1 br-4 padding-4">
+      <section class="row margin-8">
+        <vbutton variant="text" color="primary" size="sm">SMALL</vbutton>
+        <vbutton variant="text" color="primary" size="md">MEDIUM</vbutton>
+        <vbutton variant="text" color="primary" size="lg">LARGE</vbutton>
+      </section>
+      <section class="row margin-8">
+        <vbutton variant="outlined" color="primary" size="sm">SMALL</vbutton>
+        <vbutton variant="outlined" color="primary" size="md">MEDIUM</vbutton>
+        <vbutton variant="outlined" color="primary" size="lg">LARGE</vbutton>
+      </section>
+      <section class="row margin-8">
+        <vbutton variant="contained" color="primary" size="sm">SMALL</vbutton>
+        <vbutton variant="contained" color="primary" size="md">MEDIUM</vbutton>
+        <vbutton variant="contained" color="primary" size="lg">LARGE</vbutton>
+      </section>
+    </section>
+    <typography variant="p"
+      >It is recommended to costomize your own padding, width, height, fon-size and so
+      on in the style of <code>.btn</code>.</typography
+    >
+    <section class="group-box box-block bd-1 br-4 padding-4">
+      <section class="row margin-8">
+        <vbutton class="custom" variant="contained" color="primary" size="sm">CUSTOM</vbutton>
+      </section>
+    </section>
   </section>
 </template>
 <script>
@@ -87,7 +119,7 @@ import Vbutton from "../components/Button/Button";
 import Typography from "../components/Typography/Typography";
 export default {
   name: "FloatActionButton",
-  components: {  Typography, Vbutton },
+  components: { Typography, Vbutton },
   data() {
     return {};
   },
@@ -97,5 +129,11 @@ export default {
 </script>
 <style scoped lang="less">
 .button-example {
+  .custom{
+    width:120px;
+    height:32px;
+    padding:4px 8px;
+    font-size: 16px;
+  }
 }
 </style>
