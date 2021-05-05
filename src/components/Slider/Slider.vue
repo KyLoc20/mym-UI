@@ -7,7 +7,6 @@
       <span class="rail"></span>
       <span class="track" :style="trackLength"></span>
     </div>
-
     <span class="text">{{ progressText }} {{ isActive }}</span>
   </section>
 </template>
@@ -166,6 +165,7 @@ export default {
     .track {
       .baseline();
       top: 50%;
+      transition: width 50ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     }
     .thumb-wrapper {
       position: absolute;
@@ -175,6 +175,7 @@ export default {
       &:hover .thumb {
         box-shadow: 0px 0px 0px 8px #1976d229;
       }
+      transition: left 50ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
       .thumb {
         position: absolute;
         width: 12px;
