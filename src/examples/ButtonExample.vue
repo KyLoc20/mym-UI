@@ -118,7 +118,7 @@
 import Vbutton from "../components/Button/Button";
 import Typography from "../components/Typography/Typography";
 export default {
-  name: "FloatActionButton",
+  name: "ButtonExample",
   components: { Typography, Vbutton },
   data() {
     return {};
@@ -130,9 +130,9 @@ export default {
 <style scoped lang="less">
 .button-example {
   .custom{
-    width:120px;
-    height:32px;
-    padding:4px 8px;
+    width:240px;
+    height:48px;
+    padding:14px 18px;
     font-size: 16px;
   }
 }

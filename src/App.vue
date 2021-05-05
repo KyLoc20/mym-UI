@@ -40,7 +40,7 @@ export default {
             },
             { content: { label: "radio", text: "Radio" } },
             { content: { label: "select", text: "Select" } },
-            { content: { label: "slider", text: "Slider" } },
+            { content: { label: "slider", text: "Slider", link: "slider" } },
             { content: { label: "textfield", text: "Text Field" } },
           ],
         },

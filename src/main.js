@@ -7,11 +7,13 @@ import './assets/layout.less'
 import './assets/legacy.less'
 Vue.config.productionTip = false
 Vue.use(VueRouter)
-
+import _ from 'lodash'
+Vue.prototype._ = _
 import StepperExample from "./examples/StepperExample"
 import AvatarExample from "./examples/AvatarExample"
 import FloatActionButtonExample from "./examples/FloatActionButtonExample"
 import ButtonExample from "./examples/ButtonExample"
+import SliderExample from "./examples/SliderExample"
 
 const routes = [
     { path: '/', component: AvatarExample },
@@ -19,6 +21,7 @@ const routes = [
     { path: '/avatar', component: AvatarExample },
     { path: '/float-action-button', component: FloatActionButtonExample },
     { path: '/button', component: ButtonExample },
+    { path: '/slider', component: SliderExample },
     // { path: '/boo', component: Boo },
 ]
 
