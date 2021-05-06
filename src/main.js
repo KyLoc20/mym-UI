@@ -14,7 +14,7 @@ import AvatarExample from "./examples/AvatarExample"
 import FloatActionButtonExample from "./examples/FloatActionButtonExample"
 import ButtonExample from "./examples/ButtonExample"
 import SliderExample from "./examples/SliderExample"
-
+import CardExample from "./examples/CardExample"
 const routes = [
     { path: '/', component: AvatarExample },
     { path: '/stepper', component: StepperExample },
@@ -22,6 +22,7 @@ const routes = [
     { path: '/float-action-button', component: FloatActionButtonExample },
     { path: '/button', component: ButtonExample },
     { path: '/slider', component: SliderExample },
+    { path: '/card', component: CardExample },
     // { path: '/boo', component: Boo },
 ]
 
@@ -34,7 +35,7 @@ const router = new VueRouter({
             //GoForward or GoBack Button in the browser
             return savedPosition
         } else {
-            console.log('scrollBehavior', to.hash, from, savedPosition)
+            // console.log('scrollBehavior', to.hash, from, savedPosition)
             return { selector: to.hash, offset: { x: 0, y: 70 } }
         }
     }

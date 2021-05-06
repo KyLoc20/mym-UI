@@ -64,7 +64,7 @@ export default {
           content: { label: "surfaces", text: "Surfaces" },
           children: [
             { content: { label: "app-bar", text: "App Bar" } },
-            { content: { label: "card", text: "Card" } },
+            { content: { label: "card", text: "Card", link: "card"  } },
           ],
         },
         {
