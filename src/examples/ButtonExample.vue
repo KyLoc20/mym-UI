@@ -80,6 +80,32 @@
       <vbutton variant="outlined" color="secondary">secondary</vbutton>
       <vbutton variant="outlined" disabled>disabled</vbutton>
     </section>
+    <typography variant="h2" id="ac-sizes">Upload Button</typography>
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <label for="upload-input" @click="handleClick2">
+        <input
+          class="hide-input-trick"
+          accept="image/*"
+          id="upload-input"
+          multiple
+          type="file"
+          @change="handleUploadFile"
+        />
+        <vbutton variant="contained" color="primary">
+          Upload
+        </vbutton>
+      </label>
+    </section>
+    <typography variant="h2" id="ac-sizes"
+      >Buttons with icons and label</typography
+    >
+    <typography variant="p"
+      >Sometimes you might want to have icons for certain buttons to enhance the
+      UX of the application as we recognize logos more easily than plain text.
+      For example, if you have a delete button you can label it with a dustbin
+      icon.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4"></section>
     <typography variant="h2" id="ac-sizes">Sizes</typography>
     <typography variant="p"
       >By default the size is medium with the specific padding and height. To
@@ -104,12 +130,14 @@
       </section>
     </section>
     <typography variant="p"
-      >It is recommended to costomize your own padding, width, height, fon-size and so
-      on in the style of <code>.btn</code>.</typography
+      >It is recommended to costomize your own padding, width, height, fon-size
+      and so on in the style of <code>.btn</code>.</typography
     >
     <section class="group-box box-block bd-1 br-4 padding-4">
       <section class="row margin-8">
-        <vbutton class="custom" variant="contained" color="primary" size="sm">CUSTOM</vbutton>
+        <vbutton class="custom" variant="contained" color="primary" size="sm"
+          >CUSTOM</vbutton
+        >
       </section>
     </section>
   </section>
@@ -121,19 +149,36 @@ export default {
   name: "ButtonExample",
   components: { Typography, Vbutton },
   data() {
-    return {};
+    return {
+      uploadValue: null,
+    };
   },
-  methods: {},
+
+  methods: {
+    handleUploadFile(e) {
+      //todo no response for the first click or need to click twice
+      console.log("handleUploadFile", e.target.files);
+    },
+    handleClick2() {
+      console.log("handleClick2");
+    },
+  },
   computed: {},
 };
 </script>
 <style scoped lang="less">
 .button-example {
-  .custom{
-    width:240px;
-    height:48px;
-    padding:14px 18px;
+  .custom {
+    width: 240px;
+    height: 48px;
+    padding: 14px 18px;
     font-size: 16px;
+  }
+  .hide-input-trick {
+    width: 0;
+    height: 0;
+    padding: 0;
+    border: none;
   }
 }
 </style>

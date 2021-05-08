@@ -4,7 +4,7 @@
   </button>
 </template>
 <script>
-import Rippleable from "@/mixins/rippleable";
+import Rippleable from "../../mixins/rippleable";
 export default {
   name: "Button",
   components: {},

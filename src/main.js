@@ -35,8 +35,8 @@ const router = new VueRouter({
             //GoForward or GoBack Button in the browser
             return savedPosition
         } else {
-            // console.log('scrollBehavior', to.hash, from, savedPosition)
-            return { selector: to.hash, offset: { x: 0, y: 70 } }
+            if (to.hash) return { selector: to.hash, offset: { x: 0, y: 70 } }
+            else return
         }
     }
 })
