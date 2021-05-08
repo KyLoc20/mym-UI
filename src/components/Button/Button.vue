@@ -1,14 +1,17 @@
 <template>
   <button :class="classButton" @click="handleButtonClick">
+    <Icon v-if="startIcon" :name="startIcon" :size="'sm'"></Icon>
     <slot></slot>
+    <Icon v-if="endIcon" :name="endIcon" :size="'sm'"></Icon>
   </button>
 </template>
 <script>
 import Rippleable from "../../mixins/rippleable";
+import Icon from "../../components/Icon/Icon"
 export default {
   name: "Button",
-  components: {},
-  mixins: [Rippleable],
+  components: {Icon,},
+  mixins: [Rippleable,],
   props: {
     variant: {
       default: "contained",
@@ -43,6 +46,15 @@ export default {
     delayed: {
       default: false,
       type: Boolean,
+    },
+    //icon 
+    startIcon:{
+      type: String,
+      required:false,
+    },
+        endIcon:{
+      type: String,
+      required:false,
     },
   },
   data() {

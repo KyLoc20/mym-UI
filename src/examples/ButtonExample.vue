@@ -96,16 +96,7 @@
         </vbutton>
       </label>
     </section>
-    <typography variant="h2" id="ac-sizes"
-      >Buttons with icons and label</typography
-    >
-    <typography variant="p"
-      >Sometimes you might want to have icons for certain buttons to enhance the
-      UX of the application as we recognize logos more easily than plain text.
-      For example, if you have a delete button you can label it with a dustbin
-      icon.</typography
-    >
-    <section class="group-box box-inline center margin-8 bd-1 br-4"></section>
+
     <typography variant="h2" id="ac-sizes">Sizes</typography>
     <typography variant="p"
       >By default the size is medium with the specific padding and height. To
@@ -139,6 +130,24 @@
           >CUSTOM</vbutton
         >
       </section>
+    </section>
+
+    <typography variant="h2" id="ac-sizes"
+      >Buttons with icons and label</typography
+    >
+    <typography variant="p"
+      >Sometimes you might want to have icons for certain buttons to enhance the
+      UX of the application as we recognize logos more easily than plain text.
+      For example, if you have a delete button you can label it with a dustbin
+      icon.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <vbutton variant="outlined" color="primary" startIcon="delete">
+        DELETE
+      </vbutton>
+      <vbutton variant="contained" color="primary" endIcon="send">
+        SEND
+      </vbutton>
     </section>
   </section>
 </template>
