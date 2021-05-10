@@ -1,5 +1,5 @@
 <template>
-  <section class="button-box" :class="classIconButton">
+  <section class="icon-button" :class="classIconButton">
     <vbutton
       variant="iconed"
       :color="color"
@@ -83,8 +83,8 @@ export default {
   computed: {
     classIconButton() {
       return this.disabled
-        ? this.size + " disabled"
-        : this.size + " " + this.color + (this.isFlat ? " flat" : "");
+        ? " disabled"
+        : " " + this.color + (this.isFlat ? " flat" : "");
     },
   },
   methods: {
@@ -97,7 +97,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.button-box {
+.icon-button {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -108,19 +108,10 @@ export default {
     height: inherit;
     border-radius: 50%;
     box-shadow: none;
+    //todo padding and size need to be specified
+    //size 44 48 60
     padding: 12px;
+
   }
-}
-.button-box.sm {
-  width: 44px;
-  height: 44px;
-}
-.button-box.md {
-  width: 48px;
-  height: 48px;
-}
-.button-box.lg {
-  width: 60px;
-  height: 60px;
 }
 </style>

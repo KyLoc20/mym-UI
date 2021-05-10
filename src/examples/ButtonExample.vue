@@ -149,14 +149,40 @@
         SEND
       </vbutton>
     </section>
+
+    <typography variant="h2" id="ac-sizes">Icon button</typography>
+    <typography variant="p"
+      >Icon buttons are commonly found in app bars and toolbars.</typography
+    >
+    <typography variant="p"
+      >Icons are also appropriate for toggle buttons that allow a single choice
+      to be selected or deselected, such as adding or removing a star to an
+      item.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <icon-button size="md" icon="delete" color="default"></icon-button>
+      <icon-button
+        size="md"
+        icon="delete"
+        color="default"
+        disabled
+      ></icon-button>
+      <icon-button size="md" icon="clock" color="secondary"></icon-button>
+      <icon-button
+        size="md"
+        icon="shopcart"
+        color="primary"
+      ></icon-button>
+    </section>
   </section>
 </template>
 <script>
 import Vbutton from "../components/Button/Button";
+import IconButton from "../components/Button/IconButton";
 import Typography from "../components/Typography/Typography";
 export default {
   name: "ButtonExample",
-  components: { Typography, Vbutton },
+  components: { Typography, Vbutton ,IconButton},
   data() {
     return {
       uploadValue: null,

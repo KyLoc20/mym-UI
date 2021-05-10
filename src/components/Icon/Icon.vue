@@ -1,42 +1,54 @@
 <template>
-  <span class="icon" :style="{fill:color?color:'currentColor'}">
-    <badge v-if="badge" :content="badge.content"  :size="badge.size"  :color="badge.color" :visible="badge.visible"></badge>
-    <svg :class="size" focusable="false" :viewBox="viewBox" aria-hidden="true">
+  <span class="icon" :style="{ fill: color ? color : 'currentColor',...iconSize}">
+    <badge
+      v-if="badge"
+      :content="badge.content"
+      :size="badge.size"
+      :color="badge.color"
+      :visible="badge.visible"
+    ></badge>
+    <svg :style="iconSize" focusable="false" :viewBox="viewBox" aria-hidden="true">
       <path :d="path"></path>
     </svg>
   </span>
 </template>
 <script>
 //todo IMPORTANT Icon Component is based on the prop name to control the path, API is name not path.When name changed, the path must be updated.
-import Badge from '../Badge/Badge'
-import {iconMap,iconList} from './icons'
+import Badge from "../Badge/Badge";
+import { iconMap, iconList } from "./icons";
+const mapSize = {
+  sm: 20,
+  md: 24,
+  lg: 36,
+};
 export default {
   name: "Icon",
-  components: {Badge},
+  components: { Badge },
   props: {
     name: {
       default: "unknown",
       validator: (v) => {
-        return (
-          iconList.indexOf(v) !== -1
-        );
+        return iconList.indexOf(v) !== -1;
       },
     },
     size: {
-      default: "auto",
+      default: "md",
       validator: (v) => {
-        return ["auto","sm", "md", "lg"].indexOf(v) !== -1;
+        if (typeof v === "string" && ["sm", "md", "lg"].indexOf(v) !== -1)
+          return true;
+        else if (typeof v === "number" && v > 0) return true;
+        else return false;
       },
     },
-    color:{
-      type:String,
-      required:false,
+    color: {
+      type: String,
+      required: false,
     },
-    badge:{
-      required:false,
+    badge: {
+      required: false,
       //todo {content,size,color,visible}
-      type:Object,
-    }
+      type: Object,
+    },
   },
   data() {
     return {};
@@ -48,10 +60,19 @@ export default {
     viewBox() {
       return iconMap[this.name].viewBox;
     },
+    iconSize() {
+      let size = this.getIconSize(this.size);
+      return { width: `${size}px`, height: `${size}px` };
+    },
   },
-  mounted() {
+  mounted() {},
+  methods: {
+    getIconSize(inputSize) {
+      if (typeof inputSize === "string") return mapSize[inputSize] || 24;
+      else if (typeof inputSize === "number") return inputSize;
+      else return 24;
+    },
   },
-  methods: {},
 };
 </script>
 <style lang="less" scoped>
@@ -61,31 +82,6 @@ export default {
   position: relative;
   vertical-align: middle;
   text-align: center;
-  // color:rgba(0, 0, 0, 0.54);
   transition: fill, background-color 500ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-}
-// .plain .icon svg {
-//   fill: white;
-// }
-// .primary .icon svg {
-//   fill: rgba(25, 118, 210, 0.8);
-// }
-// .secondary .icon svg {
-//   fill: rgba(220, 0, 78, 0.8);
-// }
-// .disabled .icon svg {
-//   fill: rgba(0, 0, 0, 0.26);
-// }
-svg.sm {
-  width: 20px;
-  height: 20px;
-}
-svg.md {
-  width: 24px;
-  height: 24px;
-}
-svg.lg {
-  width: 36px;
-  height: 36px;
 }
 </style>
