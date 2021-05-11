@@ -15,11 +15,13 @@ import FloatActionButtonExample from "./examples/FloatActionButtonExample"
 import ButtonExample from "./examples/ButtonExample"
 import SliderExample from "./examples/SliderExample"
 import CardExample from "./examples/CardExample"
+import RadioExample from "./examples/RadioExample"
 const routes = [
     { path: '/', component: AvatarExample },
     { path: '/stepper', component: StepperExample },
     { path: '/avatar', component: AvatarExample },
     { path: '/float-action-button', component: FloatActionButtonExample },
+    { path: '/radio-button', component: RadioExample },
     { path: '/button', component: ButtonExample },
     { path: '/slider', component: SliderExample },
     { path: '/card', component: CardExample },

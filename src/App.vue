@@ -38,7 +38,7 @@ export default {
                 link: "float-action-button",
               },
             },
-            { content: { label: "radio", text: "Radio" } },
+            { content: { label: "radio", text: "Radio Button", link: "radio-button"  } },
             { content: { label: "select", text: "Select" } },
             { content: { label: "slider", text: "Slider", link: "slider" } },
             { content: { label: "textfield", text: "Text Field" } },
