@@ -111,7 +111,6 @@ export default {
     //todo padding and size need to be specified
     //size 44 48 60
     padding: 12px;
-
   }
 }
 </style>

@@ -82,7 +82,7 @@
     </section>
     <typography variant="h2" id="ac-sizes">Upload Button</typography>
     <section class="group-box box-inline center margin-8 bd-1 br-4">
-      <label for="upload-input" @click="handleClick2">
+      <label for="upload-input">
         <input
           class="hide-input-trick"
           accept="image/*"
@@ -168,24 +168,46 @@
         disabled
       ></icon-button>
       <icon-button size="md" icon="clock" color="secondary"></icon-button>
-      <icon-button
-        size="md"
-        icon="shopcart"
-        color="primary"
-      ></icon-button>
+      <icon-button size="md" icon="shopcart" color="primary"></icon-button>
+    </section>
+
+    <typography variant="h2" id="ac-sizes">Loading buttons</typography>
+    <typography variant="p"
+      >The loading buttons can show loading state and disable
+      interactions.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <section class="box-block">
+        <section class="row margin-8 start">
+          <vswitch @select="handleSelectLoading"></vswitch>
+          <typography variant="san">Loading</typography>
+        </section>
+        <section class="row margin-8 start">
+          <vbutton variant="outlined" color="primary" :loading="isLoading">SUBMIT</vbutton>
+          <vbutton variant="outlined" color="primary" :loading="isLoading">FETCH DATA</vbutton>
+          <vbutton variant="contained" color="primary" startIcon="send" :loading="isLoading">
+            SEND
+          </vbutton>
+          <vbutton variant="contained" color="secondary" endIcon="save" :loading="isLoading">
+            SAVE
+          </vbutton>
+        </section>
+      </section>
     </section>
   </section>
 </template>
 <script>
 import Vbutton from "../components/Button/Button";
+import Vswitch from "../components/Switch/Switch";
 import IconButton from "../components/Button/IconButton";
 import Typography from "../components/Typography/Typography";
 export default {
   name: "ButtonExample",
-  components: { Typography, Vbutton ,IconButton},
+  components: { Typography, Vbutton, IconButton, Vswitch },
   data() {
     return {
       uploadValue: null,
+      isLoading: false,
     };
   },
 
@@ -194,8 +216,9 @@ export default {
       //todo no response for the first click or need to click twice
       console.log("handleUploadFile", e.target.files);
     },
-    handleClick2() {
-      console.log("handleClick2");
+    handleSelectLoading(e) {
+      this.isLoading = e.state;
+      console.log("handleUploadFile", this.isLoading);
     },
   },
   computed: {},

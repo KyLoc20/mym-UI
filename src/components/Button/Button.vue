@@ -1,17 +1,31 @@
 <template>
   <button :class="classButton" @click="handleButtonClick">
-    <Icon v-if="startIcon" :name="startIcon" :size="'sm'"></Icon>
-    <slot></slot>
-    <Icon v-if="endIcon" :name="endIcon" :size="'sm'"></Icon>
+    <!-- <div class="loading-content" v-if="loading">
+      <LoadingEffect ></LoadingEffect>
+      <slot></slot>
+    </div> -->
+    <div class="content">
+      <Icon
+        v-if="startIcon"
+        :name="startIcon"
+        :size="'sm'"
+        class="start-icon"
+      ></Icon>
+      <LoadingEffect class="loading-effect" v-if="loading"></LoadingEffect>
+      <span class="text" :class="loading ? 'loading' : ''"><slot></slot></span>
+
+      <Icon v-if="endIcon" :name="endIcon" :size="'sm'" class="end-icon"></Icon>
+    </div>
   </button>
 </template>
 <script>
 import Rippleable from "../../mixins/rippleable";
-import Icon from "../../components/Icon/Icon"
+import Icon from "../../components/Icon/Icon";
+import LoadingEffect from "../../components/Progress/CircularProgress";
 export default {
   name: "Button",
-  components: {Icon,},
-  mixins: [Rippleable,],
+  components: { Icon, LoadingEffect },
+  mixins: [Rippleable],
   props: {
     variant: {
       default: "contained",
@@ -47,14 +61,24 @@ export default {
       default: false,
       type: Boolean,
     },
-    //icon 
-    startIcon:{
+    //icon
+    startIcon: {
       type: String,
-      required:false,
+      required: false,
     },
-        endIcon:{
+    endIcon: {
       type: String,
-      required:false,
+      required: false,
+    },
+    //loading
+    loading: {
+      default: false,
+      type: Boolean,
+    },
+    loadingIndicator: {
+      //content when loading, by default its a circular animation
+      required: false,
+      type: String,
     },
   },
   data() {
@@ -144,6 +168,30 @@ button {
   text-transform: uppercase;
   cursor: pointer;
   user-select: none;
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+    position: relative;
+    .loading-effect{
+      position: absolute;
+    }
+    .text {
+      transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      &.loading {
+        opacity: 0;
+      }
+    }
+    .start-icon {
+      margin-left: -4px;
+      margin-right: 8px;
+    }
+    .end-icon {
+      margin-right: -4px;
+      margin-left: 8px;
+    }
+  }
 }
 .sm-btn {
   padding: 4px 10px;

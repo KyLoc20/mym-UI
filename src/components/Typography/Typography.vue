@@ -9,11 +9,13 @@ const mapType = {
   h2: "Heading2",
   h3: "Heading3",
   p: "Paragraph",
+  span:"Span",
 };
 import Heading1 from "./types/Heading1";
 import Heading2 from "./types/Heading2";
 import Heading3 from "./types/Heading3";
 import Paragraph from "./types/Paragraph";
+import Span from "./types/Span";
 export default {
   name: "Typography",
   components: {
@@ -21,6 +23,7 @@ export default {
     CptHeading2: Heading2,
     CptHeading3: Heading3,
     CptParagraph: Paragraph,
+    CptSpan: Span,
   },
   props: {
     variant: {
@@ -52,7 +55,6 @@ export default {
     padding: 0 2px;
     border-radius: 2px;
   }
-  
 }
 
 .font-roboto {
