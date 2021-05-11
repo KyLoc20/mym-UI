@@ -173,8 +173,7 @@
 
     <typography variant="h2" id="ac-sizes">Loading buttons</typography>
     <typography variant="p"
-      >The loading buttons can show loading state and disable
-      interactions.</typography
+      >The loading buttons can show loading state.</typography
     >
     <section class="group-box box-inline center margin-8 bd-1 br-4">
       <section class="box-block">
@@ -184,7 +183,7 @@
         </section>
         <section class="row margin-8 start">
           <vbutton variant="outlined" color="primary" :loading="isLoading">SUBMIT</vbutton>
-          <vbutton variant="outlined" color="primary" :loading="isLoading">FETCH DATA</vbutton>
+          <vbutton variant="outlined" color="primary" :loading="isLoading" loadingIndicator="Loading...">FETCH DATA</vbutton>
           <vbutton variant="contained" color="primary" startIcon="send" :loading="isLoading">
             SEND
           </vbutton>

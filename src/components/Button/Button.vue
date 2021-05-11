@@ -1,27 +1,34 @@
 <template>
   <button :class="classButton" @click="handleButtonClick">
-    <!-- <div class="loading-content" v-if="loading">
-      <LoadingEffect ></LoadingEffect>
-      <slot></slot>
-    </div> -->
     <div class="content">
-      <Icon
-        v-if="startIcon"
-        :name="startIcon"
-        :size="'sm'"
-        class="start-icon"
-      ></Icon>
-      <LoadingEffect class="loading-effect" v-if="loading"></LoadingEffect>
-      <span class="text" :class="loading ? 'loading' : ''"><slot></slot></span>
-
-      <Icon v-if="endIcon" :name="endIcon" :size="'sm'" class="end-icon"></Icon>
+      <span class="icon-placeholder start" v-if="startIcon">
+          <LoadingEffect v-if="loading"></LoadingEffect>
+          <Icon v-else :name="startIcon" :size="'sm'" class="start-icon"></Icon>
+      </span>
+      <span class="text-placeholder">
+        <transition>
+          <LoadingEffect
+            v-if="loading && !startIcon && !endIcon"
+            :indicator="loadingIndicator"
+          ></LoadingEffect>
+        </transition>
+        <span
+          class="text"
+          :class="loading && !startIcon && !endIcon ? 'loading' : ''"
+          ><slot></slot
+        ></span>
+      </span>
+      <span class="icon-placeholder end" v-if="endIcon">
+        <LoadingEffect v-if="loading"></LoadingEffect>
+        <Icon v-else :name="endIcon" :size="'sm'" class="end-icon"></Icon>
+      </span>
     </div>
   </button>
 </template>
 <script>
 import Rippleable from "../../mixins/rippleable";
 import Icon from "../../components/Icon/Icon";
-import LoadingEffect from "../../components/Progress/CircularProgress";
+import LoadingEffect from "./LoadingEffect";
 export default {
   name: "Button",
   components: { Icon, LoadingEffect },
@@ -160,7 +167,7 @@ button {
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  font-weight: 500;
+  font-weight: 600;
   background: transparent;
 
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -173,23 +180,28 @@ button {
     align-items: center;
     justify-content: space-evenly;
     flex-wrap: nowrap;
-    position: relative;
-    .loading-effect{
-      position: absolute;
-    }
-    .text {
-      transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-      &.loading {
-        opacity: 0;
+
+    .text-placeholder {
+      position: relative;
+      .text {
+        transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        &.loading {
+          opacity: 0;
+        }
       }
     }
-    .start-icon {
-      margin-left: -4px;
-      margin-right: 8px;
-    }
-    .end-icon {
-      margin-right: -4px;
-      margin-left: 8px;
+    .icon-placeholder {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      &.start {
+        margin-left: -4px;
+        margin-right: 8px;
+      }
+      &.end {
+        margin-right: -4px;
+        margin-left: 8px;
+      }
     }
   }
 }
@@ -354,5 +366,15 @@ button {
 .disabled {
   cursor: default;
   box-shadow: none;
+}
+
+.v-enter-active {
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 100ms;
+}
+.v-leave-active {
+  transition: opacity 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.v-enter, .v-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
