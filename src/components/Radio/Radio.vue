@@ -52,13 +52,14 @@ import Rippleable from "../../mixins/rippleable";
 export default {
   name: "Radio",
   props: {
-    //todo alias of label
+
+    label: {
+      type: String,
+    },
+        //todo alias of label
     value: {
       type: String,
       required: false,
-    },
-    label: {
-      type: String,
     },
     text: {
       type: String,
@@ -68,6 +69,13 @@ export default {
       //for locating the radio in the group
       type: Number,
       required: false,
+    },
+    exclusive: {
+      //by default radio is exclusive meaning at most one active radio at any time
+      //therefore the activation is decided by prop of checked from parent(often [RadioGroup])
+      //whereas it can be like a toggle if exclusive is false
+      type: Boolean,
+      default: true,
     },
     disabled: {
       type: Boolean,
@@ -83,18 +91,23 @@ export default {
     return {
       id: null,
       isFocused: false,
-      isSelected: null,
+      isSelectedSelf: null,
       cValue: null,
     };
   },
   mounted() {
-    this.isSelected = this.checked;
+    this.isSelectedSelf = this.checked;
   },
   components: {},
   mixins: [Rippleable],
   computed: {
     getId() {
       return this._uid;
+    },
+    isSelected() {
+      //controlled by its parent
+      if (this.exclusive) return this.checked;
+      else return this.isSelectedSelf;
     },
   },
   methods: {
@@ -110,8 +123,13 @@ export default {
     },
     handleSelect() {
       if (this.disabled) return;
-      console.log("handleSelect", this.label, this.groupIndex,this.isSelected);
-      this.isSelected = !this.isSelected;
+      console.log(
+        "handleSelect",
+        this.label,
+        this.groupIndex,
+        this.isSelectedSelf
+      );
+      if (!this.exclusive) this.isSelectedSelf = !this.isSelectedSelf;
       this.$emit("change", { label: this.label, index: this.groupIndex });
     },
     handleClickRipple(e) {

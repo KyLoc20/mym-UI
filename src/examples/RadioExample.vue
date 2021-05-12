@@ -35,8 +35,8 @@
       wrapper.
     </typography>
     <section class="group-box box-inline center margin-8 bd-1 br-4">
-      <Radio value="a"></Radio>
-      <Radio value="b"></Radio>
+      <Radio label="a" :exclusive="false"></Radio>
+      <Radio label="b" :exclusive="false"></Radio>
     </section>
   </section>
 </template>
