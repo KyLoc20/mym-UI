@@ -9,11 +9,12 @@
       :checked="isSelected"
       :disabled="disabled"
     />
-    <div
+    <label
+      :for="getId"
       class="ripple-wrapper"
       :class="disabled ? 'disabled' : ''"
       @click="handleClickRipple"
-    ></div>
+    ></label>
     <div class="icon-wrapper icon-ring">
       <div class="icon">
         <svg
@@ -42,7 +43,7 @@
         </svg>
       </div>
     </div>
-    <label :for="getId" class="radio-item" :class="disabled ? 'disabled' : ''"
+    <label :for="getId" class="radio-text" :class="disabled ? 'disabled' : ''"
       >{{ text }}
     </label>
   </section>
@@ -52,11 +53,10 @@ import Rippleable from "../../mixins/rippleable";
 export default {
   name: "Radio",
   props: {
-
     label: {
       type: String,
     },
-        //todo alias of label
+    //todo alias of label
     value: {
       type: String,
       required: false,
@@ -90,7 +90,6 @@ export default {
   data() {
     return {
       id: null,
-      isFocused: false,
       isSelectedSelf: null,
       cValue: null,
     };
@@ -112,13 +111,14 @@ export default {
   },
   methods: {
     handleFocus(e) {
-      // console.log("handleFocus", e);
-      this.isFocused = true;
+      //basically it is to control header of [RadioGroup]
+      this.$emit("focus");
       return e;
     },
     handleBlur(e) {
+      //basically it is to control header of [RadioGroup]
       // console.log("handleBlur", e);
-      this.isFocused = false;
+      this.$emit("blur");
       return e;
     },
     handleSelect() {
@@ -130,7 +130,7 @@ export default {
         this.isSelectedSelf
       );
       if (!this.exclusive) this.isSelectedSelf = !this.isSelectedSelf;
-      this.$emit("change", { label: this.label, index: this.groupIndex });
+      this.$emit("select", { label: this.label, index: this.groupIndex });
     },
     handleClickRipple(e) {
       if (this.disabled) return;
@@ -156,6 +156,8 @@ export default {
   position: relative;
   min-width: 42px;
   min-height: 42px;
+  display: flex;
+  align-items: center;
   input {
     position: absolute;
     width: 42px;
@@ -198,8 +200,8 @@ export default {
     &:not(.disabled):hover ~ .icon-ring {
       background: rgba(220, 0, 78, 0.04);
     }
+    pointer-events: auto;
   }
-
   .icon-wrapper {
     position: absolute;
     .round-shape();
@@ -226,16 +228,13 @@ export default {
     transform: scale(0);
   }
 
-  label {
+  label.radio-text {
     &.disabled {
       color: rgba(0, 0, 0, 0.38);
       cursor: default;
     }
     .base-font();
-    height: 100%;
     margin-left: 42px;
-    display: flex;
-    align-items: center;
     cursor: pointer;
     user-select: none;
   }

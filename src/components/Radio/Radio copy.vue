@@ -162,7 +162,7 @@ export default {
     padding: 0;
     margin-left: 9px;
     color: rgba(0, 0, 0, 0.54);
-    transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 100ms;
     user-select: none;
   }
   .group-content {

@@ -22,7 +22,7 @@
     </typography>
     <section class="group-box box-inline center margin-8 bd-1 br-4">
       <RadioGroup
-        group="Gender"
+        name="Gender"
         :items="radioItems"
         :defaultValue="defaultValue"
         @change="handleChangeRadioGroup"
