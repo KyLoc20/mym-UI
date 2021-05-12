@@ -19,6 +19,11 @@
           :checked="item.label === cValue"
           :disabled="item.disabled"
         />
+        <div
+          class="ripple-wrapper"
+          :class="item.disabled ? 'disabled' : ''"
+          @click="handleClickRipple($event, item.disabled)"
+        ></div>
         <div class="icon-wrapper icon-ring">
           <div class="icon">
             <svg
@@ -110,14 +115,16 @@ export default {
       return `${this.id}-${subName}`;
     },
     handleFocus(e) {
-      console.log("handleFocus", e);
+      // console.log("handleFocus", e);
       this.isFocused = true;
       //todo create ripple as sibling
       //its not available to create a ripple as a child for input
+      return e;
     },
     handleBlur(e) {
-      console.log("handleBlur", e);
+      // console.log("handleBlur", e);
       this.isFocused = false;
+      return e;
     },
     handleSelect(label, index, disabled) {
       if (disabled) return;
@@ -125,7 +132,9 @@ export default {
       this.cValue = label;
       this.$emit("change", { label, index });
     },
-    handleClickRipple(e) {
+    handleClickRipple(e, disabled) {
+      if (disabled) return;
+      console.log("handleClickRipple");
       this.createRipple(e, true, "secondary");
     },
   },
@@ -136,6 +145,11 @@ export default {
   font-size: 16px;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   letter-spacing: 0.01em;
+}
+.round-shape {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
 }
 .radio {
   display: flex;
@@ -188,19 +202,29 @@ export default {
           color: rgb(220, 0, 78);
         }
       }
-      input:not(:disabled):hover ~ .icon-ring {
-        background: rgba(220, 0, 78, 0.04);
-      }
 
       input:checked ~ .icon-circle,
       input:focus ~ .icon-circle {
         transform: scale(1);
       }
+      .ripple-wrapper {
+        .round-shape();
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 10;
+        cursor: pointer;
+        &.disabled {
+          cursor: default;
+        }
+        &:not(.disabled):hover ~ .icon-ring {
+          background: rgba(220, 0, 78, 0.04);
+        }
+      }
+
       .icon-wrapper {
         position: absolute;
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
+        .round-shape();
         left: 0;
         top: 0;
         transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
@@ -220,6 +244,7 @@ export default {
         }
       }
       .icon-circle {
+        transform-origin: 50% 50%;
         transform: scale(0);
       }
 
