@@ -25,17 +25,28 @@
         group="Gender"
         :items="radioItems"
         :defaultValue="defaultValue"
-        @change="handleChangeRadio"
+        @change="handleChangeRadioGroup"
       ></RadioGroup>
+    </section>
+
+    <typography variant="h2">Standalone radio buttons</typography>
+    <typography variant="p"
+      ><code>Radio</code> can also be used standalone, without the RadioGroup
+      wrapper.
+    </typography>
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <Radio value="a"></Radio>
+      <Radio value="b"></Radio>
     </section>
   </section>
 </template>
 <script>
-import RadioGroup from "../components/Radio/Radio";
+import RadioGroup from "../components/Radio/RadioGroup";
+import Radio from "../components/Radio/Radio";
 import Typography from "../components/Typography/Typography";
 export default {
   name: "RadioExample",
-  components: { Typography, RadioGroup },
+  components: { Typography, RadioGroup, Radio },
   data() {
     return {
       defaultValue: "female",
@@ -49,7 +60,7 @@ export default {
     };
   },
   methods: {
-    handleChangeRadio(e) {
+    handleChangeRadioGroup(e) {
       this.cValue = e.label;
     },
   },
