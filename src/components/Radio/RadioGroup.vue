@@ -3,7 +3,7 @@
     <div class="group-header" v-if="name" :class="isFocused ? 'focused' : ''">
       <span class="text">{{ name }}</span>
     </div>
-    <div class="group-content">
+    <div class="group-content" :class="horizontal ? 'horizontal' : ''">
       <div class="outer" v-for="(item, idx) in items" :key="idx">
         <Radio
           :label="item.label"
@@ -39,6 +39,11 @@ export default {
     defaultValue: {
       type: String,
       required: false,
+    },
+    horizontal: {
+      //lay out the radios horizontally
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -97,6 +102,7 @@ export default {
 .radio-group {
   display: flex;
   flex-direction: column;
+
   .group-header {
     &.focused {
       color: #1976d2;
@@ -107,6 +113,17 @@ export default {
     color: rgba(77, 52, 52, 0.54);
     transition: color 1000ms cubic-bezier(0, 0, 0.2, 1) 0ms;
     user-select: none;
+  }
+  .group-content {
+    display: flex;
+    flex-direction: column;
+    &.horizontal {
+      flex-direction: row;
+      flex-wrap: wrap;
+      .radio{
+        margin-right: 4px;
+      }
+    }
   }
 }
 </style>

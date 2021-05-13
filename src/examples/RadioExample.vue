@@ -29,6 +29,21 @@
       ></RadioGroup>
     </section>
 
+    <typography variant="h2">Direction</typography>
+    <typography variant="p"
+      >To lay out the buttons horizontally, set the
+      <code>horizontal</code> prop:
+    </typography>
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <RadioGroup
+        name="Gender"
+        horizontal
+        :items="radioItems"
+        :defaultValue="defaultValue"
+        @change="handleChangeRadioGroup"
+      ></RadioGroup>
+    </section>
+
     <typography variant="h2">Standalone radio buttons</typography>
     <typography variant="p"
       ><code>Radio</code> can also be used standalone, without the RadioGroup
