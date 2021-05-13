@@ -50,20 +50,35 @@
       wrapper.
     </typography>
     <section class="group-box box-inline center margin-8 bd-1 br-4">
-      <Radio label="a" :exclusive="false"></Radio>
+      <Radio label="a" :exclusive="false" checked></Radio>
       <Radio label="b" :exclusive="false"></Radio>
     </section>
 
     <typography variant="h2">Size</typography>
     <typography variant="p"
-      >Use the <code>size</code> prop or customize the font size of the svg icons to change the size of the radios.
+      >Use the <code>size</code> prop or customize the font size of the svg
+      icons to change the size of the radios.
     </typography>
     <section class="group-box box-inline center margin-8 bd-1 br-4">
-      <Radio label="sm" :exclusive="false" size="sm"></Radio>
+      <Radio label="sm" :exclusive="false" size="sm" checked></Radio>
       <Radio label="md" :exclusive="false" size="md"></Radio>
       <Radio label="lg" :exclusive="false" size="lg"></Radio>
     </section>
 
+    <typography variant="h2">Label placement</typography>
+    <typography variant="p"
+      >You can change the placement of the label with the
+      <code>label-placement</code> prop
+    </typography>
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <RadioGroup
+        name="LabelPlacement"
+        horizontal
+        :items="radioItemsVariousPlacement"
+        defaultValue="bottom"
+        @change="handleChangeRadioGroup"
+      ></RadioGroup>
+    </section>
   </section>
 </template>
 <script>
@@ -82,6 +97,12 @@ export default {
         { label: "male", text: "Male" },
         { label: "other", text: "Other" },
         { label: "disabled", text: "Disabled Option", disabled: true },
+      ],
+      radioItemsVariousPlacement: [
+        { label: "top", text: "Top", placement: "top" },
+        { label: "left", text: "Left", placement: "left" },
+        { label: "bottom", text: "Bottom", placement: "bottom" },
+        { label: "right", text: "Right", placement: "right" },
       ],
     };
   },

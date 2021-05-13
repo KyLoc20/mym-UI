@@ -9,6 +9,7 @@
           :label="item.label"
           :text="item.text"
           :groupIndex="idx"
+          :placement="item.placement"
           :disabled="item.disabled"
           :checked="item.label === cValue"
           @select="handleSelect"
@@ -108,9 +109,10 @@ export default {
       color: #1976d2;
     }
     .base-font();
+    line-height: 1.5;
     padding: 0;
     margin-left: 9px;
-    color: rgba(77, 52, 52, 0.54);
+    color: rgba(0, 0, 0, 0.6);
     transition: color 1000ms cubic-bezier(0, 0, 0.2, 1) 0ms;
     user-select: none;
   }
@@ -120,9 +122,6 @@ export default {
     &.horizontal {
       flex-direction: row;
       flex-wrap: wrap;
-      .radio{
-        margin-right: 4px;
-      }
     }
   }
 }

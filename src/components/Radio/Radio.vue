@@ -1,5 +1,10 @@
 <template>
-  <section class="radio" @click="handleSelect" :style="containerSize">
+  <section
+    class="radio"
+    @click="handleSelect"
+    :style="{ ...containerSize, ...containerMargin }"
+    :class="labelPlacement"
+  >
     <input
       type="radio"
       :id="getId"
@@ -8,7 +13,7 @@
       @blur="handleBlur"
       :checked="isSelected"
       :disabled="disabled"
-      :style="radioSize"
+      :style="{ ...radioSize, ...inputPlacement }"
       ref="input"
     />
     <label
@@ -16,9 +21,12 @@
       class="ripple-wrapper"
       :class="disabled ? 'disabled' : ''"
       @click="handleClickRipple"
-      :style="radioSize"
+      :style="{ ...radioSize, ...inputPlacement }"
     ></label>
-    <div class="icon-wrapper icon-ring" :style="radioSize">
+    <div
+      class="icon-wrapper icon-ring"
+      :style="{ ...radioSize, ...inputPlacement }"
+    >
       <div class="icon">
         <svg
           class="icon"
@@ -33,7 +41,10 @@
         </svg>
       </div>
     </div>
-    <div class="icon-wrapper icon-circle" :style="radioSize">
+    <div
+      class="icon-wrapper icon-circle"
+      :style="{ ...radioSize, ...inputPlacement }"
+    >
       <div class="icon">
         <svg
           class="icon"
@@ -52,7 +63,7 @@
       :for="getId"
       class="radio-text"
       :class="disabled ? 'disabled' : ''"
-      :style="textMargin"
+      :style="textPlacement"
       >{{ text }}
     </label>
   </section>
@@ -103,6 +114,13 @@ export default {
       type: Boolean,
       default: false,
     },
+    placement: {
+      //of label
+      default: "right",
+      validator: (v) => {
+        return ["right", "bottom", "left", "top"].indexOf(v) > -1;
+      },
+    },
   },
   data() {
     return {
@@ -127,17 +145,85 @@ export default {
       let size = this.getSize(this.size, mapRadioSize);
       return { minWidth: `${size}px`, minHeight: `${size}px` };
     },
+    containerMargin() {
+      let margin = null;
+      const size = 4;
+      switch (this.placement) {
+        case "right":
+          margin = { marginRight: `${size}px` };
+          break;
+        case "bottom":
+          margin = {
+            marginRight: `${size * 4}px`,
+            marginLeft: `${size * 4}px`,
+          };
+          break;
+        case "top":
+          margin = {
+            marginRight: `${size * 4}px`,
+            marginLeft: `${size * 4}px`,
+          };
+          break;
+        case "left":
+          margin = { marginLeft: `${size}px` };
+          break;
+      }
+      return margin;
+    },
     radioSize() {
       let size = this.getSize(this.size, mapRadioSize);
       return { width: `${size}px`, height: `${size}px` };
     },
-    textMargin() {
-      let size = this.getSize(this.size, mapRadioSize);
-      return { marginLeft: `${size}px` };
-    },
+
     svgSize() {
       let size = this.getSize(this.size, mapRadioSize) - 18;
       return { width: `${size}px`, height: `${size}px` };
+    },
+    inputPlacement() {
+      let position = null;
+      let size = this.getSize(this.size, mapRadioSize);
+      //this.placement is the position of radio-text
+      switch (this.placement) {
+        case "right":
+          position = { left: 0 };
+          break;
+        case "bottom":
+          //todo transform: "translate(-50%, 0)" will overload transform:"scale(0)" not recommended
+          position = { top: 0, left: `calc(50% - ${size / 2}px)` };
+          break;
+        case "left":
+          position = { right: 0 };
+          break;
+        case "top":
+          position = {
+            bottom: 0,
+            left: `calc(50% - ${size / 2}px)`,
+          };
+          break;
+      }
+      return position;
+    },
+    textPlacement() {
+      let margin = null;
+      let size = this.getSize(this.size, mapRadioSize);
+      switch (this.placement) {
+        case "right":
+          margin = { marginLeft: `${size}px` };
+          break;
+        case "bottom":
+          margin = { marginTop: `${size}px`, textAlign: "center" };
+          break;
+        case "left":
+          margin = { marginRight: `${size}px` };
+          break;
+        case "top":
+          margin = { marginBottom: `${size}px`, textAlign: "center" };
+          break;
+      }
+      return margin;
+    },
+    labelPlacement() {
+      return `label-${this.placement}`;
     },
   },
   methods: {
@@ -156,7 +242,7 @@ export default {
       //todo if not prevent it will trigger twice thats weird
       if (this.disabled) return;
       if (!this.exclusive) {
-        e.preventDefault()
+        e.preventDefault();
         this.isSelectedSelf = !this.isSelectedSelf;
         // if (this.$refs.input) console.log("input", this.$refs.input.checked);
       }
@@ -188,14 +274,21 @@ export default {
 .radio {
   display: flex;
   position: relative;
-  display: flex;
   align-items: center;
+  &.label-right {
+    flex-direction: row;
+  }
+  &.label-left {
+    flex-direction: row-reverse;
+  }
   input {
     position: absolute;
     padding: 0;
     margin: 0;
     opacity: 0;
     z-index: 1;
+    // left: 0;
+    // top: 0;
     cursor: pointer;
     pointer-events: auto;
     &:focus {
@@ -218,8 +311,8 @@ export default {
   .ripple-wrapper {
     .round-shape();
     position: absolute;
-    left: 0;
-    top: 0;
+    // left: 0;
+    // top: 0;
     z-index: 10;
     cursor: pointer;
     &.disabled {
@@ -233,8 +326,8 @@ export default {
   .icon-wrapper {
     position: absolute;
     .round-shape();
-    left: 0;
-    top: 0;
+    // left: 0;
+    // top: 0;
     transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
       background 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     .icon {
@@ -262,6 +355,7 @@ export default {
     .base-font();
     cursor: pointer;
     user-select: none;
+    width: 100%;
   }
 }
 </style>
