@@ -21,13 +21,13 @@
       class="ripple-wrapper"
       :class="disabled ? 'disabled' : ''"
       @click="handleClickRipple"
-      :style="{ ...radioSize, ...inputPlacement }"
+      :style="{ ...radioSize, ...inputPlacement, ...hoverBgColor }"
     ></label>
     <div
       class="icon-wrapper icon-ring"
       :style="{ ...radioSize, ...inputPlacement }"
     >
-      <div class="icon">
+      <div class="icon" :style="iconSelectedColor">
         <svg
           class="icon"
           focusable="false"
@@ -45,7 +45,7 @@
       class="icon-wrapper icon-circle"
       :style="{ ...radioSize, ...inputPlacement }"
     >
-      <div class="icon">
+      <div class="icon" :style="iconSelectedColor">
         <svg
           class="icon"
           focusable="false"
@@ -75,6 +75,14 @@ const mapRadioSize = {
   sm: 38, //20 svg
   md: 42, //24 svg
   lg: 46, //28 svg
+};
+const mapColor = {
+  //todo rgba parser
+  primary: [25, 118, 210, 1],
+  secondary: [220, 0, 78, 1],
+  default: [0, 0, 0, 0.6],
+  disabled: [0, 0, 0, 0.38],
+  green: [67, 160, 71, 1],
 };
 export default {
   name: "Radio",
@@ -113,6 +121,10 @@ export default {
       //isSelected by default
       type: Boolean,
       default: false,
+    },
+    color: {
+      type: String,
+      default: "secondary",
     },
     placement: {
       //of label
@@ -179,6 +191,14 @@ export default {
       let size = this.getSize(this.size, mapRadioSize) - 18;
       return { width: `${size}px`, height: `${size}px` };
     },
+    iconSelectedColor() {
+      let color = this.getColor(this.color, mapColor);
+      return { color };
+    },
+    hoverBgColor() {
+      let color = this.getColor(this.color, mapColor, 0.08);
+      return { color };
+    },
     inputPlacement() {
       let position = null;
       let size = this.getSize(this.size, mapRadioSize);
@@ -227,6 +247,14 @@ export default {
     },
   },
   methods: {
+    getColor(inputColor, mapColor, alpha) {
+      //todo color parser
+      let arr = null;
+      if (inputColor in mapColor) arr = [...mapColor[inputColor]];
+      else arr = [0, 0, 0, 0.6];
+      if (alpha) arr[3] = alpha;
+      return `rgba(${arr[0]},${arr[1]},${arr[2]},${arr[3]})`;
+    },
     handleFocus(e) {
       //basically it is to control header of [RadioGroup]
       this.$emit("focus");
@@ -257,7 +285,8 @@ export default {
     handleClickRipple(e) {
       if (this.disabled) return;
       console.log("handleClickRipple");
-      this.createRipple(e, true, "secondary");
+      //todo ripple color
+      this.createRipple(e, true, "default");
     },
   },
 };
@@ -298,11 +327,12 @@ export default {
     &:disabled {
       cursor: default;
     }
-    &:disabled ~ .icon-wrapper .icon {
-      color: rgba(0, 0, 0, 0.38);
+
+    &:not(:checked) ~ .icon-wrapper .icon {
+      color: rgba(0, 0, 0, 0.54) !important;
     }
-    &:checked ~ .icon-wrapper .icon {
-      color: rgb(220, 0, 78);
+    &:disabled ~ .icon-wrapper .icon {
+      color: rgba(0, 0, 0, 0.38) !important;
     }
     &:checked ~ .icon-circle {
       transform: scale(1);
@@ -318,8 +348,9 @@ export default {
     &.disabled {
       cursor: default;
     }
-    &:not(.disabled):hover ~ .icon-ring {
-      background: rgba(220, 0, 78, 0.04);
+    &:not(.disabled):hover {
+      background: currentColor;
+      // opacity: 0.1;
     }
     pointer-events: auto;
   }
@@ -336,7 +367,6 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      color: rgba(0, 0, 0, 0.54);
       svg {
         fill: currentColor;
       }

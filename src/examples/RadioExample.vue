@@ -65,6 +65,22 @@
       <Radio label="lg" :exclusive="false" size="lg"></Radio>
     </section>
 
+    <typography variant="h2">Color</typography>
+    <typography variant="p"
+      >Use the <code>color</code> prop or customize the color of the radios.
+    </typography>
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <Radio
+        label="secondary"
+        :exclusive="false"
+        checked
+        color="secondary"
+      ></Radio>
+      <Radio label="primary" :exclusive="false" color="primary"></Radio>
+      <Radio label="default" :exclusive="false" color="default"></Radio>
+      <Radio label="green" :exclusive="false" color="green"></Radio>
+    </section>
+
     <typography variant="h2">Label placement</typography>
     <typography variant="p"
       >You can change the placement of the label with the
