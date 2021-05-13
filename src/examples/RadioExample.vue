@@ -53,6 +53,17 @@
       <Radio label="a" :exclusive="false"></Radio>
       <Radio label="b" :exclusive="false"></Radio>
     </section>
+
+    <typography variant="h2">Size</typography>
+    <typography variant="p"
+      >Use the <code>size</code> prop or customize the font size of the svg icons to change the size of the radios.
+    </typography>
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <Radio label="sm" :exclusive="false" size="sm"></Radio>
+      <Radio label="md" :exclusive="false" size="md"></Radio>
+      <Radio label="lg" :exclusive="false" size="lg"></Radio>
+    </section>
+
   </section>
 </template>
 <script>

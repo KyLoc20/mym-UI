@@ -1,5 +1,5 @@
 <template>
-  <section class="radio" @click="handleSelect">
+  <section class="radio" @click="handleSelect" :style="containerSize">
     <input
       type="radio"
       :id="getId"
@@ -8,20 +8,24 @@
       @blur="handleBlur"
       :checked="isSelected"
       :disabled="disabled"
+      :style="radioSize"
+      ref="input"
     />
     <label
       :for="getId"
       class="ripple-wrapper"
       :class="disabled ? 'disabled' : ''"
       @click="handleClickRipple"
+      :style="radioSize"
     ></label>
-    <div class="icon-wrapper icon-ring">
+    <div class="icon-wrapper icon-ring" :style="radioSize">
       <div class="icon">
         <svg
           class="icon"
           focusable="false"
           viewBox="0 0 24 24"
           aria-hidden="true"
+          :style="svgSize"
         >
           <path
             d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
@@ -29,13 +33,14 @@
         </svg>
       </div>
     </div>
-    <div class="icon-wrapper icon-circle">
+    <div class="icon-wrapper icon-circle" :style="radioSize">
       <div class="icon">
         <svg
           class="icon"
           focusable="false"
           viewBox="0 0 24 24"
           aria-hidden="true"
+          :style="svgSize"
         >
           <path
             d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
@@ -43,15 +48,27 @@
         </svg>
       </div>
     </div>
-    <label :for="getId" class="radio-text" :class="disabled ? 'disabled' : ''"
+    <label
+      :for="getId"
+      class="radio-text"
+      :class="disabled ? 'disabled' : ''"
+      :style="textMargin"
       >{{ text }}
     </label>
   </section>
 </template>
 <script>
 import Rippleable from "../../mixins/rippleable";
+import CustomSize from "../../mixins/customSize";
+const mapRadioSize = {
+  sm: 38, //20 svg
+  md: 42, //24 svg
+  lg: 46, //28 svg
+};
 export default {
   name: "Radio",
+  components: {},
+  mixins: [Rippleable, CustomSize],
   props: {
     label: {
       type: String,
@@ -97,8 +114,6 @@ export default {
   mounted() {
     this.isSelectedSelf = this.checked;
   },
-  components: {},
-  mixins: [Rippleable],
   computed: {
     getId() {
       return this._uid;
@@ -107,6 +122,22 @@ export default {
       //controlled by its parent
       if (this.exclusive) return this.checked;
       else return this.isSelectedSelf;
+    },
+    containerSize() {
+      let size = this.getSize(this.size, mapRadioSize);
+      return { minWidth: `${size}px`, minHeight: `${size}px` };
+    },
+    radioSize() {
+      let size = this.getSize(this.size, mapRadioSize);
+      return { width: `${size}px`, height: `${size}px` };
+    },
+    textMargin() {
+      let size = this.getSize(this.size, mapRadioSize);
+      return { marginLeft: `${size}px` };
+    },
+    svgSize() {
+      let size = this.getSize(this.size, mapRadioSize) - 18;
+      return { width: `${size}px`, height: `${size}px` };
     },
   },
   methods: {
@@ -121,15 +152,20 @@ export default {
       this.$emit("blur");
       return e;
     },
-    handleSelect() {
+    handleSelect(e) {
+      //todo if not prevent it will trigger twice thats weird
       if (this.disabled) return;
+      if (!this.exclusive) {
+        e.preventDefault()
+        this.isSelectedSelf = !this.isSelectedSelf;
+        // if (this.$refs.input) console.log("input", this.$refs.input.checked);
+      }
       console.log(
         "handleSelect",
         this.label,
         this.groupIndex,
         this.isSelectedSelf
       );
-      if (!this.exclusive) this.isSelectedSelf = !this.isSelectedSelf;
       this.$emit("select", { label: this.label, index: this.groupIndex });
     },
     handleClickRipple(e) {
@@ -147,21 +183,15 @@ export default {
   letter-spacing: 0.01em;
 }
 .round-shape {
-  width: 42px;
-  height: 42px;
   border-radius: 50%;
 }
 .radio {
   display: flex;
   position: relative;
-  min-width: 42px;
-  min-height: 42px;
   display: flex;
   align-items: center;
   input {
     position: absolute;
-    width: 42px;
-    height: 42px;
     padding: 0;
     margin: 0;
     opacity: 0;
@@ -178,12 +208,10 @@ export default {
     &:disabled ~ .icon-wrapper .icon {
       color: rgba(0, 0, 0, 0.38);
     }
-    &:checked ~ .icon-wrapper .icon,
-    &:focus ~ .icon-wrapper .icon {
+    &:checked ~ .icon-wrapper .icon {
       color: rgb(220, 0, 78);
     }
-    &:checked ~ .icon-circle,
-    &:focus ~ .icon-circle {
+    &:checked ~ .icon-circle {
       transform: scale(1);
     }
   }
@@ -217,8 +245,6 @@ export default {
       align-items: center;
       color: rgba(0, 0, 0, 0.54);
       svg {
-        width: 24px;
-        height: 24px;
         fill: currentColor;
       }
     }
@@ -234,7 +260,6 @@ export default {
       cursor: default;
     }
     .base-font();
-    margin-left: 42px;
     cursor: pointer;
     user-select: none;
   }
