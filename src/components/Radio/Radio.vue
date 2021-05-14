@@ -286,7 +286,12 @@ export default {
       if (this.disabled) return;
       console.log("handleClickRipple");
       //todo ripple color
-      this.createRipple(e, true, "default");
+      this.createRipple(
+        e,
+        true,
+        this.getColor(this.color, mapColor, 0.3),
+        1200
+      );
     },
   },
 };
@@ -352,6 +357,7 @@ export default {
       background: currentColor;
       // opacity: 0.1;
     }
+    transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     pointer-events: auto;
   }
   .icon-wrapper {
@@ -359,8 +365,7 @@ export default {
     .round-shape();
     // left: 0;
     // top: 0;
-    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-      background 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     .icon {
       width: 100%;
       height: 100%;

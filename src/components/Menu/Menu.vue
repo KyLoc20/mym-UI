@@ -109,7 +109,7 @@ export default {
       this.isMaskOpened = opened;
     },
     handleClick(e) {
-      this.createRipple(e);
+      this.createRipple(e,false,'default');
     },
     handleOpenMenu() {
       this.openMenu(true);

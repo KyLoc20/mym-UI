@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     handleClick(e) {
-      this.createRipple(e);
+      this.createRipple(e,false,'default');
     },
     handleToggle(from) {
       this.toggled = !this.toggled;

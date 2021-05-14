@@ -179,7 +179,7 @@
       <section class="box-block">
         <section class="row margin-8 start">
           <vswitch @select="handleSelectLoading"></vswitch>
-          <typography variant="san">Loading</typography>
+          <typography variant="span">Loading</typography>
         </section>
         <section class="row margin-8 start">
           <vbutton variant="outlined" color="primary" :loading="isLoading">SUBMIT</vbutton>
