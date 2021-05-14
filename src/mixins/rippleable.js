@@ -14,16 +14,6 @@ export default {
         // console.log('mount ripple', this.$el, window.getComputedStyle(this.$el).position)
     },
     methods: {
-        setColor(target, color) {
-            if (!color) return
-            else target.classList.add(ColorMap[color]);
-        },
-        setVelocity(target, velocity) {
-            //default slow  animation: ripple 800ms ease-out;
-            if (!velocity) return
-                //fast animation: ripple 400ms ease-out;
-            else target.classList.add('fast-ripple');
-        },
         generateRipple(target, e, isPositionFixed, color, duration) {
             let ripple = document.createElement("span");
             let radius = 21;
