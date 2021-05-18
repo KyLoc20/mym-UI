@@ -16,6 +16,7 @@ import ButtonExample from "./examples/ButtonExample"
 import SliderExample from "./examples/SliderExample"
 import CardExample from "./examples/CardExample"
 import RadioExample from "./examples/RadioExample"
+import ChipExample from "./examples/ChipExample"
 const routes = [
     { path: '/', component: AvatarExample },
     { path: '/stepper', component: StepperExample },
@@ -25,6 +26,7 @@ const routes = [
     { path: '/button', component: ButtonExample },
     { path: '/slider', component: SliderExample },
     { path: '/card', component: CardExample },
+    { path: '/chip', component: ChipExample },
     // { path: '/boo', component: Boo },
 ]
 

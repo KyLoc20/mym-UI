@@ -18,7 +18,7 @@
 </template>
 <script>
 import Vbutton from "./Button";
-import Icon from "@/components/Icon/Icon";
+import Icon from "../../components/Icon/Icon";
 export default {
   name: "IconButton",
   components: { Vbutton, Icon },

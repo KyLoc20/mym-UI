@@ -52,11 +52,11 @@ export default {
             outer.classList.add("ripple-outer");
             return outer
         },
-        createRippleByAddingLayer(e, isFixed = false, color = 'default', duration = 400) {
+        createRippleByAddingLayer(e, isFixed = false, color = 'default', duration = 800) {
             //todo using an outer layer
             let target = e.currentTarget;
             //config the father component
-            if (window.getComputedStyle(target).position !== 'absolute') target.style.position = 'relative'
+            if (['absolute', 'fixed'].indexOf(window.getComputedStyle(target).position) === -1) target.style.position = 'relative'
                 // this.setColor(target, color)
                 // this.setVelocity(target, velocity)
                 //generate an outer el
@@ -72,10 +72,10 @@ export default {
             //mount the outer
             target.appendChild(outer);
         },
-        createRipple(e, isFixed = false, color = 'default', duration = 400) {
+        createRipple(e, isFixed = false, color = 'default', duration = 800) {
             let target = e.currentTarget;
             //config the father component
-            if (window.getComputedStyle(target).position !== 'absolute') target.style.position = 'relative'
+            if (['absolute', 'fixed'].indexOf(window.getComputedStyle(target).position) === -1) target.style.position = 'relative'
             target.style.overflow = 'hidden'
                 // this.setColor(target, color)
                 // this.setVelocity(target, velocity)

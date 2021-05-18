@@ -2,20 +2,21 @@
   <section
     class="float-action-button br-round"
     :class="buttonClass"
-    @click="handleClick"
+    @click="handleButtonClick"
   >
     <icon :name="icon" size="md"></icon>
     <span class="text" v-if="variant === 'extended'">{{ text }}</span>
   </section>
 </template>
 <script>
-import Rippleable from "@/mixins/rippleable";
+import Rippleable from "../../mixins/rippleable";
 import Icon from "../Icon/Icon";
 export default {
   name: "FloatActionButton",
   props: {
     icon: {
       type: String,
+      default:"add",
     },
     variant: {
       validator: (v) => {
@@ -66,9 +67,10 @@ export default {
     },
   },
   methods: {
-    handleClick(e) {
+    handleButtonClick(e) {
       if (!this.disabled) {
-        this.createRipple(e, false, this.getRippleColor());
+        this.createRipple(e, false, this.getRippleColor(),800);
+         this.$emit("click", e);
       }
     },
     getRippleColor() {

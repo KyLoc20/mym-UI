@@ -1,5 +1,5 @@
-import Icon from "../components/common/Icon";
-import { iconChecker } from "../components/common/icons";
+import Icon from "../components/Icon/Icon";
+import { iconChecker } from "../components/Icon/icons";
 export default {
     components: {
         Icon

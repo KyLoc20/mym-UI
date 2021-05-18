@@ -79,7 +79,7 @@ export default {
           children: [
             { content: { label: "avatar", text: "Avatar", link: "avatar" } },
             { content: { label: "badge", text: "Badge" } },
-            { content: { label: "chip", text: "Chip" } },
+            { content: { label: "chip", text: "Chip" , link: "chip" } },
           ],
         },
       ],
