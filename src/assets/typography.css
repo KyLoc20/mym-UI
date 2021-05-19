@@ -68,3 +68,12 @@ li {
     font-size: 1rem;
     line-height: 1.5;
 }
+
+code {
+    font-family: Consolas;
+    font-size: 0.85em;
+    background-color: rgba(255, 229, 100, 0.2);
+    line-height: 1.4;
+    padding: 0 2px;
+    border-radius: 2px;
+}

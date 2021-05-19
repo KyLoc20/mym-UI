@@ -5,24 +5,66 @@
       :class="classChip"
       @click="handleClick"
       v-if="isAlive"
+      :style="isSelected ? hoverBgColor : mainBgColor"
     >
       <div class="thumbnail">
         <icon v-if="iconAvailable" :name="iconName" :size="iconSize"></icon>
       </div>
       <div class="content">
-        <span class="text">{{ text }}</span>
+        <span class="text" :style="textColor">{{ text }}</span>
       </div>
       <transition name="fade">
-        <div class="select" v-if="selectable && isSelected">
-          <icon name="check" size="auto"></icon>
+        <div
+          class="select"
+          v-if="selectable && isSelected"
+          :style="actionBtnColor"
+        >
+          <icon name="check"></icon>
         </div>
       </transition>
-      <div class="remove" v-if="removable" @click="handleRemove">
-        <icon name="cross" size="auto"></icon>
+      <div
+        class="remove"
+        v-if="deleteable"
+        @click="handleDelete"
+        :style="actionBtnColor"
+      >
+        <icon name="cross"></icon>
       </div></section
   ></transition>
 </template>
 <script>
+const ColorThemeMap = {
+  //todo too many color status causes too many logic
+  primary: {
+    main: [25, 118, 210, 1],
+    focus: [43, 128, 213, 1], //on hover or select
+    text: [25, 118, 210, 1],
+    border: [25, 118, 210, 0.7],
+    ripple:[25, 118, 210, 0.3],
+  },
+  secondary: {
+    main: [220, 0, 78, 1],
+    focus: [245, 20, 100, 1], //on hover or select
+    text: [220, 0, 78, 1],
+    border: [220, 0, 78, 0.7],
+    ripple:[220, 0, 78, 0.3],
+  },
+  default: {
+    main: [0, 0, 0, 0.08],
+    focus: [0, 0, 0, 0.12], //on hover or select
+    text: [0, 0, 0, 0.87],
+    border: [189, 189, 189, 1],
+    ripple:[0, 0, 0,0.3],
+  },
+  //todo in advance leave
+  disabled: {
+    main: [25, 118, 210, 1],
+    focus: [43, 128, 213, 1], //on hover or select
+    text: [25, 118, 210, 1],
+    border: [25, 118, 210, 0.7],
+    ripple:[25, 118, 210, 0.3],
+  },
+};
 import Iconable from "../../mixins/iconable";
 import Rippleable from "../../mixins/rippleable";
 export default {
@@ -39,13 +81,23 @@ export default {
     text: {
       type: String,
     },
+    variant: {
+      default: "filled",
+      validator: (v) => {
+        return ["filled", "outlined"].indexOf(v) !== -1;
+      },
+    },
     color: {
       default: "default",
       validator: (v) => {
         return ["default", "primary", "secondary"].indexOf(v) !== -1;
       },
     },
-    removable: {
+    clickable: {
+      type: Boolean,
+      default: false,
+    },
+    deleteable: {
       type: Boolean,
       default: false,
     },
@@ -62,26 +114,87 @@ export default {
   },
   computed: {
     classChip() {
-      let color = this.color + "-chip";
+      let variant = this.variant;
       let selected = this.selectable && this.isSelected ? "selected" : "";
-      return color + " " + selected;
+      let clickable = this.clickable ? "clickable" : "";
+      return `${variant} ${selected} ${clickable} `;
     },
+    mainBgColor() {
+      if (this.variant === "outlined")
+        return {
+          background: "transparent",
+          border: `1px solid ${this.getColorFromTheme(this.color, "border")}`,
+        };
+      else {
+        return { background: this.getColorFromTheme(this.color, "main") };
+      }
+    },
+    hoverBgColor() {
+      if (this.variant === "outlined")
+        return {
+          background: "transparent",
+          border: `1px solid ${this.getColorFromTheme(this.color, "border")}`,
+        };
+      else {
+        return { background: this.getColorFromTheme(this.color, "focus") };
+      }
+    },
+    textColor() {
+      if (this.variant === "filled" && this.color !== "default")
+        return { color: "#fff" };
+      else return { color: this.getColorFromTheme(this.color, "text") };
+    },
+    actionBtnColor() {
+      let color = null;
+      if (this.color === "default") {
+        color = "rgba(0, 0, 0, 0.26)";
+      } else {
+        if (this.variant === "outlined")
+          color = this.getColorFromTheme(this.color, "border");
+        else color = "rgba(255, 255, 255, 0.7)";
+      }
+      return {
+        color,
+      };
+    },
+    rippleColor(){
+       if (this.color === "default") {
+        return "default"
+      } else {
+        if (this.variant === "outlined")
+          return this.getColorFromTheme(this.color, "ripple");
+        else return "plain";
+      }
+    }
   },
   methods: {
+    getColorFromTheme(theme, type) {
+      let colorSet = ColorThemeMap[theme] || ColorThemeMap["default"];
+      let rgba = colorSet[type];
+      if (!rgba) throw Error(`Not Found the ${type}-color of ${theme}`);
+      return this.parseColor(rgba);
+    },
+    parseColor(inputColorArray, alpha) {
+      let arr = [...inputColorArray];
+      if (alpha) arr[3] = alpha;
+      return `rgba(${arr[0]},${arr[1]},${arr[2]},${arr[3]})`;
+    },
     handleClick(e) {
-      this.createRipple(
-        e,
-        false,
-        this.color === "default" ? "default" : "plain"
-      );
+      if (this.clickable) {
+        this.createRipple(
+          e,
+          false,
+          this.rippleColor
+        );
+      }
       if (this.selectable) {
         this.handleSelect();
       }
     },
-    handleRemove() {
-      if (this.removable && this.isAlive) {
+    handleDelete() {
+      if (this.deleteable && this.isAlive) {
         this.isAlive = false;
-        this.$emit("remove");
+        this.$emit("delete");
         console.log("chip remove: ", this.text);
       }
     },
@@ -99,24 +212,45 @@ export default {
 @default-color: #e0e0e0;
 @primary-color: #1976d2;
 @secondary-color: #dc004e;
+// .filled {
+//   color: #fff;
+//   background-color: currentColor;
+// }
+// .outlined {
+//   box-shadow: 0 0 0 1px rgba(90, 155, 255, 0.7);
+//   background-color: #fff;
+// }
 .chip {
   display: flex;
   align-items: center;
   box-sizing: border-box;
-
+  position: relative;
   font-size: 10px;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   height: 3.2em;
   border-radius: 1.6em;
-  cursor: pointer;
+
   user-select: none;
   transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  &.clickable {
+    cursor: pointer;
+  }
+  &:hover .hover-mask {
+    background: currentColor;
+  }
+  .hover-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    // z-index: -10;
+  }
   .content {
     padding: 1.2em;
     .text {
       font-size: 1.4em;
+      white-space: nowrap;
     }
   }
   .thumbnail {
