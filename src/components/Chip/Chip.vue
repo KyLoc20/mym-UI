@@ -5,7 +5,9 @@
       :class="classChip"
       @click="handleClick"
       v-if="isAlive"
-      :style="isSelected ? hoverBgColor : mainBgColor"
+      :style="isHovering || isSelected ? hoverBgColor : mainBgColor"
+      @mouseenter="handleHoverEnter"
+      @mouseleave="handleHoverLeave"
     >
       <div class="thumbnail">
         <icon v-if="iconAvailable" :name="iconName" :size="iconSize"></icon>
@@ -18,15 +20,19 @@
           class="select"
           v-if="selectable && isSelected"
           :style="actionBtnColor"
+          @mouseenter="handleBtnHoverEnter"
+          @mouseleave="handleBtnHoverLeave"
         >
           <icon name="check"></icon>
         </div>
       </transition>
       <div
-        class="remove"
+        class="delete"
         v-if="deleteable"
         @click="handleDelete"
         :style="actionBtnColor"
+        @mouseenter="handleBtnHoverEnter"
+        @mouseleave="handleBtnHoverLeave"
       >
         <icon name="cross"></icon>
       </div></section
@@ -38,31 +44,26 @@ const ColorThemeMap = {
   primary: {
     main: [25, 118, 210, 1],
     focus: [43, 128, 213, 1], //on hover or select
+    focus2: [25, 118, 210, 0.04], //on hover or select
     text: [25, 118, 210, 1],
     border: [25, 118, 210, 0.7],
-    ripple:[25, 118, 210, 0.3],
+    ripple: [25, 118, 210, 0.3],
   },
   secondary: {
     main: [220, 0, 78, 1],
     focus: [245, 20, 100, 1], //on hover or select
+    focus2: [220, 0, 78, 0.04], //on hover or select
     text: [220, 0, 78, 1],
     border: [220, 0, 78, 0.7],
-    ripple:[220, 0, 78, 0.3],
+    ripple: [220, 0, 78, 0.3],
   },
   default: {
     main: [0, 0, 0, 0.08],
     focus: [0, 0, 0, 0.12], //on hover or select
+    focus2: [0, 0, 0, 0.04], //on hover or select
     text: [0, 0, 0, 0.87],
     border: [189, 189, 189, 1],
-    ripple:[0, 0, 0,0.3],
-  },
-  //todo in advance leave
-  disabled: {
-    main: [25, 118, 210, 1],
-    focus: [43, 128, 213, 1], //on hover or select
-    text: [25, 118, 210, 1],
-    border: [25, 118, 210, 0.7],
-    ripple:[25, 118, 210, 0.3],
+    ripple: [0, 0, 0, 0.3],
   },
 };
 import Iconable from "../../mixins/iconable";
@@ -75,6 +76,8 @@ export default {
     return {
       isAlive: true,
       isSelected: this.selected,
+      isHovering: false,
+      isBtnHovering: false, //action btn of select and delete
     };
   },
   props: {
@@ -117,7 +120,9 @@ export default {
       let variant = this.variant;
       let selected = this.selectable && this.isSelected ? "selected" : "";
       let clickable = this.clickable ? "clickable" : "";
-      return `${variant} ${selected} ${clickable} `;
+      let selectable = this.selectable ? "selectable" : "";
+      let deleteable = this.deleteable ? "deleteable" : "";
+      return `${variant} ${selected} ${clickable} ${selectable} ${deleteable}`;
     },
     mainBgColor() {
       if (this.variant === "outlined")
@@ -130,9 +135,10 @@ export default {
       }
     },
     hoverBgColor() {
+      console.log("hoverBgColor");
       if (this.variant === "outlined")
         return {
-          background: "transparent",
+          background: this.getColorFromTheme(this.color, "focus2"),
           border: `1px solid ${this.getColorFromTheme(this.color, "border")}`,
         };
       else {
@@ -146,26 +152,38 @@ export default {
     },
     actionBtnColor() {
       let color = null;
-      if (this.color === "default") {
-        color = "rgba(0, 0, 0, 0.26)";
+      if (this.isBtnHovering) {
+        //on hover
+        if (this.color === "default") {
+          color = "rgba(0, 0, 0, 0.4)";
+        } else {
+          if (this.variant === "outlined")
+            color = this.getColorFromTheme(this.color, "main");
+          else color = "rgba(255, 255, 255, 1)";
+        }
       } else {
-        if (this.variant === "outlined")
-          color = this.getColorFromTheme(this.color, "border");
-        else color = "rgba(255, 255, 255, 0.7)";
+        if (this.color === "default") {
+          color = "rgba(0, 0, 0, 0.26)";
+        } else {
+          if (this.variant === "outlined")
+            color = this.getColorFromTheme(this.color, "border");
+          else color = "rgba(255, 255, 255, 0.7)";
+        }
       }
+
       return {
         color,
       };
     },
-    rippleColor(){
-       if (this.color === "default") {
-        return "default"
+    rippleColor() {
+      if (this.color === "default") {
+        return "default";
       } else {
         if (this.variant === "outlined")
           return this.getColorFromTheme(this.color, "ripple");
         else return "plain";
       }
-    }
+    },
   },
   methods: {
     getColorFromTheme(theme, type) {
@@ -179,13 +197,23 @@ export default {
       if (alpha) arr[3] = alpha;
       return `rgba(${arr[0]},${arr[1]},${arr[2]},${arr[3]})`;
     },
+    handleHoverEnter() {
+      if (!this.clickable) return;
+      this.isHovering = true;
+    },
+    handleHoverLeave() {
+      if (!this.clickable) return;
+      this.isHovering = false;
+    },
+    handleBtnHoverEnter() {
+      this.isBtnHovering = true;
+    },
+    handleBtnHoverLeave() {
+      this.isBtnHovering = false;
+    },
     handleClick(e) {
       if (this.clickable) {
-        this.createRipple(
-          e,
-          false,
-          this.rippleColor
-        );
+        this.createRipple(e, false, this.rippleColor);
       }
       if (this.selectable) {
         this.handleSelect();
@@ -195,7 +223,7 @@ export default {
       if (this.deleteable && this.isAlive) {
         this.isAlive = false;
         this.$emit("delete");
-        console.log("chip remove: ", this.text);
+        console.log("chip delete: ", this.text);
       }
     },
     handleSelect() {
@@ -234,7 +262,8 @@ export default {
   transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  &.clickable {
+  &.clickable,
+  &.selectable {
     cursor: pointer;
   }
   &:hover .hover-mask {
@@ -262,15 +291,7 @@ export default {
       height: 2.4em;
     }
   }
-  .remove {
-    margin-left: -0.4em;
-    margin-right: 0.8em;
-    .icon {
-      //todo icon svg is not responsive
-      width: 2.2em;
-      height: 2.2em;
-    }
-  }
+  .delete,
   .select {
     margin-left: -0.4em;
     margin-right: 0.8em;
@@ -278,86 +299,8 @@ export default {
       //todo icon svg is not responsive
       width: 2.2em;
       height: 2.2em;
+      cursor: pointer;
     }
-  }
-}
-.light-icon {
-  .icon {
-    color: rgba(255, 255, 255, 0.7);
-    fill: currentColor;
-    &:hover {
-      color: #fff;
-    }
-  }
-}
-.dark-icon {
-  .icon {
-    color: rgba(0, 0, 0, 0.26);
-    fill: currentColor;
-    &:hover {
-      color: rgba(0, 0, 0, 0.4);
-    }
-  }
-}
-.default-chip {
-  background: @default-color;
-  color: rgba(0, 0, 0, 0.87);
-
-  &:hover,
-  &.selected {
-    background: rgb(206, 206, 206);
-  }
-  .thumbnail {
-    .icon {
-      color: #616161;
-      fill: currentColor;
-    }
-  }
-  .remove {
-    .dark-icon();
-  }
-  .select {
-    .dark-icon();
-  }
-}
-.primary-chip {
-  background: @primary-color;
-  color: #fff;
-  .thumbnail {
-    .icon {
-      color: #fff;
-      fill: currentColor;
-    }
-  }
-  &:hover,
-  &.selected {
-    background: rgb(43, 128, 213);
-  }
-  .remove {
-    .light-icon();
-  }
-  .select {
-    .light-icon();
-  }
-}
-.secondary-chip {
-  background: @secondary-color;
-  color: #fff;
-  .thumbnail {
-    .icon {
-      color: #fff;
-      fill: currentColor;
-    }
-  }
-  &:hover,
-  &.selected {
-    background-color: rgb(245, 20, 100);
-  }
-  .remove {
-    .light-icon();
-  }
-  .select {
-    .light-icon();
   }
 }
 .fade-enter-active,
