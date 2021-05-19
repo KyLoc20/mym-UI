@@ -185,6 +185,58 @@
       </section>
       <section class="row  margin-8"></section>
     </section>
+
+    <typography variant="h2">Chip adornments</typography>
+    <typography variant="p"
+      >You can add ornaments to the beginning of the component.</typography
+    >
+    <typography variant="p"
+      >Use the <code>icon</code> prop to added a icon.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <chip
+        icon="face"
+        variant="filled"
+        color="default"
+        text="With Icon"
+        clickable
+      ></chip>
+      <chip
+        icon="face"
+        variant="outlined"
+        color="default"
+        text="With Icon"
+        clickable
+      ></chip>
+      <chip
+        icon="face"
+        variant="filled"
+        color="primary"
+        text="With Icon"
+        clickable
+      ></chip>
+      <chip
+        icon="face"
+        variant="outlined"
+        color="primary"
+        text="With Icon"
+        clickable
+      ></chip>
+      <chip
+        icon="face"
+        variant="filled"
+        color="secondary"
+        text="With Icon"
+        clickable
+      ></chip>
+      <chip
+        icon="face"
+        variant="outlined"
+        color="secondary"
+        text="With Icon"
+        clickable
+      ></chip>
+    </section>
   </section>
 </template>
 <script>

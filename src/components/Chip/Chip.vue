@@ -5,11 +5,11 @@
       :class="classChip"
       @click="handleClick"
       v-if="isAlive"
-      :style="isHovering || isSelected ? hoverBgColor : mainBgColor"
+      :style="mainBgColor"
       @mouseenter="handleHoverEnter"
       @mouseleave="handleHoverLeave"
     >
-      <div class="thumbnail">
+      <div class="thumbnail" :style="iconColor">
         <icon v-if="iconAvailable" :name="iconName" :size="iconSize"></icon>
       </div>
       <div class="content">
@@ -125,24 +125,25 @@ export default {
       return `${variant} ${selected} ${clickable} ${selectable} ${deleteable}`;
     },
     mainBgColor() {
-      if (this.variant === "outlined")
-        return {
-          background: "transparent",
-          border: `1px solid ${this.getColorFromTheme(this.color, "border")}`,
-        };
-      else {
-        return { background: this.getColorFromTheme(this.color, "main") };
-      }
-    },
-    hoverBgColor() {
-      console.log("hoverBgColor");
-      if (this.variant === "outlined")
-        return {
-          background: this.getColorFromTheme(this.color, "focus2"),
-          border: `1px solid ${this.getColorFromTheme(this.color, "border")}`,
-        };
-      else {
-        return { background: this.getColorFromTheme(this.color, "focus") };
+      if (this.isHovering || this.isSelected) {
+        //on hover or on select
+        if (this.variant === "outlined")
+          return {
+            background: this.getColorFromTheme(this.color, "focus2"),
+            border: `1px solid ${this.getColorFromTheme(this.color, "border")}`,
+          };
+        else {
+          return { background: this.getColorFromTheme(this.color, "focus") };
+        }
+      } else {
+        if (this.variant === "outlined")
+          return {
+            background: "transparent",
+            border: `1px solid ${this.getColorFromTheme(this.color, "border")}`,
+          };
+        else {
+          return { background: this.getColorFromTheme(this.color, "main") };
+        }
       }
     },
     textColor() {
@@ -170,7 +171,20 @@ export default {
           else color = "rgba(255, 255, 255, 0.7)";
         }
       }
-
+      return {
+        color,
+      };
+    },
+    iconColor() {
+      let color = null;
+      //on hover
+      if (this.color === "default") {
+        color = "rgba(97, 97, 97, 1)";
+      } else {
+        if (this.variant === "outlined")
+          color = this.getColorFromTheme(this.color, "main");
+        else color = "rgba(255, 255, 255, 1)";
+      }
       return {
         color,
       };
@@ -283,8 +297,8 @@ export default {
     }
   }
   .thumbnail {
-    margin-left: 0.4em;
-    margin-right: -0.4em;
+    margin-left: 0.5em;
+    margin-right: -0.6em;
     .icon {
       //todo icon svg is not responsive
       width: 2.4em;
