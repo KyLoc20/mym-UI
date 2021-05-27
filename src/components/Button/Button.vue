@@ -314,6 +314,9 @@ button {
   }
   &.plain-btn {
     color: #fff;
+    &:hover {
+      background: rgba(232, 234, 237, 0.08);
+    }
   }
   &.disabled {
     color: rgba(0, 0, 0, 0.26);
