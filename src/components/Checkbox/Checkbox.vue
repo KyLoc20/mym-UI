@@ -1,20 +1,28 @@
 <template>
-  <section class="checkbox">
+  <section class="checkbox" :class="classes">
     <span
       class="icon-button"
-      :style="{ ...checkboxSize, ...mainBgColor }"
+      :style="{
+        width: computedCheckboxSize,
+        height: computedCheckboxSize,
+        background: computedBackgroundColor,
+      }"
       @click="handleCheck"
       @mouseenter="handleHoverEnter"
       @mouseleave="handleHoverLeave"
     >
       <svg
-        :style="{ ..._iconSize, fill: iconFillColor }"
+        :style="{
+          width: computedIconSize,
+          height: computedIconSize,
+          fill: computedIconFillColor,
+        }"
         class="icon"
         focusable="false"
         viewBox="0 0 24 24"
         aria-hidden="true"
       >
-        <path :d="renderIcon"></path>
+        <path :d="computedPath"></path>
       </svg>
     </span>
     <span class="label-placeholder" @click="handleCheck">{{ this.label }}</span>
@@ -111,103 +119,40 @@ export default {
     return {
       //basically a checkbox can have only two states:'checked' and 'unchecked'
       //sometimes a checkbox can have the third state: 'indeterminate'
-      state: "unchecked",
+      state: this.checked ? "checked" : "unchecked",
       isHovering: false,
-      //
-      isChecked: this.checked,
-      isDisabled: this.disabled,
-      isIndeterminate: this.indeterminate,
     };
   },
   computed: {
-    renderIcon() {
-      let icon = "";
-      switch (this.state) {
-        case "checked":
-          icon = IconCheckMarkBox;
-          break;
-        case "unchecked":
-          icon = IconEmptyBox;
-          break;
-        case "indeterminate":
-          icon = IconDashBox;
-          break;
-        default:
-          icon = IconEmptyBox;
-          break;
-      }
-      return icon;
+    classes() {
+      return { disabled: this.disabled };
     },
-    mainBgColor() {
+    computedPath() {
+      if (this.state === "unchecked") return IconEmptyBox;
+      else if (this.state === "checked") return IconCheckMarkBox;
+      else if (this.state === "indeterminate") return IconDashBox;
+      else return IconEmptyBox;
+    },
+    computedBackgroundColor() {
       if (this.isHovering)
-        return {
-          background:
-            this.hoverColor || this.getColorFromTheme(this.color, "focus"),
-        };
-      else {
-        return {
-          background: "transparent",
-        };
-      }
+        return this.hoverColor || this.getColorFromTheme(this.color, "focus");
+      else return null;
     },
-    iconFillColor() {
+    computedCheckboxSize() {
+      if (this.size) return `${this.getSize(this.size, "checkbox")}px`;
+      else return null;
+    },
+    computedIconFillColor() {
       if (this.disabled) return "rgba(0, 0, 0, 0.26)";
       if (this.isHovering && this.iconHoverColor) return this.iconHoverColor;
       else return this.iconColor || this.getColorFromTheme(this.color, "icon");
     },
-    checkboxSize() {
-      if (this.size) {
-        let value = this.getSize(this.size, "checkbox");
-        return {
-          width: `${value}px`,
-          height: `${value}px`,
-        };
-      } else {
-        return {};
-      }
+    computedIconSize() {
+      if (this.iconSize) return `${this.getSize(this.iconSize, "icon")}px`;
+      else return null;
     },
-    _iconSize() {
-      if (this.iconSize) {
-        let value = this.getSize(this.iconSize, "icon");
-        return {
-          width: `${value}px`,
-          height: `${value}px`,
-        };
-      } else {
-        return {};
-      }
-    },
-    rippleRenderColor() {
+    computedRippleColor() {
       return this.rippleColor || this.getColorFromTheme(this.color, "ripple");
-    },
-    styleBox() {
-      let padding = "";
-      for (let i of this.padding) {
-        padding += i.toString() + "px ";
-      }
-      console.log("styleBox", padding);
-      return {
-        padding,
-      };
-    },
-    classCheckbox() {
-      let color = this.color;
-      let size = this.size;
-      //no default color for indeterminate
-      if (this.indeterminate && color === "default") {
-        color = "secondary";
-      }
-      let style = [
-        color,
-        size,
-        {
-          disabled: this.disabled,
-          checked: this.checked,
-          indeterminate: this.indeterminate,
-        },
-      ];
-      console.log("classCheckbox", style);
-      return style;
     },
   },
   mounted() {},
@@ -247,7 +192,7 @@ export default {
         }
         //ripple
         if (!e.currentTarget.classList.value.includes("label-placeholder")) {
-          this.createRipple(e, true, this.rippleColor);
+          this.createRipple(e, true, this.computedRippleColor);
         }
       }
     },
@@ -258,6 +203,7 @@ export default {
 .checkbox {
   display: flex;
   align-items: center;
+
   .icon-button {
     display: flex;
     justify-content: center;
@@ -274,6 +220,10 @@ export default {
     letter-spacing: 0.01em;
     user-select: none;
     cursor: pointer;
+  }
+  &.disabled .icon-button,
+  &.disabled .label-placeholder {
+    cursor: default;
   }
 }
 </style>

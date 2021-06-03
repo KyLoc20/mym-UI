@@ -14,6 +14,9 @@
     <typography variant="h2">Basic checkboxes</typography>
     <section class="group-box box-inline center margin-8 bd-1 br-4">
       <checkbox></checkbox>
+       <checkbox checked></checkbox>
+      <checkbox disabled></checkbox>
+     <checkbox disabled checked></checkbox>
     </section>
 
   
