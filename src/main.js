@@ -17,6 +17,7 @@ import SliderExample from "./examples/SliderExample"
 import CardExample from "./examples/CardExample"
 import RadioExample from "./examples/RadioExample"
 import ChipExample from "./examples/ChipExample"
+import CheckboxExample from "./examples/CheckboxExample"
 const routes = [
     { path: '/', component: AvatarExample },
     { path: '/stepper', component: StepperExample },
@@ -27,6 +28,7 @@ const routes = [
     { path: '/slider', component: SliderExample },
     { path: '/card', component: CardExample },
     { path: '/chip', component: ChipExample },
+    { path: '/checkbox', component: CheckboxExample },
     // { path: '/boo', component: Boo },
 ]
 

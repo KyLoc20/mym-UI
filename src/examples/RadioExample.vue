@@ -1,5 +1,5 @@
 <template>
-  <section class="slider-example">
+  <section class="radio-example">
     <typography variant="h1">Radio</typography>
     <typography variant="p" :classes="['description']"
       >Radio buttons allow the user to select one option from a set.</typography
@@ -131,7 +131,7 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.slider-example {
+.radio-example {
   .custom {
     width: 240px;
     height: 48px;

@@ -30,7 +30,7 @@ export default {
           content: { label: "inputs", text: "Inputs" },
           children: [
             { content: { label: "button", text: "Button", link: "button" } },
-            { content: { label: "checkbox", text: "Checkbox" } },
+            { content: { label: "checkbox", text: "Checkbox", link: "checkbox" } },
             {
               content: {
                 label: "float-action-button",
