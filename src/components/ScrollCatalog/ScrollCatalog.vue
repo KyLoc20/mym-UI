@@ -11,7 +11,7 @@
           tag="div"
           class="item"
           :class="activeAnchor === item.anchor ? 'active' : 'inactive'"
-          :to="{ path: '/avatar', hash: `#${item.anchor}` }"
+          :to="{ path: computedPath, hash: `#${item.anchor}` }"
           >{{ item.text }}</router-link
         >
       </li>
@@ -30,6 +30,15 @@ export default {
     items: {
       type: Array,
     },
+    //'/avatar'
+    path: {
+      type: Array,
+    },
+  },
+  computed:{
+    computedPath(){
+      return this.path
+    }
   },
   data() {
     return {
@@ -38,8 +47,11 @@ export default {
       activeAnchor: null, //when scrolling
     };
   },
+  beforeMount(){
+  console.log("beforeMount",this.path,this.items);
+  },
   mounted() {
-    console.log(this.items);
+  
     document.addEventListener("scroll", this.handleScroll, true);
   },
   destroyed() {

@@ -13,7 +13,7 @@
       Elements, like text and images, should be placed on them in a way that
       clearly indicates hierarchy.
     </typography>
-    <typography variant="h2">Basic card</typography>
+    <typography variant="h2" id="ac-basic-card">Basic card</typography>
     <typography variant="p"
       >Although cards can support multiple actions, UI controls, and an overflow
       menu, use restraint and remember that cards are entry points to more
@@ -31,6 +31,7 @@ import Typography from "../components/Typography/Typography";
 export default {
   name: "CardExample",
   components: { Typography, Card },
+  anchors: [{ anchor: "ac-basic-card", text: "Basic card" }],
   data() {
     return {};
   },

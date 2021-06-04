@@ -10,7 +10,8 @@
       </section>
     </section>
     <section class="right-container">
-      <ScrollCatalog title="contents" :items="scrollItems"></ScrollCatalog>
+      <router-view class="scroll-catalog" name="catalog"></router-view>
+      <!-- <scroll-catalog title="contents" :items="scrollItems"></scroll-catalog> -->
     </section>
   </div>
 </template>
@@ -18,10 +19,10 @@
 <script>
 import AppBar from "./components/AppBar/AppBar";
 import Divider from "./components/Divider/Divider";
-import ScrollCatalog from "./components//ScrollCatalog/ScrollCatalog";
+// import ScrollCatalog from "./components//ScrollCatalog/ScrollCatalog";
 export default {
   name: "App",
-  components: { AppBar, Divider, ScrollCatalog },
+  components: { AppBar, Divider },
   data() {
     return {
       scrollerWidth: null,
@@ -30,7 +31,13 @@ export default {
           content: { label: "inputs", text: "Inputs" },
           children: [
             { content: { label: "button", text: "Button", link: "button" } },
-            { content: { label: "checkbox", text: "Checkbox", link: "checkbox" } },
+            {
+              content: {
+                label: "checkbox",
+                text: "Checkbox",
+                link: "checkbox",
+              },
+            },
             {
               content: {
                 label: "float-action-button",
@@ -38,7 +45,13 @@ export default {
                 link: "float-action-button",
               },
             },
-            { content: { label: "radio", text: "Radio Button", link: "radio-button"  } },
+            {
+              content: {
+                label: "radio",
+                text: "Radio Button",
+                link: "radio-button",
+              },
+            },
             { content: { label: "select", text: "Select" } },
             { content: { label: "slider", text: "Slider", link: "slider" } },
             { content: { label: "textfield", text: "Text Field" } },
@@ -64,7 +77,7 @@ export default {
           content: { label: "surfaces", text: "Surfaces" },
           children: [
             { content: { label: "app-bar", text: "App Bar" } },
-            { content: { label: "card", text: "Card", link: "card"  } },
+            { content: { label: "card", text: "Card", link: "card" } },
           ],
         },
         {
@@ -79,7 +92,7 @@ export default {
           children: [
             { content: { label: "avatar", text: "Avatar", link: "avatar" } },
             { content: { label: "badge", text: "Badge" } },
-            { content: { label: "chip", text: "Chip" , link: "chip" } },
+            { content: { label: "chip", text: "Chip", link: "chip" } },
           ],
         },
       ],

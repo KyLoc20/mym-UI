@@ -67,14 +67,18 @@ import Typography from "../components/Typography/Typography";
 export default {
   name: "FloatActionButton",
   components: { Avatar, Typography },
+  //for in-page navigation
+  anchors: [
+    { anchor: "ac-image", text: "Image avatars" },
+    { anchor: "ac-letter", text: "Letter avatars" },
+    { anchor: "ac-sizes", text: "Sizes" },
+    { anchor: "ac-badge", text: "With badge" },
+  ],
   data() {
-    return {
-    };
+    return {};
   },
-  methods: {
-  },
-  computed: {
-  },
+  methods: {},
+  computed: {},
 };
 </script>
 <style scoped lang="less">

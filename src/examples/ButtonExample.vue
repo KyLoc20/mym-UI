@@ -22,7 +22,9 @@
         Toolbars
       </li>
     </ul>
-    <typography variant="h2" id="ac-contained">Contained buttons</typography>
+    <typography variant="h2" id="ac-contained-buttons"
+      >Contained buttons</typography
+    >
     <typography variant="p"
       >Contained buttons are high-emphasis, distinguished by their use of
       elevation and fill. They contain actions that are primary to your
@@ -40,7 +42,7 @@
     <section class="group-box box-inline center margin-8 bd-1 br-4">
       <vbutton color="primary" flat>flat</vbutton>
     </section>
-    <typography variant="h2" id="ac-text">Text buttons</typography>
+    <typography variant="h2" id="ac-text-buttons">Text buttons</typography>
     <typography variant="p"
       >Text buttons are typically used for less-pronounced actions, including
       those located:</typography
@@ -65,7 +67,9 @@
       <vbutton variant="text" color="secondary">secondary</vbutton>
       <vbutton variant="text" disabled>disabled</vbutton>
     </section>
-    <typography variant="h2" id="ac-outlined">Outlined buttons</typography>
+    <typography variant="h2" id="ac-outlined-buttons"
+      >Outlined buttons</typography
+    >
     <typography variant="p"
       >Outlined buttons are medium-emphasis buttons. They contain actions that
       are important but aren't the primary action in an app.</typography
@@ -80,7 +84,7 @@
       <vbutton variant="outlined" color="secondary">secondary</vbutton>
       <vbutton variant="outlined" disabled>disabled</vbutton>
     </section>
-    <typography variant="h2" id="ac-sizes">Upload Button</typography>
+    <typography variant="h2" id="ac-upload-button">Upload Button</typography>
     <section class="group-box box-inline center margin-8 bd-1 br-4">
       <label for="upload-input">
         <input
@@ -132,7 +136,7 @@
       </section>
     </section>
 
-    <typography variant="h2" id="ac-sizes"
+    <typography variant="h2" id="ac-buttons-with-icons-and-label"
       >Buttons with icons and label</typography
     >
     <typography variant="p"
@@ -150,7 +154,7 @@
       </vbutton>
     </section>
 
-    <typography variant="h2" id="ac-sizes">Icon button</typography>
+    <typography variant="h2" id="ac-icon-buttons">Icon buttons</typography>
     <typography variant="p"
       >Icon buttons are commonly found in app bars and toolbars.</typography
     >
@@ -171,7 +175,9 @@
       <icon-button size="md" icon="shopcart" color="primary"></icon-button>
     </section>
 
-    <typography variant="h2" id="ac-sizes">Loading buttons</typography>
+    <typography variant="h2" id="ac-loading-buttons"
+      >Loading buttons</typography
+    >
     <typography variant="p"
       >The loading buttons can show loading state.</typography
     >
@@ -182,12 +188,30 @@
           <typography variant="span">Loading</typography>
         </section>
         <section class="row margin-8 start">
-          <vbutton variant="outlined" color="primary" :loading="isLoading">SUBMIT</vbutton>
-          <vbutton variant="outlined" color="primary" :loading="isLoading" loadingIndicator="Loading...">FETCH DATA</vbutton>
-          <vbutton variant="contained" color="primary" startIcon="send" :loading="isLoading">
+          <vbutton variant="outlined" color="primary" :loading="isLoading"
+            >SUBMIT</vbutton
+          >
+          <vbutton
+            variant="outlined"
+            color="primary"
+            :loading="isLoading"
+            loadingIndicator="Loading..."
+            >FETCH DATA</vbutton
+          >
+          <vbutton
+            variant="contained"
+            color="primary"
+            startIcon="send"
+            :loading="isLoading"
+          >
             SEND
           </vbutton>
-          <vbutton variant="contained" color="secondary" endIcon="save" :loading="isLoading">
+          <vbutton
+            variant="contained"
+            color="secondary"
+            endIcon="save"
+            :loading="isLoading"
+          >
             SAVE
           </vbutton>
         </section>
@@ -203,6 +227,20 @@ import Typography from "../components/Typography/Typography";
 export default {
   name: "ButtonExample",
   components: { Typography, Vbutton, IconButton, Vswitch },
+  //for in-page navigation
+  anchors: [
+    { anchor: "ac-contained-buttons", text: "Contained buttons" },
+    { anchor: "ac-text-buttons", text: "Text buttons" },
+    { anchor: "ac-outlined-buttons", text: "Outlined buttons" },
+    { anchor: "ac-upload-button", text: "Upload Button" },
+    { anchor: "ac-sizes", text: "Sizes" },
+    {
+      anchor: "ac-buttons-with-icons-and-label",
+      text: "Buttons with icons and label",
+    },
+    { anchor: "ac-icon-buttons", text: "Icon buttons" },
+    { anchor: "ac-loading-buttons", text: "Loading buttons" },
+  ],
   data() {
     return {
       uploadValue: null,

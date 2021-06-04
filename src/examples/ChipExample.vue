@@ -9,7 +9,7 @@
       >Chips allow users to enter information, make selections, filter content,
       or trigger actions.</typography
     >
-    <typography variant="h2">Basic chip</typography>
+    <typography variant="h2" id="ac-basic-chip">Basic chip</typography>
     <typography variant="p"
       >The <code>Chip</code> component supports outlined and filled
       styling.</typography
@@ -20,7 +20,7 @@
       <chip variant="outlined" color="default" text="Chip Outlined"></chip>
     </section>
 
-    <typography variant="h2">Chip actions </typography>
+    <typography variant="h2" id="ac-chip-actions">Chip actions </typography>
     <typography variant="p">You can use the following actions.</typography>
     <ul>
       <li>
@@ -93,7 +93,7 @@
       ></chip>
     </section>
 
-    <typography variant="h3">Color Chip</typography>
+    <typography variant="h2" id="ac-color-chip">Color Chip</typography>
     <typography variant="p"
       >You can use the <code>color</code> prop to define a primary or secondary
       color style.</typography
@@ -186,7 +186,9 @@
       <section class="row  margin-8"></section>
     </section>
 
-    <typography variant="h2">Chip adornments</typography>
+    <typography variant="h2" id="ac-chip-adornments"
+      >Chip adornments</typography
+    >
     <typography variant="p"
       >You can add ornaments to the beginning of the component.</typography
     >
@@ -245,6 +247,13 @@ import Typography from "../components/Typography/Typography";
 export default {
   name: "ChipExample",
   components: { Typography, Chip },
+  //for in-page navigation
+  anchors: [
+    { anchor: "ac-basic-chip", text: "Basic chip" },
+    { anchor: "ac-chip-actions", text: "Chip actions" },
+    { anchor: "ac-color-chip", text: "Color Chip" },
+    { anchor: "ac-chip-adornments", text: "Chip adornments" },
+  ],
   data() {
     return {};
   },

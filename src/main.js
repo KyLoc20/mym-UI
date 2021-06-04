@@ -18,18 +18,27 @@ import CardExample from "./examples/CardExample"
 import RadioExample from "./examples/RadioExample"
 import ChipExample from "./examples/ChipExample"
 import CheckboxExample from "./examples/CheckboxExample"
+import ScrollCatalog from "./components//ScrollCatalog/ScrollCatalog";
+const genRouteWithCatalog = (path, vNode) => ({
+    components: {
+        default: vNode,
+        catalog: ScrollCatalog
+    },
+    props: {
+        catalog: { path, items: vNode.anchors, title: "content" }
+    }
+})
 const routes = [
-    { path: '/', component: AvatarExample },
-    { path: '/stepper', component: StepperExample },
-    { path: '/avatar', component: AvatarExample },
-    { path: '/float-action-button', component: FloatActionButtonExample },
-    { path: '/radio-button', component: RadioExample },
-    { path: '/button', component: ButtonExample },
-    { path: '/slider', component: SliderExample },
-    { path: '/card', component: CardExample },
-    { path: '/chip', component: ChipExample },
-    { path: '/checkbox', component: CheckboxExample },
-    // { path: '/boo', component: Boo },
+    { path: '/', ...genRouteWithCatalog('/avatar', AvatarExample), },
+    { path: '/avatar', ...genRouteWithCatalog('/avatar', AvatarExample), },
+    { path: '/stepper', ...genRouteWithCatalog('/stepper', StepperExample), },
+    { path: '/float-action-button', ...genRouteWithCatalog('/float-action-button', FloatActionButtonExample), },
+    { path: '/button', ...genRouteWithCatalog('/button', ButtonExample), },
+    { path: '/card', ...genRouteWithCatalog('/card', CardExample), },
+    { path: '/checkbox', ...genRouteWithCatalog('/checkbox', CheckboxExample), },
+    { path: '/radio-button', ...genRouteWithCatalog('/radio-button', RadioExample), },
+    { path: '/chip', ...genRouteWithCatalog('/chip', ChipExample), },
+    { path: '/slider', ...genRouteWithCatalog('/slider', SliderExample), },
 ]
 
 const router = new VueRouter({

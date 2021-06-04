@@ -28,7 +28,7 @@
         them.</typography
       >
     </section>
-    <typography variant="h2">Horizontal Stepper</typography>
+    <typography variant="h2" id="ac-horizontal">Horizontal Stepper</typography>
     <typography variant="h3">Customized Stepper</typography>
 
     <typography variant="p"
@@ -81,6 +81,8 @@ const tipMap = {
 export default {
   name: "StepperExample",
   components: { Stepper, Vbutton, Typography },
+  //for in-page navigation
+  anchors: [{ anchor: "ac-horizontal", text: "Horizontal" }],
   data() {
     return {
       progress: 0,
@@ -126,7 +128,6 @@ export default {
 </script>
 <style scoped lang="less">
 .stepper-example {
-
   ul {
     padding-left: 30px;
     margin: 0 0 16px;

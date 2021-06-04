@@ -5,7 +5,9 @@
       >A floating action button (FAB) performs the primary, or most common,
       action on a screen.</typography
     >
-    <typography variant="h2">Floating Action Button</typography>
+    <typography variant="h2" id="ac-floating-action-button"
+      >Floating Action Button</typography
+    >
     <typography variant="p"
       >A floating action button appears in front of all screen content,
       typically as a circular shape with an icon in its center. FABs come in two
@@ -30,7 +32,7 @@
       ></float-action-button>
       <float-action-button icon="favorite" disabled></float-action-button>
     </section>
-    <typography variant="h2">Size</typography>
+    <typography variant="h2" id="ac-size">Size</typography>
     <typography variant="p"
       >Use the <code>size</code> prop for larger or smaller floating action
       buttons.</typography
@@ -78,7 +80,7 @@
       </section>
     </section>
 
-    <typography variant="h2">Animation</typography>
+    <typography variant="h2" id="ac-animation">Animation</typography>
     <typography variant="p"
       >The floating action button animates onto the screen as an expanding piece
       of material, by default.</typography
@@ -90,8 +92,8 @@
     >
     <typography variant="p"
       >The Zoom transition can be used to achieve this. Note that since both the
-      exiting and entering animations are triggered at the same time, we use
-      a enter delay to allow the outgoing Floating Action Button's animation to
+      exiting and entering animations are triggered at the same time, we use a
+      enter delay to allow the outgoing Floating Action Button's animation to
       finish before the new one enters.</typography
     >
 
@@ -139,6 +141,12 @@ import Typography from "../components/Typography/Typography";
 export default {
   name: "FloatActionButtonExample",
   components: { FloatActionButton, Typography, Tabs },
+  //for in-page navigation
+  anchors: [
+    { anchor: "ac-floating-action-button", text: "Floating Action Button" },
+    { anchor: "ac-size", text: "Size" },
+    { anchor: "ac-animation", text: "Animation" },
+  ],
   data() {
     return {
       tabsItems: [

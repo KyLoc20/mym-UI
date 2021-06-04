@@ -14,7 +14,7 @@
       default.
     </typography>
 
-    <typography variant="h2">Radio group</typography>
+    <typography variant="h2" id="ac-radio-group">Radio group</typography>
     <typography variant="p"
       ><code>RadioGroup</code> is a helpful wrapper used to group
       <code>Radio</code> components that provides an easier API, and proper
@@ -29,7 +29,7 @@
       ></RadioGroup>
     </section>
 
-    <typography variant="h2">Direction</typography>
+    <typography variant="h2" id="ac-direction">Direction</typography>
     <typography variant="p"
       >To lay out the buttons horizontally, set the
       <code>horizontal</code> prop:
@@ -44,7 +44,9 @@
       ></RadioGroup>
     </section>
 
-    <typography variant="h2">Standalone radio buttons</typography>
+    <typography variant="h2" id="ac-standalone-radio-buttons"
+      >Standalone radio buttons</typography
+    >
     <typography variant="p"
       ><code>Radio</code> can also be used standalone, without the RadioGroup
       wrapper.
@@ -54,7 +56,7 @@
       <Radio label="b" :exclusive="false"></Radio>
     </section>
 
-    <typography variant="h2">Size</typography>
+    <typography variant="h2" id="ac-size">Size</typography>
     <typography variant="p"
       >Use the <code>size</code> prop or customize the font size of the svg
       icons to change the size of the radios.
@@ -65,7 +67,7 @@
       <Radio label="lg" :exclusive="false" size="lg"></Radio>
     </section>
 
-    <typography variant="h2">Color</typography>
+    <typography variant="h2" id="ac-color">Color</typography>
     <typography variant="p"
       >Use the <code>color</code> prop or customize the color of the radios.
     </typography>
@@ -81,7 +83,7 @@
       <Radio label="green" :exclusive="false" color="green"></Radio>
     </section>
 
-    <typography variant="h2">Label placement</typography>
+    <typography variant="h2" id="ac-label-placment">Label placement</typography>
     <typography variant="p"
       >You can change the placement of the label with the
       <code>label-placement</code> prop
@@ -104,6 +106,15 @@ import Typography from "../components/Typography/Typography";
 export default {
   name: "RadioExample",
   components: { Typography, RadioGroup, Radio },
+  //for in-page navigation
+  anchors: [
+    { anchor: "ac-radio-group", text: "Radio group" },
+    { anchor: "ac-direction", text: "Direction" },
+    { anchor: "ac-standalone-radio-buttons", text: "Standalone radio buttons" },
+    { anchor: "ac-size", text: "Size" },
+    { anchor: "ac-color", text: "Color" },
+    { anchor: "ac-label-placment", text: "Label placement" },
+  ],
   data() {
     return {
       defaultValue: "female",
