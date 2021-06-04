@@ -32,7 +32,7 @@ export default {
     },
     //'/avatar'
     path: {
-      type: Array,
+      type: String,
     },
   },
   computed:{
