@@ -14,12 +14,19 @@
     <typography variant="h2">Basic checkboxes</typography>
     <section class="group-box box-inline center margin-8 bd-1 br-4">
       <checkbox></checkbox>
-       <checkbox checked></checkbox>
+      <checkbox checked></checkbox>
       <checkbox disabled></checkbox>
-     <checkbox disabled checked></checkbox>
+      <checkbox disabled checked></checkbox>
     </section>
-
-  
+    <typography variant="h2">Label</typography>
+    <typography variant="p"
+      >You can add a description text to the
+      <code>label</code> prop.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <checkbox label="Label"></checkbox>
+      <checkbox disabled label="Disabled"></checkbox>
+    </section>
   </section>
 </template>
 <script>
@@ -29,11 +36,9 @@ export default {
   name: "CheckboxExample",
   components: { Typography, Checkbox },
   data() {
-    return {
-    };
+    return {};
   },
-  methods: {
-  },
+  methods: {},
   computed: {},
 };
 </script>

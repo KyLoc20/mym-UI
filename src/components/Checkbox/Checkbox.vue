@@ -25,7 +25,7 @@
         <path :d="computedPath"></path>
       </svg>
     </span>
-    <span class="label-placeholder" @click="handleCheck">{{ this.label }}</span>
+    <span class="label-placeholder" :style="{color:computedLabelColor}" @click="handleCheck">{{ this.label }}</span>
   </section>
 </template>
 <script>
@@ -67,12 +67,6 @@ export default {
   components: {},
   mixins: [Rippleable],
   props: {
-    padding: {
-      type: Array,
-      default: function() {
-        return [0, 0, 0, 0];
-      },
-    },
     color: {
       default: "default",
       validator: (v) => {
@@ -106,13 +100,13 @@ export default {
       default: false,
       type: Boolean,
     },
-    indeterminate: {
-      default: false,
-      type: Boolean,
-    },
     label: {
       default: "",
       type: String,
+    },
+    indeterminate: {
+      default: false,
+      type: Boolean,
     },
   },
   data() {
@@ -154,6 +148,10 @@ export default {
     computedRippleColor() {
       return this.rippleColor || this.getColorFromTheme(this.color, "ripple");
     },
+    computedLabelColor() {
+      if (this.disabled) return "rgba(0, 0, 0, 0.38)";
+      else return null;
+    },
   },
   mounted() {},
   methods: {
@@ -189,11 +187,11 @@ export default {
         } else if (this.state === "checked") {
           this.state = "unchecked";
           this.$emit("check", { value: false });
-        }
-        //ripple
+        } else;
+        //ripple only in icon-button
         if (!e.currentTarget.classList.value.includes("label-placeholder")) {
           this.createRipple(e, true, this.computedRippleColor);
-        }
+        } else;
       }
     },
   },
