@@ -9,12 +9,14 @@ const mapType = {
   h2: "Heading2",
   h3: "Heading3",
   p: "Paragraph",
-  span:"Span",
+  span: "Span",
+  quote: "Quote",
 };
 import Heading1 from "./types/Heading1";
 import Heading2 from "./types/Heading2";
 import Heading3 from "./types/Heading3";
 import Paragraph from "./types/Paragraph";
+import Quote from "./types/Quote";
 import Span from "./types/Span";
 export default {
   name: "Typography",
@@ -24,6 +26,7 @@ export default {
     CptHeading3: Heading3,
     CptParagraph: Paragraph,
     CptSpan: Span,
+    CptQuote: Quote,
   },
   props: {
     variant: {

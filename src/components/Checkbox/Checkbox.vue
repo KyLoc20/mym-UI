@@ -25,7 +25,12 @@
         <path :d="computedPath"></path>
       </svg>
     </span>
-    <span class="label-placeholder" :style="{color:computedLabelColor}" @click="handleCheck">{{ this.label }}</span>
+    <span
+      class="label-placeholder"
+      :style="{ color: computedLabelColor }"
+      @click="handleCheck"
+      >{{ this.label }}</span
+    >
   </section>
 </template>
 <script>
@@ -72,6 +77,19 @@ export default {
       validator: (v) => {
         return ["default", "primary", "secondary"].indexOf(v) !== -1;
       },
+    },
+    iconUncheckedColor: {
+      required: false,
+      type: String,
+    },
+    iconColor: {
+      //color of checked or indeterminate icon
+      required: false,
+      type: String,
+    },
+    iconHoverColor: {
+      required: false,
+      type: String,
     },
     //size of checkbox
     size: {
@@ -139,7 +157,9 @@ export default {
     computedIconFillColor() {
       if (this.disabled) return "rgba(0, 0, 0, 0.26)";
       if (this.isHovering && this.iconHoverColor) return this.iconHoverColor;
-      else return this.iconColor || this.getColorFromTheme(this.color, "icon");
+      else if (this.state === "checked")
+        return this.iconColor || this.getColorFromTheme(this.color, "icon");
+      else return this.iconUncheckedColor || this.getColorFromTheme("default", "icon");
     },
     computedIconSize() {
       if (this.iconSize) return `${this.getSize(this.iconSize, "icon")}px`;
@@ -183,10 +203,10 @@ export default {
       else {
         if (this.state === "unchecked") {
           this.state = "checked";
-          this.$emit("check", { value: true });
+          this.$emit("change", { value: true });
         } else if (this.state === "checked") {
           this.state = "unchecked";
-          this.$emit("check", { value: false });
+          this.$emit("change", { value: false });
         } else;
         //ripple only in icon-button
         if (!e.currentTarget.classList.value.includes("label-placeholder")) {
