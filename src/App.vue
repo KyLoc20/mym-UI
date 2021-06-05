@@ -52,13 +52,13 @@ export default {
                 link: "radio-button",
               },
             },
-            { content: { label: "select", text: "Select" } },
-            { content: { label: "slider", text: "Slider", link: "slider" } },
-            { content: { label: "textfield", text: "Text Field" } },
+            { content: { label: "select", text: "Select🚧" } },
+            { content: { label: "slider", text: "Slider🚧", link: "slider" } },
+            { content: { label: "textfield", text: "Text Field🚧" } },
           ],
         },
         {
-          content: { label: "navigation", text: "Navigation" },
+          content: { label: "navigation", text: "Navigation🚧" },
           children: [
             {
               content: {
@@ -66,32 +66,32 @@ export default {
                 text: "Bottom Navigation",
               },
             },
-            { content: { label: "breadcrumbs", text: "Breadcrumbs" } },
-            { content: { label: "drawer", text: "Drawer" } },
-            { content: { label: "menu", text: "Menu" } },
-            { content: { label: "stepper", text: "Stepper", link: "stepper" } },
-            { content: { label: "tabs", text: "Tabs" } },
+            { content: { label: "breadcrumbs", text: "Breadcrumbs🚧" } },
+            { content: { label: "drawer", text: "Drawer🚧" } },
+            { content: { label: "menu", text: "Menu🚧" } },
+            { content: { label: "stepper", text: "Stepper", link: "stepper🚧" } },
+            { content: { label: "tabs", text: "Tabs🚧" } },
           ],
         },
         {
           content: { label: "surfaces", text: "Surfaces" },
           children: [
-            { content: { label: "app-bar", text: "App Bar" } },
-            { content: { label: "card", text: "Card", link: "card" } },
+            { content: { label: "app-bar", text: "App Bar🚧" } },
+            { content: { label: "card", text: "Card🚧", link: "card" } },
           ],
         },
         {
           content: { label: "feedback", text: "Feedback" },
           children: [
-            { content: { label: "progress", text: "Progress" } },
-            { content: { label: "snackbar", text: "Snackbar" } },
+            { content: { label: "progress", text: "Progress🚧" } },
+            { content: { label: "snackbar", text: "Snackbar🚧" } },
           ],
         },
         {
           content: { label: "data-display", text: "Data Display" },
           children: [
             { content: { label: "avatar", text: "Avatar", link: "avatar" } },
-            { content: { label: "badge", text: "Badge" } },
+            { content: { label: "badge", text: "Badge🚧" } },
             { content: { label: "chip", text: "Chip", link: "chip" } },
           ],
         },
