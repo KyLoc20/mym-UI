@@ -1,5 +1,5 @@
 <template>
-  <button :class="classButton" @click="handleButtonClick">
+  <button :class="classButton" :style="computedSize" @click="handleButtonClick">
     <div class="content">
       <span class="icon-placeholder start" v-if="startIcon">
         <LoadingEffect v-if="loading"></LoadingEffect>
@@ -120,6 +120,7 @@ export default {
     computedSize() {
       if (this.size === "auto") return null;
       if (!this.size || !SizeMap[this.size]) return this.getSizeFromMap("md");
+      //todo customise the props including height, fontSize, padding
       return this.getSizeFromMap(this.size);
     },
     isActive() {
@@ -329,41 +330,7 @@ button {
     }
   }
 }
-.iconed-btn {
-  box-shadow: none;
-  background: transparent;
-  &.default-btn {
-    color: rgba(0, 0, 0, 0.54);
-    &:hover {
-      background: rgba(0, 0, 0, 0.04);
-    }
-  }
-  &.primary-btn {
-    color: rgba(25, 118, 210, 0.8);
-    &:hover {
-      background: rgba(25, 118, 210, 0.04);
-    }
-  }
-  &.secondary-btn {
-    color: rgba(220, 0, 78, 0.8);
-    &:hover {
-      background: rgba(220, 0, 78, 0.04);
-    }
-  }
-  &.plain-btn {
-    color: #fff;
-    &:hover {
-      background: rgba(232, 234, 237, 0.08);
-    }
-  }
-  &.disabled {
-    color: rgba(0, 0, 0, 0.26);
-    &:hover {
-      color: rgba(0, 0, 0, 0.26);
-      background: transparent;
-    }
-  }
-}
+
 .outlined-btn {
   box-shadow: none;
   background-color: transparent;

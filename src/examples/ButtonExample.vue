@@ -130,7 +130,7 @@
     >
     <section class="group-box box-block bd-1 br-4 padding-4">
       <section class="row margin-8">
-        <vbutton class="custom" variant="contained" color="primary" size="sm"
+        <vbutton class="custom" variant="contained" color="primary" size="auto"
           >CUSTOM</vbutton
         >
       </section>
