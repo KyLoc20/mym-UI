@@ -59,6 +59,7 @@ export default {
   mixins: [Rippleable],
   props: {
     color: {
+      //a bunch of preset theme
       default: "default",
       validator: (v) => {
         return ["plain", "default", "primary", "secondary"].indexOf(v) !== -1;

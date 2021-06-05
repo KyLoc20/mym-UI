@@ -2,8 +2,8 @@
   <button :class="classButton" @click="handleButtonClick">
     <div class="content">
       <span class="icon-placeholder start" v-if="startIcon">
-          <LoadingEffect v-if="loading"></LoadingEffect>
-          <Icon v-else :name="startIcon" :size="'sm'" class="start-icon"></Icon>
+        <LoadingEffect v-if="loading"></LoadingEffect>
+        <Icon v-else :name="startIcon" :size="'sm'" class="start-icon"></Icon>
       </span>
       <span class="text-placeholder">
         <transition>
@@ -29,27 +29,52 @@
 import Rippleable from "../../mixins/rippleable";
 import Icon from "../../components/Icon/Icon";
 import LoadingEffect from "./LoadingEffect";
+import { requireOneOf, requireAuto } from "../common/validator";
+
+const SizeMap = {
+  sm: { height: 22, fontSize: 13, paddingY: 4, paddingX: 10 },
+  md: { height: 24, fontSize: 14, paddingY: 6, paddingX: 16 },
+  lg: { height: 26, fontSize: 15, paddingY: 8, paddingX: 22 },
+};
 export default {
   name: "Button",
   components: { Icon, LoadingEffect },
   mixins: [Rippleable],
   props: {
+    //the style of the button
     variant: {
       default: "contained",
       validator: (v) => {
-        return ["contained", "text", "outlined", "iconed"].indexOf(v) !== -1;
+        return [requireOneOf(["contained", "text", "outlined"])].some((test) =>
+          test(v)
+        );
       },
     },
+    //the color theme of the button
     color: {
       default: "default",
       validator: (v) => {
-        return ["plain", "default", "primary", "secondary"].indexOf(v) !== -1;
+        return [
+          requireOneOf(["plain", "default", "primary", "secondary"]),
+        ].some((test) => test(v));
       },
     },
+    /*     
+    To control the size of button including width, height, padding, there are 4 ways
+    1.use the preset size of button by passing "sm", "md", "lg"
+    2.set a specific value by passing a number(here for button the prop of size is an obj, not suitable)
+    3.use the custom value in the outer css by passing "auto"(do nothing if not)
+    4.pass nothing and a default preset size will be adopted   
+    Principle: users have to pass a "auto" in order to customize the style in the outer css
+    For implementation see computedSize
+    */
+
     size: {
-      default: "md",
+      required: false,
       validator: (v) => {
-        return ["sm", "md", "lg"].indexOf(v) !== -1;
+        return [requireAuto(), requireOneOf(["sm", "md", "lg"])].some((test) =>
+          test(v)
+        );
       },
     },
     flat: {
@@ -92,6 +117,11 @@ export default {
     return {};
   },
   computed: {
+    computedSize() {
+      if (this.size === "auto") return null;
+      if (!this.size || !SizeMap[this.size]) return this.getSizeFromMap("md");
+      return this.getSizeFromMap(this.size);
+    },
     isActive() {
       return !this.disabled;
     },
@@ -108,6 +138,14 @@ export default {
   },
   mounted() {},
   methods: {
+    getSizeFromMap(type) {
+      const preset = SizeMap[type];
+      return {
+        height: `${preset["height"]}px`,
+        fontSize: `${preset["fontSize"]}px`,
+        padding: `${preset["paddingY"]}px ${preset["paddingX"]}px`,
+      };
+    },
     handleButtonClick(e) {
       if (!this.isActive) return;
       console.log("Inner onButtonClick");
