@@ -9,6 +9,7 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 import _ from 'lodash'
 Vue.prototype._ = _
+import ScrollCatalog from "./components//ScrollCatalog/ScrollCatalog";
 import StepperExample from "./examples/StepperExample"
 import AvatarExample from "./examples/AvatarExample"
 import FloatActionButtonExample from "./examples/FloatActionButtonExample"
@@ -18,7 +19,7 @@ import CardExample from "./examples/CardExample"
 import RadioExample from "./examples/RadioExample"
 import ChipExample from "./examples/ChipExample"
 import CheckboxExample from "./examples/CheckboxExample"
-import ScrollCatalog from "./components//ScrollCatalog/ScrollCatalog";
+import SelectExample from "./examples/SelectExample";
 const genRouteWithCatalog = (path, vNode) => ({
     components: {
         default: vNode,
@@ -39,6 +40,7 @@ const routes = [
     { path: '/radio-button', ...genRouteWithCatalog('/radio-button', RadioExample), },
     { path: '/chip', ...genRouteWithCatalog('/chip', ChipExample), },
     { path: '/slider', ...genRouteWithCatalog('/slider', SliderExample), },
+    { path: '/select', ...genRouteWithCatalog('/select', SelectExample), },
 ]
 
 const router = new VueRouter({

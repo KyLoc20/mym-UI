@@ -52,7 +52,7 @@ export default {
                 link: "radio-button",
               },
             },
-            { content: { label: "select", text: "Select🚧" } },
+            { content: { label: "select", text: "Select🚧", link: "select" } },
             { content: { label: "slider", text: "Slider🚧", link: "slider" } },
             { content: { label: "textfield", text: "Text Field🚧" } },
           ],
