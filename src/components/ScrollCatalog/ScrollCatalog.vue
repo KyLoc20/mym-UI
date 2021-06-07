@@ -47,9 +47,9 @@ export default {
       activeAnchor: null, //when scrolling
     };
   },
-  beforeMount(){
-  console.log("beforeMount",this.path,this.items);
-  },
+  // beforeMount(){
+  // console.log("beforeMount",this.path,this.items);
+  // },
   mounted() {
   
     document.addEventListener("scroll", this.handleScroll, true);
@@ -85,18 +85,18 @@ export default {
       return closestOne ? closestOne.anchor : null;
     },
     handleScroll() {
-      console.log("handleScroll");
+      // console.log("handleScroll");
       if (this.throttleTimer) {
         return;
       }
       this.throttleTimer = setTimeout(() => {
         this.throttleTimer = null;
         this.activeAnchor = this.locateByScrolling();
-        console.log("activeAnchor", this.activeAnchor);
+        // console.log("activeAnchor", this.activeAnchor);
       }, 100);
     },
-    handleSelect(anchor, e) {
-      console.log("handleSelect", e, anchor);
+    handleSelect(anchor) {
+      // console.log("handleSelect", anchor);
       this.activeAnchor = anchor;
     },
   },
