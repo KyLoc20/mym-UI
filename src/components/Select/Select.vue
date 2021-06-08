@@ -11,7 +11,7 @@
         type="text"
         :id="id"
         ref="input"
-        v-model="valueSelected"
+        v-model="cValue"
         @focus="handleFocus"
         @blur="handleBlur"
       />
@@ -51,9 +51,17 @@
       }}</span>
     </div>
     <transition name="fade-from-left">
-      <div class="input-menu" v-if="menuToggled" :style="menuPos">
+      <div class="input-menu" v-if="menuToggled" :style="{top:computedMenuPositionTop}">
         <div class="control-mask" @mousedown="handleStopSelect"></div>
-        <div class="item-wrapper item-none"></div>
+        <div class="item-wrapper">
+          <select-item
+            class="item-none"
+            :label="'$none'"
+            :text="'None'"
+            :index="-1"
+            @select="handleDoneSelect"
+          ></select-item>
+        </div>
         <div class="item-wrapper" v-for="(item, idx) in items" :key="idx">
           <select-item
             :label="item.label"
@@ -65,29 +73,6 @@
         </div>
       </div>
     </transition>
-    <!-- <div
-            class="item"
-            :style="{}"
-            @mousedown="handleDoneSelect($event, item.label, idx)"
-          >
-            <span class="text">{{ item.text }}</span>
-          </div>
-        </div> -->
-    <!-- <div
-          class="outer"
-          v-for="(item, idx) in itemsFiltered"
-          :key="idx"
-          @click="handleClick"
-          :class="valueSelected === item.label ? 'selected' : ''"
-        >
-          <anchor
-            :label="item.label"
-            :icon="item.icon | sizeAdder('md')"
-            @select="handleSelect(idx, $event)"
-          >
-            <template>{{ item.text }}</template>
-          </anchor>
-        </div> -->
   </section>
 </template>
 <script>
@@ -222,23 +207,12 @@ export default {
       if (!this.cValue) return this.placeholder;
       else return this.cValue;
     },
-    itemsFiltered() {
-      return [{ label: "$special", text: "None" }, ...this.items];
-    },
-    valueSelected() {
-      return this.cValue;
-    },
-
-    menuPos() {
-      let size = 36,
-        items = this.itemsFiltered;
-      //based on the index of valueSelected
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].label === this.valueSelected) {
-          return { top: `${-8 - i * size}px` };
-        }
+    computedMenuPositionTop(){
+      const size=36
+      for(let [index,el] of this.items.entries()){
+        if(el.label===this.cValue)return `${-8 - (index+1) * size}px`
       }
-      return { top: 0 };
+      return 0
     },
   },
   methods: {
@@ -284,7 +258,7 @@ export default {
     },
     handleDoneSelect(e) {
       if (this.disabled) return;
-      let {label,index}=e
+      let { label, index } = e;
       console.log("handleSelectDone", label, index);
       this.$refs.input.focus();
       this.cValue = label;
