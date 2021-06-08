@@ -17,6 +17,16 @@
         :activeIndex="activeIndex"
         @change="handleChange"
       ></vselect>
+      <div class="test">
+        <input
+        id="1"
+          type="text"
+          @focus="handleFocus"
+          @blur="handleBlur"
+        />
+        <label for="1" @mousedown="handle1">123456</label>
+        <span class="text">{{isFocused}}</span>
+      </div>
     </section>
     <typography variant="p"
       >Menus are positioned under their emitting elements.</typography
@@ -26,6 +36,8 @@
         label="Age"
         :items="selectItems"
         :activeIndex="activeIndex"
+        placeholder="placeholder"
+        helper="my name is liuzeduoxcc"
         @change="handleChange"
       ></vselect>
     </section>
@@ -49,10 +61,14 @@ export default {
         { label: "forty", text: "Forty" },
         { label: "fifty", text: "Fifty" },
       ],
+      isFocused:false
     };
   },
 
   methods: {
+    handle1(e){
+      e.preventDefault()
+    },
     handleChange(e) {
       this.activeIndex = this.getIndexByKeyValue(
         this.selectItems,
@@ -67,11 +83,26 @@ export default {
       }
       return -1;
     },
+        handleFocus() {
+      //console.log("handleFocus");
+      if (!this.disabled) this.isFocused = true;
+    },
+    handleBlur() {
+      //console.log("handleBlur");
+      if (!this.disabled) this.isFocused = false;
+    },
   },
   computed: {},
 };
 </script>
 <style scoped lang="less">
 .select-example {
+  .test{
+    position: relative;
+    .text{
+      position: absolute;
+      left:200%;
+    }
+  }
 }
 </style>

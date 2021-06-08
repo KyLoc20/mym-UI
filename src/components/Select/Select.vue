@@ -1,21 +1,32 @@
 <template>
   <section class="select">
     <section class="container">
-      <div class="input-outer" @click="handleOpenMenu">
+      <span class="test">{{ isFocused }}</span>
+      <div
+        class="input-wrapper"
+        @click="handleOpenMenu"
+        @mouseenter="handleHoverEnter"
+        @mouseleave="handleHoverLeave"
+      >
         <input
           type="text"
           :id="id"
-          placeholder=" "
           ref="input"
           v-model="valueSelected"
           @focus="handleFocus"
+          @blur="handleBlur"
         />
-        <label :for="id" v-if="!noLabel" :class="disabled ? 'disabled' : ''"
-          >{{ label }}{{ this.required ? " * " : "" }}</label
+        <label
+          :for="id"
+          v-if="labelDisplayed"
+          :style="{ color: computedLabelColor ,transform:computedLabelPosition}"
+          >{{ computedLabelText }}</label
         >
-        <span class="value-text" :class="disabled ? 'disabled' : ''">{{
-          valueShowing
-        }}</span>
+        <span
+          class="selected-value"
+          :style="{ color: computedSelectedColor }"
+          >{{ computedDisplayedValue }}</span
+        >
         <span class="synchronizing-trick-activeindex" v-show="false">{{
           activeIndex
         }}</span>
@@ -29,19 +40,30 @@
             :class="disabled ? 'disabled' : ''"
           ></Icon>
         </span>
-        <span class="base-underline" :class="disabled ? 'disabled' : ''"></span>
-        <span class="focus-underline"></span>
-        <span class="focus-layer"></span>
+        <span
+          class="base-underline"
+          :style="{ borderBottom: computedBaseUnderlineBorder }"
+        ></span>
+        <span
+          class="focus-underline"
+          :style="{ transform: computedFocusUnderlineScale }"
+        ></span>
       </div>
-      <div class="helper" v-if="helper" :class="disabled ? 'disabled' : ''">
-        <span class="text">{{ helper }}</span>
+      <div
+        class="input-helper"
+        v-if="helper"
+        :class="disabled ? 'disabled' : ''"
+      >
+        <span class="text" :style="{ color: computedHelperColor }">{{
+          helper
+        }}</span>
       </div>
-      <transition name="leftfade">
+      <transition name="left-fade">
         <div class="menu" v-if="isMenuOpened" :style="menuPos">
           <div
             class="control-mask"
             v-if="isMaskOpened"
-            @click="handleCloseMask"
+            @mousedown="handleCloseMask"
           ></div>
           <div
             class="outer"
@@ -67,14 +89,12 @@
 import Icon from "../Icon/Icon.vue";
 import Navigable from "../../mixins/navigable";
 import Rippleable from "../../mixins/rippleable";
-//todo flexible width responding to value-text
+//todo flexible width responding to selected-value
 export default {
   name: "Select",
   props: {
-    label: {
-      type: String,
-    },
     items: {
+      //[{label:'...'}]
       type: Array,
     },
     activeIndex: {
@@ -82,18 +102,27 @@ export default {
       type: Number,
       required: false,
     },
+    /* 
+    There are 3 types of description text in this component:
+    1.label can be floating above the inpout content;
+    2.helper is the description text below the input;
+    3.placeholder appears in the position of selected item when no item selected;
+    */
+    label: {
+      type: String,
+      required: false,
+    },
     helper: {
       type: String,
       required: false,
     },
-
     placeholder: {
       type: String,
       required: false,
     },
-    noLabel: {
+    labelDisplayed: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     disabled: {
       type: Boolean,
@@ -107,6 +136,21 @@ export default {
       type: Boolean,
       default: false,
     },
+    //the following props are for user custom
+    labelColor: {
+      type: String,
+      required: false,
+    },
+    selectedColor: {
+      //the text color of currently selected value
+      type: String,
+      required: false,
+    },
+    helperColor: {
+      //the text color of input-helper
+      type: String,
+      required: false,
+    },
   },
   components: {
     Icon,
@@ -115,6 +159,8 @@ export default {
   data() {
     return {
       id: null,
+      isHovering: false,
+      isFocused: false,
       // valueSelected: null,
       cValue: null,
       //menu
@@ -126,31 +172,58 @@ export default {
     this.id = this._uid;
     //init value from prop
     this.initValue();
-    console.log("mounted", this.id, this.cValue);
+    // console.log("mounted", this.id, this.cValue);
   },
   updated() {
     //update value from prop
     this.initValue();
-    console.log("updated", this.id, this.cValue);
+    // console.log("updated", this.id, this.cValue);
   },
   computed: {
+    computedLabelText() {
+      return `${this.label}${this.required ? " * " : ""}`;
+    },
+    computedSelectedColor() {
+      if (this.disabled) return "rgba(0, 0, 0, 0.38)";
+      else return this.selectedColor || "rgba(0, 0, 0, 0.87)";
+    },
+    computedLabelColor() {
+      if (this.disabled) return "rgba(0, 0, 0, 0.38)";
+      else if (this.isFocused) return "rgba(25, 118, 210, 1)";
+      else return this.labelColor || "rgba(0, 0, 0, 0.54)";
+    },
+    computedLabelPosition(){
+      const floatingEffect="translateY(calc(-100% - 6px)) translateX(-10%) scale(0.8)"
+      //when the input is focused or the input is valued or the input is placeholdered
+      if(this.isFocused||this.cValue||this.placeholder)return floatingEffect
+      return null
+    },
+    computedHelperColor() {
+      if (this.disabled) return "rgba(0, 0, 0, 0.38)";
+      else return this.helperColor || "rgba(0, 0, 0, 0.54)";
+    },
+    computedBaseUnderlineBorder() {
+      if (this.disabled) return "1px dotted rgba(0, 0, 0, 0.87)";
+      else if (this.isHovering) return "2px solid rgba(0, 0, 0, 0.87)";
+      else return "1px solid rgba(0, 0, 0, 0.42)";
+    },
+    computedFocusUnderlineScale() {
+      //shrink when not focused
+      if (!this.isFocused) return "scaleX(0)";
+      else return "scaleX(1)";
+    },
+    computedDisplayedValue() {
+      //for showing if not valued or has no placeholder it displays nothing and the label goes back from floating
+      if (!this.cValue) return this.placeholder;
+      else return this.cValue;
+    },
     itemsFiltered() {
       return [{ label: "$special", text: "None" }, ...this.items];
     },
     valueSelected() {
-      if (this.cValue === null && this.placeholder) {
-        //with placeholder
-        return this.placeholder;
-      } else return this.cValue;
+      return this.cValue;
     },
-    valueShowing() {
-      //for template
-      if (this.cValue === null) {
-        if (this.placeholder) return this.placeholder;
-        else if (this.noLabel) return "None";
-        else return this.valueSelected;
-      } else return this.valueSelected;
-    },
+
     menuPos() {
       let size = 36,
         items = this.itemsFiltered;
@@ -164,6 +237,16 @@ export default {
     },
   },
   methods: {
+    handleHoverEnter() {
+      if (this.disabled) return;
+      console.log("handleHoverEnter");
+      this.isHovering = true;
+    },
+    handleHoverLeave() {
+      if (this.disabled) return;
+      console.log("handleHoverLeave");
+      this.isHovering = false;
+    },
     initValue() {
       //todo safety check
       if (this.activeIndex !== undefined) {
@@ -199,7 +282,11 @@ export default {
     },
     handleFocus() {
       //console.log("handleFocus");
-      if (this.disabled) this.$refs.input.blur();
+      if (!this.disabled) this.isFocused = true;
+    },
+    handleBlur() {
+      //console.log("handleBlur");
+      if (!this.disabled) this.isFocused = false;
     },
     openMenu(opened) {
       console.log("openMenu", opened);
@@ -222,48 +309,71 @@ export default {
 .select {
   .container {
     position: relative;
+    width: 120px;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     margin-top: 16px;
     // max-width: 120px;
-    .input-outer {
+    .test {
+      position: absolute;
+      right: 200%;
+    }
+    .input-helper {
+      //helpful description text below the input
+      width: 100%;
+      margin-top: 3px;
+      word-wrap: break-word;
+      word-break: break-all;
+      .text {
+        font-size: 12px;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 400;
+        letter-spacing: 0.03333em;
+      }
+    }
+    .input-wrapper {
+      width: 100%;
       position: relative;
       display: flex;
+      cursor: pointer;
       input {
-        width: 120px;
+        width: 100%;
         height: 32px;
         padding: 6px 24px 7px 0;
         box-sizing: border-box;
         border: none;
         cursor: pointer;
-        color: transparent; //hide focus cursor
+        color: transparent; //hide focus cursor and value
         user-select: none;
+      }
+      .hide-selection {
+        //todo hide the value of input when selecting
+        background: transparent;
+        color: transparent;
+      }
+      input::selection {
+        .hide-selection();
       }
       input:focus {
         outline: none;
         &::selection {
-          //todo hide the value of input
-          background: transparent;
-          color: transparent;
+          .hide-selection();
         }
       }
-      input:not(:focus) ~ .focus-underline {
-        transform: scaleX(0);
-      }
-      input:not(:focus) ~ .focus-layer {
-        background: transparent;
-      }
-      input:focus + label {
-        color: #1976d2;
-        transform: translateY(calc(-100% - 6px)) translateX(-10%) scale(0.8);
-      }
-      input:not(:placeholder-shown) + label {
-        transform: translateY(calc(-100% - 6px)) translateX(-10%) scale(0.8);
-      }
+      // .floating-effect {
+      //   transform: translateY(calc(-100% - 6px)) translateX(-10%) scale(0.8);
+      // }
+      // input:focus + label {
+      //   color: #1976d2;
+      //   .floating-effect();
+      // }
+      // input:not(:placeholder-shown) + label {
+      //   .floating-effect();
+      // }
       label {
         position: absolute;
         top: 6px;
-        color: rgba(0, 0, 0, 0.54);
         transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
           transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
         font-family: "Roboto", "Helvetica";
@@ -271,12 +381,9 @@ export default {
         line-height: 16px;
         text-transform: capitalize;
         user-select: none;
-        &.disabled {
-          color: rgba(0, 0, 0, 0.38);
-        }
       }
 
-      .value-text {
+      .selected-value {
         position: absolute;
         top: 6px;
         color: rgba(0, 0, 0, 0.87);
@@ -290,35 +397,19 @@ export default {
           color: rgba(0, 0, 0, 0.38);
         }
       }
-
       .underline {
         position: absolute;
         width: 100%;
         bottom: 0;
       }
-
       .base-underline {
         .underline();
-        border-bottom: 1px solid rgba(0, 0, 0, 0.42);
         transition: border-bottom-color 200ms cubic-bezier(0.4, 0.2, 0, 1);
-      }
-      &:hover .base-underline:not(.disabled) {
-        border-bottom: 2px solid rgba(0, 0, 0, 0.87);
-      }
-      .base-underline.disabled {
-        border-bottom: 1px dotted rgba(0, 0, 0, 0.87);
       }
       .focus-underline {
         .underline();
-        transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
-        transform-origin: 50% 50%;
+        transition: transform 200ms cubic-bezier(0.4, 0.2, 0, 1);
         border-bottom: 2px solid #1976d2;
-      }
-      .focus-layer {
-        .underline();
-        height: 100%;
-        background: rgba(0, 0, 0, 0.05);
-        transition: background 200ms cubic-bezier(0.4, 0.2, 0, 1);
       }
       .expand-action {
         position: absolute;
@@ -339,18 +430,6 @@ export default {
         &.towards-up {
           transform: rotate(180deg);
         }
-      }
-    }
-    .helper {
-      display: flex;
-      margin-top: 3px;
-      color: rgba(0, 0, 0, 0.54);
-      font-size: 12px;
-      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-      font-weight: 400;
-      letter-spacing: 0.03333em;
-      &.disabled {
-        color: rgba(0, 0, 0, 0.38);
       }
     }
 
@@ -407,7 +486,7 @@ export default {
   transform: scale(0);
   opacity: 0;
 }
-.leftfade {
+.left-fade {
   &-enter-active,
   &-leave-active {
     .fade();
