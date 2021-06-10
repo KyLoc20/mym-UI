@@ -18,11 +18,6 @@
         @change="handleChange"
         dev
       ></vselect>
-      <div class="test">
-        <input id="1" type="text" @focus="handleFocus" @blur="handleBlur" />
-        <label for="1" @mousedown="handle1">123456</label>
-        <span class="text">{{ isFocused }}</span>
-      </div>
     </section>
     <typography variant="p"
       >Menus are positioned under their emitting elements.</typography
@@ -93,9 +88,6 @@ export default {
   },
 
   methods: {
-    handle1(e) {
-      e.preventDefault();
-    },
     handleChange(e) {
       this.activeIndex = this.getIndexByKeyValue(
         this.selectItems,
@@ -124,12 +116,5 @@ export default {
 </script>
 <style scoped lang="less">
 .select-example {
-  .test {
-    position: relative;
-    .text {
-      position: absolute;
-      left: 200%;
-    }
-  }
 }
 </style>

@@ -7,7 +7,10 @@
     <span class="dev-context" v-if="dev">{{ isFocused }}</span>
     <div
       class="input-wrapper"
-      :style="{padding:computedInputWrapperPadding}"
+      :style="{
+        padding: computedInputWrapperPadding,
+        border: computedInputWrapperBorder,
+      }"
       @mousedown="handleWannaSelect"
       @mouseenter="handleHoverEnter"
       @mouseleave="handleHoverLeave"
@@ -25,30 +28,41 @@
         v-if="!labelHidden"
         :style="{
           color: computedLabelColor,
-          top:computedLabelPositionTop,
-          transform: computedLabelPosition,
+          top: computedLabelPositionTop,
+          transform: computedLabelFloating,
+          background: computedLabelBackgroundColor,
         }"
         >{{ computedLabelText }}</label
       >
-      <span class="selected-value" :style="{ color: computedSelectedColor,top:computedSelectedPositionTop }">{{
-        computedDisplayedValue
-      }}</span>
+      <span
+        class="selected-value"
+        :style="{
+          color: computedSelectedColor,
+          top: computedSelectedPositionTop,
+        }"
+        >{{ computedDisplayedValue }}</span
+      >
       <span class="synchronizing-trick-activeindex" v-show="false">{{
         activeIndex
       }}</span>
       <span
         class="menu-control-action"
         :class="menuToggled ? 'towards-up' : 'towards-down'"
-        :style={top:computedMenuControllerPositionTop,right:computedMenuControllerPositionRight}
+        :style="{
+          top: computedMenuControllerPositionTop,
+          right: computedMenuControllerPositionRight,
+        }"
       >
         <Icon name="down" size="md" :class="disabled ? 'disabled' : ''"></Icon>
       </span>
       <span
         class="base-underline"
+        v-if="variant !== 'outlined'"
         :style="{ borderBottom: computedBaseUnderlineBorder }"
       ></span>
       <span
         class="focus-underline"
+        v-if="variant !== 'outlined'"
         :style="{ transform: computedFocusUnderlineScale }"
       ></span>
     </div>
@@ -162,6 +176,11 @@ export default {
       type: String,
       required: false,
     },
+    outlinedLabelColor: {
+      //only for outlined variant in order to cover border
+      type: String,
+      required: false,
+    },
     dev: {
       //dev mode to show some info
       type: Boolean,
@@ -205,47 +224,81 @@ export default {
     },
     //the following are some varieties decided by the prop of variant
     computedInputWrapperPadding() {
-      if (this.variant === "standard") return "20px 24px 5px 0";//standard top 4+16
-      else if(this.variant === "filled")return "25px 32px 8px 12px";//filled top 4+16+5
+      //deciding the size of main border-box
+      if (this.variant === "standard") return "20px 24px 5px 0";
+      //standard height 48
+      else if (this.variant === "filled") return "25px 32px 8px 12px";
+      //filled height 56
+      else if (this.variant === "outlined") return "15.5px 32px 15.5px 14px";
+      //outlined height 56 including border
       else return 0;
     },
+    computedInputWrapperBorder() {
+      //only for outlined
+      if (this.variant === "outlined")
+        return `1px solid ${
+          this.isHovering ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0.23)"
+        }`;
+      else return null;
+    },
     computedSelectedPositionTop() {
-      if (this.variant === "standard") return "23px";//standard 7+16
-      else if(this.variant === "filled")return "28px";//filled 7+16+5
+      //main paddingTop +3
+      if (this.variant === "standard") return "23px";
+      else if (this.variant === "filled") return "28px";
+      else if (this.variant === "outlined") return "19.5px";
       else return 0;
     },
     computedMenuControllerPositionTop() {
-      if (this.variant === "standard") return "20px";//standard 4+16
-      else if(this.variant === "filled")return "16px";
+      //center of main border-box
+      if (this.variant === "standard") return "20px";
+      else if (this.variant === "filled") return "16px";
+      else if (this.variant === "outlined") return "16px";
       else return 0;
     },
-        computedMenuControllerPositionRight() {
-      if (this.variant === "standard") return 0;//standard 4+16
-      else if(this.variant === "filled")return "8px";
+    computedMenuControllerPositionRight() {
+      if (this.variant === "standard") return 0;
+      else if (this.variant === "filled") return "8px";
+      else if (this.variant === "outlined") return "8px";
       else return 0;
     },
     computedLabelPositionTop() {
-      if (this.variant === "standard") return "24px";//standard 8+16
-      else if(this.variant === "filled")return "29px";//filled 8+16+5
+      if (this.variant === "standard") return "24px";
+      //standard 8+16
+      else if (this.variant === "filled") return "20px";
+      //filled 8+16+5
+      else if (this.variant === "outlined") return "20px";
       else return 0;
     },
-    computedLabelPosition() {
-      const floatingEffect =
-        "translateY(calc(-100% - 8px)) translateX(-10%) scale(0.8)";
+    computedLabelFloating() {
       //when the input is focused or the input is valued or the input is placeholdered
-      if (this.isFocused || this.cValue || this.placeholder)
-        return floatingEffect;
-      return null;
+      if (this.isFocused || this.cValue || this.placeholder) {
+        switch (this.variant) {
+          case "standard":
+            return "translateY(calc(-100% - 8px)) translateX(-10%) scale(0.8)";
+          case "filled":
+            return "translateY(-100%) translateX(-10%) scale(0.8)";
+          case "outlined":
+            return "translateY(calc(-100% - 12px)) translateX(-10%) scale(0.8)";
+          default:
+            return "translateY(calc(-100% - 8px)) translateX(-10%) scale(0.8)";
+        }
+      } else return null;
     },
     computedMenuPositionTop() {
       const menuPadding = 8;
-      const mainPadding = {"standard":20,"filled":25}[this.variant];
+      const mainPadding = { standard: 20, filled: 25 }[this.variant];
       const size = 36;
       for (let [index, el] of this.items.entries()) {
         if (el.label === this.cValue)
           return `${mainPadding - menuPadding - (index + 1) * size}px`;
       }
       return `${mainPadding - menuPadding}px`;
+    },
+    computedLabelBackgroundColor() {
+      //specially for outlined variant in order to cover border
+      if (this.variant === "outlined")
+        return this.outlinedLabelColor || "rgba(255,255,255,1)";
+      else return null;
     },
     computedBackgroundColor() {
       //only for filled
@@ -343,21 +396,24 @@ export default {
   flex-direction: column;
   flex-wrap: wrap;
   width: 120px;
-  &.filled {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-  }
-  transition: background-color 200ms cubic-bezier(0.4, 0.2, 0, 1) 0ms;
+  transition: background 200ms cubic-bezier(0.4, 0.2, 0, 1) 0ms;
   .dev-context {
     position: absolute;
     left: -150%;
   }
-
+  &.filled .input-wrapper {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  &.outlined .input-wrapper {
+    border-radius: 4px;
+  }
   .input-wrapper {
     position: relative;
     display: flex;
     cursor: pointer;
     height: 23px;
+    transition: border 200ms cubic-bezier(0.4, 0.2, 0, 1) 0ms;
     input {
       width: 100%;
       padding: 0;
@@ -390,6 +446,7 @@ export default {
       line-height: 16px;
       text-transform: capitalize;
       user-select: none;
+      padding:0 1px;
     }
 
     .selected-value {
@@ -409,7 +466,7 @@ export default {
       position: absolute;
       width: 100%;
       bottom: 0;
-      left:0;
+      left: 0;
     }
     .base-underline {
       .underline();
@@ -426,6 +483,7 @@ export default {
       .icon {
         width: 24px;
         height: 24px;
+        color:rgba(0, 0, 0, 0.54);
         &.disabled {
           color: rgba(0, 0, 0, 0.38);
         }
