@@ -5,33 +5,6 @@
       >Select components are used for collecting user provided information from
       a list of options.</typography
     >
-    <typography variant="h2" id="ac-basic-select">Basic select</typography>
-    <typography variant="p"
-      >Menus are positioned over their emitting elements such that the currently
-      selected item appears on the top of the emitting element.</typography
-    >
-    <section class="group-box box-inline center margin-8 bd-1 br-4">
-      <vselect
-        label="Age"
-        :items="selectItems"
-        :activeIndex="activeIndex"
-        @change="handleChange"
-        helper="over menu"
-      ></vselect>
-    </section>
-    <typography variant="p"
-      >Menus are positioned under their emitting elements.</typography
-    >
-    <section class="group-box box-inline center margin-8 bd-1 br-4">
-      <vselect
-        label="Age"
-        :items="selectItems"
-        :activeIndex="activeIndex"
-        helper="under menu"
-        @change="handleChange"
-        menuDown
-      ></vselect>
-    </section>
     <typography variant="h2" id="ac-variant">Variant</typography>
     <typography variant="p"
       >Use the <code>variant</code> prop to decide the basic style including
@@ -58,6 +31,67 @@
         :items="selectItems"
         :activeIndex="activeIndex"
         @change="handleChange"
+      ></vselect>
+    </section>
+    <typography variant="h2" id="ac-menu-position">Menu Position</typography>
+    <typography variant="p"
+      >Menus are positioned over their emitting elements such that the currently
+      selected item appears on the top of the emitting element.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <vselect
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+        helper="over menu"
+      ></vselect>
+      <vselect
+        variant="filled"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+        helper="over menu"
+      ></vselect>
+      <vselect
+        variant="outlined"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+        helper="over menu"
+      ></vselect>
+    </section>
+    <typography variant="p"
+      >Menus are positioned under their emitting elements.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <vselect
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        helper="under menu"
+        @change="handleChange"
+        menuDown
+      ></vselect>
+      <vselect
+        variant="filled"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        helper="under menu"
+        @change="handleChange"
+        menuDown
+      ></vselect>
+      <vselect
+        variant="outlined"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        helper="under menu"
+        @change="handleChange"
+        menuDown
       ></vselect>
     </section>
     <typography variant="h2" id="ac-description"
@@ -423,8 +457,8 @@ export default {
   components: { Typography, Vselect },
   //for in-page navigation
   anchors: [
-    { anchor: "ac-basic-select", text: "Basic select" },
     { anchor: "ac-variant", text: "Variant" },
+    { anchor: "ac-menu-position", text: "Menu Position" },
     { anchor: "ac-description", text: "Label, placeholder and helper text" },
     { anchor: "ac-width", text: "Width" },
     { anchor: "ac-other-props", text: "Other props" },

@@ -82,7 +82,7 @@
         helper
       }}</span>
     </div>
-    <transition :name="menuDown?'fade-from-center':'fade-from-left'">
+    <transition :name="menuDown ? 'fade-from-center' : 'fade-from-left'">
       <div
         class="input-menu"
         v-if="menuToggled"
@@ -328,19 +328,13 @@ export default {
       } else return null;
     },
     computedMenuPositionTop() {
-      if (this.menuDown){
-        //by input height
-        switch (this.variant) {
-          case "standard":
-            return "48px";
-          case "filled":
-            return "56px";
-          case "outlined":
-            return "56px";
-          default:
-            return "48px";
-        }
-      }
+      //by input height
+      if (this.menuDown)
+        return (
+          { standard: "48px", filled: "56px", outlined: "56px" }[
+            this.variant
+          ] || "48px"
+        );
       const menuPadding = 8;
       const mainPadding = { standard: 20, filled: 25, outlined: 15.5 }[
         this.variant
@@ -625,8 +619,8 @@ export default {
     opacity: 0;
   }
 }
-.fade-from-center{
-    &-enter-active,
+.fade-from-center {
+  &-enter-active,
   &-leave-active {
     transition: opacity 120ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
       transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
