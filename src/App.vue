@@ -58,12 +58,12 @@ export default {
           ],
         },
         {
-          content: { label: "navigation", text: "Navigation🚧" },
+          content: { label: "navigation", text: "Navigation" },
           children: [
             {
               content: {
                 label: "bottom-navigation",
-                text: "Bottom Navigation",
+                text: "Bottom Navigation🚧",
               },
             },
             { content: { label: "breadcrumbs", text: "Breadcrumbs🚧" } },
