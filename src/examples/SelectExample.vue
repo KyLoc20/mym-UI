@@ -60,6 +60,248 @@
         @change="handleChange"
       ></vselect>
     </section>
+    <typography variant="h2" id="ac-description"
+      >Label, placeholder and helper text</typography
+    >
+    <typography variant="p">
+      There are 3 types of description text in this component:
+    </typography>
+    <ul>
+      <li>
+        Label can be floating above the inpout content which indicates the
+        primary infoformation. Use the prop <code>labelHidden</code> to hide it.
+      </li>
+      <li>
+        Helper is below the input content to provide some helpful messages. Use
+        the prop <code>helper</code> to add text.
+      </li>
+      <li>
+        placeholder appears in the position of the selected item when no item
+        selected. Use the prop <code>placeholder</code> to add text.
+      </li>
+    </ul>
+    <section class="group-box box-block bd-1 br-4 padding-4">
+      <section class="row margin-8">
+        <vselect
+          variant="standard"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          placeholder="placeholder"
+          :width="150"
+          helper="label with placeholder"
+        ></vselect>
+        <vselect
+          variant="filled"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          placeholder="placeholder"
+          :width="150"
+          helper="label with placeholder"
+        ></vselect>
+        <vselect
+          variant="outlined"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          placeholder="placeholder"
+          :width="150"
+          helper="label with placeholder"
+        ></vselect>
+      </section>
+      <section class="row margin-8">
+        <vselect
+          variant="standard"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          :width="150"
+          helper="label without placeholder"
+        ></vselect>
+        <vselect
+          variant="filled"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          :width="150"
+          helper="label without placeholder"
+        ></vselect>
+        <vselect
+          variant="outlined"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          :width="150"
+          helper="label without placeholder"
+        ></vselect>
+      </section>
+      <section class="row margin-8">
+        <vselect
+          variant="standard"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          labelHidden
+          placeholder="placeholder"
+          :width="150"
+          helper="only placeholder"
+        ></vselect>
+        <vselect
+          variant="filled"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          labelHidden
+          placeholder="placeholder"
+          :width="150"
+          helper="only placeholder"
+        ></vselect>
+        <vselect
+          variant="outlined"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          labelHidden
+          placeholder="placeholder"
+          :width="150"
+          helper="only placeholder"
+        ></vselect>
+      </section>
+      <section class="row margin-8">
+        <vselect
+          variant="standard"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          labelHidden
+          helper="empty"
+        ></vselect>
+        <vselect
+          variant="filled"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          labelHidden
+          helper="empty"
+        ></vselect>
+        <vselect
+          variant="outlined"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          labelHidden
+          helper="empty"
+        ></vselect>
+      </section>
+    </section>
+
+    <typography variant="h2" id="ac-width">Width</typography>
+    <typography variant="p"
+      >Use the <code>width</code> prop to change the width of this component. By
+      default it is 120px.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <vselect
+        variant="standard"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+        helper="default width"
+      ></vselect>
+      <vselect
+        variant="filled"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+        helper="80px width"
+        :width="80"
+      ></vselect>
+      <vselect
+        variant="outlined"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        helper="240px width"
+        :width="240"
+      ></vselect>
+    </section>
+    <typography variant="p"
+      >Use the <code>fitWidth</code> prop to make it change its width
+      automatically.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <vselect
+        variant="standard"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+        fitWidth
+      ></vselect>
+      <vselect
+        variant="filled"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+        placeholder="placeholder"
+        fitWidth
+      ></vselect>
+      <vselect
+        variant="outlined"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        fitWidth
+      ></vselect>
+    </section>
+    <typography variant="h2" id="ac-other-props">Other props</typography>
+    <typography variant="p"
+      >Use the <code>width</code> prop to decide the basic style including
+      standard, filled and outlined.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <vselect
+        variant="standard"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+      ></vselect>
+      <vselect
+        variant="filled"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+      ></vselect>
+      <vselect
+        variant="outlined"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+      ></vselect>
+    </section>
+    <typography variant="p"
+      >Use the <code>fitWidth</code> prop to make it change its width
+      automatically.</typography
+    >
   </section>
 </template>
 <script>
@@ -72,6 +314,9 @@ export default {
   anchors: [
     { anchor: "ac-basic-select", text: "Basic select" },
     { anchor: "ac-variant", text: "Variant" },
+    { anchor: "ac-description", text: "Label, placeholder and helper text" },
+    { anchor: "ac-width", text: "Width" },
+    { anchor: "ac-other-props", text: "Other props" },
   ],
   data() {
     return {

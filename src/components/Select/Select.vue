@@ -1,15 +1,11 @@
 <template>
-  <section
-    class="select"
-    :class="classes"
-    :style="{ background: computedBackgroundColor }"
-  >
-    <span class="dev-context" v-if="dev">{{ isFocused }}</span>
+  <section class="select" :class="classes" :style="{ width: conputedWidth }">
     <div
       class="input-wrapper"
       :style="{
         padding: computedInputWrapperPadding,
         border: computedInputWrapperBorder,
+        background: computedBackgroundColor,
       }"
       @mousedown="handleWannaSelect"
       @mouseenter="handleHoverEnter"
@@ -25,6 +21,7 @@
       />
       <label
         :for="id"
+        ref="label"
         v-if="!labelHidden"
         :style="{
           color: computedLabelColor,
@@ -36,11 +33,21 @@
       >
       <span
         class="selected-value"
+        ref="selected"
         :style="{
           color: computedSelectedColor,
           top: computedSelectedPositionTop,
         }"
         >{{ computedDisplayedValue }}</span
+      >
+      <span
+        class="tricky-label-for-fitting"
+        ref="trickyLabel"
+        v-if="fitWidth"
+        :style="{
+          top: computedLabelPositionTop,
+        }"
+        >{{ computedLabelText }}</span
       >
       <span class="synchronizing-trick-activeindex" v-show="false">{{
         activeIndex
@@ -98,6 +105,7 @@
         </div>
       </div>
     </transition>
+    <span class="dev-context" v-if="dev">{{ isFocused }}</span>
   </section>
 </template>
 <script>
@@ -161,7 +169,16 @@ export default {
       type: Boolean,
       default: false,
     },
+    fitWidth: {
+      //generate the width by its content
+      type: Boolean,
+      default: false,
+    },
     //the following props are for user custom
+    width: {
+      type: Number,
+      required: false,
+    },
     labelColor: {
       type: String,
       required: false,
@@ -199,18 +216,19 @@ export default {
       isFocused: false,
       cValue: null,
       menuToggled: false,
+      adaptiveWidth: 120,
     };
   },
   mounted() {
     this.id = this._uid;
     //init value from prop
     this.initValue();
-    // console.log("mounted", this.id, this.cValue);
+    this.adaptiveWidth = this.calcSelectedContentWidth();
   },
   updated() {
     //update value from prop
     this.initValue();
-    // console.log("updated", this.id, this.cValue);
+    this.adaptiveWidth = this.calcSelectedContentWidth();
   },
   computed: {
     classes() {
@@ -221,6 +239,14 @@ export default {
         this.labelHidden ? "labelHidden" : "",
         this.required ? "required" : "",
       ];
+    },
+    conputedWidth() {
+      if (this.fitWidth) {
+        const paddingPlus = { standard: 24, filled: 44, outlined: 46 }[
+          this.variant
+        ];
+        return `${this.adaptiveWidth + paddingPlus}px`;
+      } else return this.width ? `${this.width}px` : "120px";
     },
     //the following are some varieties decided by the prop of variant
     computedInputWrapperPadding() {
@@ -237,7 +263,11 @@ export default {
       //only for outlined
       if (this.variant === "outlined")
         return `1px solid ${
-          this.isHovering ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0.23)"
+          this.isFocused
+            ? "rgba(25, 118, 210, 1)"
+            : this.isHovering
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.23)"
         }`;
       else return null;
     },
@@ -286,7 +316,9 @@ export default {
     },
     computedMenuPositionTop() {
       const menuPadding = 8;
-      const mainPadding = { standard: 20, filled: 25 }[this.variant];
+      const mainPadding = { standard: 20, filled: 25, outlined: 15.5 }[
+        this.variant
+      ];
       const size = 36;
       for (let [index, el] of this.items.entries()) {
         if (el.label === this.cValue)
@@ -334,12 +366,28 @@ export default {
       else return "scaleX(1)";
     },
     computedDisplayedValue() {
-      //for showing if not valued or has no placeholder it displays nothing and the label goes back from floating
-      if (!this.cValue) return this.placeholder;
+      //value text for showing
+      if (this.cValue) return this.cValue;
+      else if (this.placeholder) return this.placeholder;
+      //if not valued or has no placeholder it displays nothing and the label goes back from floating
       else return this.cValue;
     },
   },
   methods: {
+    calcSelectedContentWidth() {
+      const defaultWidth = 120;
+      if (!this.$refs.selected) return defaultWidth;
+      const boundingRect = this.$refs.selected.getBoundingClientRect();
+      //use content width or placeholder width
+      if (boundingRect.width) return boundingRect.width * 1.25;
+      else {
+        //use a fixed-width trick-label instead when none is selected and no placeholder
+        if (!this.$refs.trickyLabel) return defaultWidth;
+        const labelBoundingRect = this.$refs.trickyLabel.getBoundingClientRect();
+        console.log("trick-label is selected", labelBoundingRect.width);
+        return labelBoundingRect.width * 1.25 || 120;
+      }
+    },
     handleHoverEnter() {
       if (this.disabled) return;
       this.isHovering = true;
@@ -437,7 +485,8 @@ export default {
         .hide-selection();
       }
     }
-    label {
+    label,
+    .tricky-label-for-fitting {
       position: absolute;
       transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
         transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -446,9 +495,11 @@ export default {
       line-height: 16px;
       text-transform: capitalize;
       user-select: none;
-      padding:0 1px;
+      padding: 0 1px;
     }
-
+    .tricky-label-for-fitting {
+      opacity: 0;
+    }
     .selected-value {
       position: absolute;
       color: rgba(0, 0, 0, 0.87);
@@ -483,7 +534,7 @@ export default {
       .icon {
         width: 24px;
         height: 24px;
-        color:rgba(0, 0, 0, 0.54);
+        color: rgba(0, 0, 0, 0.54);
         &.disabled {
           color: rgba(0, 0, 0, 0.38);
         }
@@ -523,14 +574,14 @@ export default {
     //helpful description text below the input
     width: 100%;
     box-sizing: border-box;
-    padding: 3px 14px 0;
+    padding: 3px 4px 0;
     .text {
       font-size: 12px;
       font-family: "Roboto", "Helvetica", "Arial", sans-serif;
       font-weight: 400;
       letter-spacing: 0.03333em;
       word-wrap: break-word;
-      word-break: break-all;
+      // word-break: break-all;
     }
   }
 }
