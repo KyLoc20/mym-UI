@@ -241,7 +241,6 @@ export default {
   },
   updated() {
     //update value from prop
-    console.log(this.menuToggled);
     this.initValue();
     this.adaptiveWidth = this.calcSelectedContentWidth();
   },
@@ -410,7 +409,7 @@ export default {
         //use a fixed-width trick-label instead when none is selected and no placeholder
         if (!this.$refs.trickyLabel) return defaultWidth;
         const labelBoundingRect = this.$refs.trickyLabel.getBoundingClientRect();
-        console.log("trick-label is selected", labelBoundingRect.width);
+        // console.log("trick-label is selected", labelBoundingRect.width);
         return labelBoundingRect.width * 1.25 || 120;
       }
     },
@@ -424,11 +423,9 @@ export default {
     },
     //todo maybe its better not to use this.$refs.input.focus(); to control this.isFocused, directly instead.
     handleFocus() {
-      console.log("handleFocus");
       if (!this.disabled) this.isFocused = true;
     },
     handleBlur() {
-      console.log("handleBlur");
       if (!this.disabled) this.isFocused = false;
     },
     initValue() {
@@ -460,7 +457,7 @@ export default {
       this.cValue = label;
       this.menuToggled = false;
       this.$emit("change", { label, index });
-      console.log("handleSelectDone", label, index, this.menuToggled);
+      // console.log("handleSelectDone", label, index, this.menuToggled);
     },
   },
 };

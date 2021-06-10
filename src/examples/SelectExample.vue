@@ -270,6 +270,7 @@
         label="Age"
         :items="selectItems"
         :activeIndex="activeIndex"
+        @change="handleChange"
         helper="240px width"
         :width="240"
       ></vselect>
@@ -300,6 +301,7 @@
         variant="outlined"
         label="Age"
         :items="selectItems"
+        @change="handleChange"
         :activeIndex="activeIndex"
         fitWidth
       ></vselect>
