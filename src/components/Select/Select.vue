@@ -1,5 +1,5 @@
 <template>
-  <section class="select" :class="classes" :style="{ width: conputedWidth }">
+  <section class="select" :class="classes" :style="{ width: computedWidth }">
     <div
       class="input-wrapper"
       :style="{
@@ -173,6 +173,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    errorFound: {
+      //if it is true, its appearance will be alarming
+      type: Boolean,
+      default: false,
+    },
     fitWidth: {
       //generate the width by its content
       type: Boolean,
@@ -244,7 +249,7 @@ export default {
         this.required ? "required" : "",
       ];
     },
-    conputedWidth() {
+    computedWidth() {
       if (this.fitWidth) {
         const paddingPlus = { standard: 24, filled: 44, outlined: 46 }[
           this.variant
@@ -267,7 +272,9 @@ export default {
       //only for outlined
       if (this.variant !== "outlined") return null;
       if (this.disabled) return "1px solid rgba(0, 0, 0, 0.38)";
-      else if (this.isFocused) return "1px solid rgba(25, 118, 210, 1)";
+      if (this.errorFound)
+        return `1px solid rgba(211, 47, 47,${this.isFocused ? 1 : 0.7})`;
+      if (this.isFocused) return "1px solid rgba(25, 118, 210, 1)";
       else if (this.isHovering) return "1px solid rgba(0, 0, 0, 1)";
       else return "1px solid rgba(0, 0, 0, 0.23)";
     },
@@ -351,22 +358,24 @@ export default {
     },
     computedLabelColor() {
       if (this.disabled) return "rgba(0, 0, 0, 0.38)";
-      else if (this.isFocused) return "rgba(25, 118, 210, 1)";
+      if (this.errorFound) return "rgba(211, 47, 47,1)";
+      if (this.isFocused) return "rgba(25, 118, 210, 1)";
       else return this.labelColor || "rgba(0, 0, 0, 0.54)";
     },
-
     computedHelperColor() {
       if (this.disabled) return "rgba(0, 0, 0, 0.38)";
+      if (this.errorFound) return "rgba(211, 47, 47,1)";
       else return this.helperColor || "rgba(0, 0, 0, 0.54)";
     },
     computedBaseUnderlineBorder() {
       if (this.disabled) return "1px dotted rgba(0, 0, 0, 0.87)";
-      else if (this.isHovering) return "2px solid rgba(0, 0, 0, 0.87)";
+      if (this.errorFound) return "2px solid rgba(211, 47, 47,1)";
+      if (this.isHovering) return "2px solid rgba(0, 0, 0, 0.87)";
       else return "1px solid rgba(0, 0, 0, 0.42)";
     },
     computedFocusUnderlineScale() {
-      //shrink when not focused
-      if (!this.isFocused) return "scaleX(0)";
+      //shrink when not focused or errorFound
+      if (this.errorFound || !this.isFocused) return "scaleX(0)";
       else return "scaleX(1)";
     },
     computedDisplayedValue() {

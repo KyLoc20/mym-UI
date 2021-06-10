@@ -308,19 +308,11 @@
           :items="selectItems"
           :activeIndex="activeIndex"
           @change="handleChange"
-          disabled
-          helper="disabled"
+          readonly
+          helper="readonly"
         ></vselect>
         <vselect
           variant="filled"
-          label="Age"
-          :items="selectItems"
-          :activeIndex="activeIndex"
-          @change="handleChange"
-          helper="error"
-        ></vselect>
-        <vselect
-          variant="outlined"
           label="Age"
           :items="selectItems"
           :activeIndex="activeIndex"
@@ -334,15 +326,93 @@
           :items="selectItems"
           :activeIndex="activeIndex"
           @change="handleChange"
+          readonly
+          helper="readonly"
+        ></vselect>
+      </section>
+      <section class="row margin-8">
+        <vselect
+          variant="standard"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          required
+          helper="required"
+        ></vselect>
+        <vselect
+          variant="filled"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          required
+          helper="required"
+        ></vselect>
+        <vselect
+          variant="outlined"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
           required
           helper="required"
         ></vselect>
       </section>
     </section>
+    <typography variant="h2" id="ac-error">Error</typography>
     <typography variant="p"
-      >Use the <code>fitWidth</code> prop to make it change its width
-      automatically.</typography
+      >Use the <code>errorFound</code> prop to tell error appeared.</typography
     >
+    <section class="group-box box-block bd-1 br-4 padding-4">
+      <section class="row margin-8">
+        <vselect
+          variant="standard"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          :errorFound="computedActiveLabel && computedActiveLabel !== 'twenty'"
+          :helper="
+            computedActiveLabel
+              ? computedActiveLabel === 'twenty'
+                ? 'Correct'
+                : 'Error need 20'
+              : 'Select One'
+          "
+        ></vselect>
+        <vselect
+          variant="filled"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          :errorFound="computedActiveLabel && computedActiveLabel !== 'twenty'"
+          :helper="
+            computedActiveLabel
+              ? computedActiveLabel === 'twenty'
+                ? 'Correct'
+                : 'Error need 20'
+              : 'Select One'
+          "
+        ></vselect>
+        <vselect
+          variant="outlined"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          :errorFound="computedActiveLabel && computedActiveLabel !== 'twenty'"
+          :helper="
+            computedActiveLabel
+              ? computedActiveLabel === 'twenty'
+                ? 'Correct'
+                : 'Error need 20'
+              : 'Select One'
+          "
+        ></vselect>
+      </section>
+    </section>
   </section>
 </template>
 <script>
@@ -372,7 +442,12 @@ export default {
       isFocused: false,
     };
   },
-
+  computed: {
+    computedActiveLabel() {
+      if (this.activeIndex < 0) return null;
+      else return this.selectItems[this.activeIndex].label;
+    },
+  },
   methods: {
     handleChange(e) {
       this.activeIndex = this.getIndexByKeyValue(
@@ -397,7 +472,6 @@ export default {
       if (!this.disabled) this.isFocused = false;
     },
   },
-  computed: {},
 };
 </script>
 <style scoped lang="less">
