@@ -271,32 +271,73 @@
       ></vselect>
     </section>
     <typography variant="h2" id="ac-other-props">Other props</typography>
-    <typography variant="p"
-      >Use the <code>width</code> prop to decide the basic style including
-      standard, filled and outlined.</typography
-    >
-    <section class="group-box box-inline center margin-8 bd-1 br-4">
-      <vselect
-        variant="standard"
-        label="Age"
-        :items="selectItems"
-        :activeIndex="activeIndex"
-        @change="handleChange"
-      ></vselect>
-      <vselect
-        variant="filled"
-        label="Age"
-        :items="selectItems"
-        :activeIndex="activeIndex"
-        @change="handleChange"
-      ></vselect>
-      <vselect
-        variant="outlined"
-        label="Age"
-        :items="selectItems"
-        :activeIndex="activeIndex"
-        @change="handleChange"
-      ></vselect>
+    <section class="group-box box-block bd-1 br-4 padding-4">
+      <section class="row margin-8">
+        <vselect
+          variant="standard"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          disabled
+          helper="disabled"
+        ></vselect>
+        <vselect
+          variant="filled"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          disabled
+          helper="disabled"
+        ></vselect>
+        <vselect
+          variant="outlined"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          disabled
+          helper="disabled"
+        ></vselect>
+      </section>
+      <section class="row margin-8">
+        <vselect
+          variant="standard"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          disabled
+          helper="disabled"
+        ></vselect>
+        <vselect
+          variant="filled"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          helper="error"
+        ></vselect>
+        <vselect
+          variant="outlined"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          readonly
+          helper="readonly"
+        ></vselect>
+        <vselect
+          variant="outlined"
+          label="Age"
+          :items="selectItems"
+          :activeIndex="activeIndex"
+          @change="handleChange"
+          required
+          helper="required"
+        ></vselect>
+      </section>
     </section>
     <typography variant="p"
       >Use the <code>fitWidth</code> prop to make it change its width

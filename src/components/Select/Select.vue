@@ -60,7 +60,11 @@
           right: computedMenuControllerPositionRight,
         }"
       >
-        <Icon name="down" size="md" :class="disabled ? 'disabled' : ''"></Icon>
+        <Icon
+          name="down"
+          :size="24"
+          :style="{ color: computedIconFillColor }"
+        ></Icon>
       </span>
       <span
         class="base-underline"
@@ -73,7 +77,7 @@
         :style="{ transform: computedFocusUnderlineScale }"
       ></span>
     </div>
-    <div class="input-helper" v-if="helper" :class="disabled ? 'disabled' : ''">
+    <div class="input-helper" v-if="helper">
       <span class="text" :style="{ color: computedHelperColor }">{{
         helper
       }}</span>
@@ -261,15 +265,11 @@ export default {
     },
     computedInputWrapperBorder() {
       //only for outlined
-      if (this.variant === "outlined")
-        return `1px solid ${
-          this.isFocused
-            ? "rgba(25, 118, 210, 1)"
-            : this.isHovering
-            ? "rgba(0, 0, 0, 1)"
-            : "rgba(0, 0, 0, 0.23)"
-        }`;
-      else return null;
+      if (this.variant !== "outlined") return null;
+      if (this.disabled) return "1px solid rgba(0, 0, 0, 0.38)";
+      else if (this.isFocused) return "1px solid rgba(25, 118, 210, 1)";
+      else if (this.isHovering) return "1px solid rgba(0, 0, 0, 1)";
+      else return "1px solid rgba(0, 0, 0, 0.23)";
     },
     computedSelectedPositionTop() {
       //main paddingTop +3
@@ -325,6 +325,10 @@ export default {
           return `${mainPadding - menuPadding - (index + 1) * size}px`;
       }
       return `${mainPadding - menuPadding}px`;
+    },
+    computedIconFillColor() {
+      if (this.disabled) return "rgba(0, 0, 0, 0.38)";
+      else return "rgba(0, 0, 0, 0.54)";
     },
     computedLabelBackgroundColor() {
       //specially for outlined variant in order to cover border
@@ -415,9 +419,10 @@ export default {
     },
     handleWannaSelect(e) {
       e.preventDefault();
-      if (this.disabled || this.readonly) return;
-      this.menuToggled = true;
+      if (this.disabled) return;
       this.$refs.input.focus();
+      if (this.readonly) return;
+      this.menuToggled = true;
     },
     handleStopSelect(e) {
       e.preventDefault();
@@ -456,6 +461,9 @@ export default {
   &.outlined .input-wrapper {
     border-radius: 4px;
   }
+  &.disabled .input-wrapper {
+    cursor: default;
+  }
   .input-wrapper {
     position: relative;
     display: flex;
@@ -466,7 +474,7 @@ export default {
       width: 100%;
       padding: 0;
       border: none;
-      cursor: pointer;
+      cursor: inherit;
       color: transparent; //hide focus cursor and value
       user-select: none;
       background: transparent;
@@ -494,6 +502,7 @@ export default {
       font-size: 16px;
       line-height: 16px;
       text-transform: capitalize;
+      cursor: inherit;
       user-select: none;
       padding: 0 1px;
     }
@@ -507,11 +516,8 @@ export default {
       font-size: 16px;
       line-height: 18px;
       text-transform: capitalize;
-      cursor: pointer;
+      // cursor: pointer;
       user-select: none;
-      &.disabled {
-        color: rgba(0, 0, 0, 0.38);
-      }
     }
     .underline {
       position: absolute;
@@ -531,15 +537,7 @@ export default {
     .menu-control-action {
       position: absolute;
       right: 0;
-      .icon {
-        width: 24px;
-        height: 24px;
-        color: rgba(0, 0, 0, 0.54);
-        &.disabled {
-          color: rgba(0, 0, 0, 0.38);
-        }
-      }
-      cursor: pointer;
+      // cursor: pointer;
       transition: transform 100ms cubic-bezier(0.4, 0.2, 0, 1);
       &.towards-down {
         transform: rotate(0);
