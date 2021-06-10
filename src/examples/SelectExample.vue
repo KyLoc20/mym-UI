@@ -16,7 +16,7 @@
         :items="selectItems"
         :activeIndex="activeIndex"
         @change="handleChange"
-        dev
+        helper="over menu"
       ></vselect>
     </section>
     <typography variant="p"
@@ -27,9 +27,9 @@
         label="Age"
         :items="selectItems"
         :activeIndex="activeIndex"
-        placeholder="placeholder"
-        helper="my name is liuzeduoxcc"
+        helper="under menu"
         @change="handleChange"
+        menuDown
       ></vselect>
     </section>
     <typography variant="h2" id="ac-variant">Variant</typography>
@@ -428,6 +428,7 @@ export default {
     { anchor: "ac-description", text: "Label, placeholder and helper text" },
     { anchor: "ac-width", text: "Width" },
     { anchor: "ac-other-props", text: "Other props" },
+    { anchor: "ac-error", text: "Error" },
   ],
   data() {
     return {

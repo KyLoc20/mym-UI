@@ -82,7 +82,7 @@
         helper
       }}</span>
     </div>
-    <transition name="fade-from-left">
+    <transition :name="menuDown?'fade-from-center':'fade-from-left'">
       <div
         class="input-menu"
         v-if="menuToggled"
@@ -157,6 +157,11 @@ export default {
       required: false,
     },
     //the following are some control props
+    menuDown: {
+      //select-menu appears under the emitting element if true
+      type: Boolean,
+      default: false,
+    },
     labelHidden: {
       type: Boolean,
       default: false,
@@ -236,6 +241,7 @@ export default {
   },
   updated() {
     //update value from prop
+    console.log(this.menuToggled);
     this.initValue();
     this.adaptiveWidth = this.calcSelectedContentWidth();
   },
@@ -322,6 +328,19 @@ export default {
       } else return null;
     },
     computedMenuPositionTop() {
+      if (this.menuDown){
+        //by input height
+        switch (this.variant) {
+          case "standard":
+            return "48px";
+          case "filled":
+            return "56px";
+          case "outlined":
+            return "56px";
+          default:
+            return "48px";
+        }
+      }
       const menuPadding = 8;
       const mainPadding = { standard: 20, filled: 25, outlined: 15.5 }[
         this.variant
@@ -441,12 +460,13 @@ export default {
     handleDoneSelect(e) {
       if (this.disabled) return;
       let { label, index } = e;
-      console.log("handleSelectDone", label, index);
+
       if (label === "$none") this.$refs.input.blur();
       else this.$refs.input.focus();
       this.cValue = label;
       this.menuToggled = false;
       this.$emit("change", { label, index });
+      console.log("handleSelectDone", label, index, this.menuToggled);
     },
   },
 };
@@ -598,6 +618,19 @@ export default {
     transition: opacity 251ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
       transform 167ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     transform-origin: 0px 26px;
+  }
+  &-leave-to,
+  &-enter {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+.fade-from-center{
+    &-enter-active,
+  &-leave-active {
+    transition: opacity 120ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+      transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transform-origin: 50% 0px;
   }
   &-leave-to,
   &-enter {
