@@ -16,16 +16,12 @@
         :items="selectItems"
         :activeIndex="activeIndex"
         @change="handleChange"
+        dev
       ></vselect>
       <div class="test">
-        <input
-        id="1"
-          type="text"
-          @focus="handleFocus"
-          @blur="handleBlur"
-        />
+        <input id="1" type="text" @focus="handleFocus" @blur="handleBlur" />
         <label for="1" @mousedown="handle1">123456</label>
-        <span class="text">{{isFocused}}</span>
+        <span class="text">{{ isFocused }}</span>
       </div>
     </section>
     <typography variant="p"
@@ -41,16 +37,47 @@
         @change="handleChange"
       ></vselect>
     </section>
+    <typography variant="h2" id="ac-variant">Variant</typography>
+    <typography variant="p"
+      >Use the <code>variant</code> prop to decide the basic style including
+      standard, filled and outlined.</typography
+    >
+    <section class="group-box box-inline center margin-8 bd-1 br-4">
+      <vselect
+        variant="standard"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+      ></vselect>
+      <vselect
+        variant="filled"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+      ></vselect>
+      <vselect
+        variant="outlined"
+        label="Age"
+        :items="selectItems"
+        :activeIndex="activeIndex"
+        @change="handleChange"
+      ></vselect>
+    </section>
   </section>
 </template>
 <script>
 import Vselect from "../components/Select/Select";
 import Typography from "../components/Typography/Typography";
 export default {
-  name: "ButtonExample",
+  name: "SelectExample",
   components: { Typography, Vselect },
   //for in-page navigation
-  anchors: [{ anchor: "ac-basic-select", text: "Basic select" }],
+  anchors: [
+    { anchor: "ac-basic-select", text: "Basic select" },
+    { anchor: "ac-variant", text: "Variant" },
+  ],
   data() {
     return {
       activeIndex: 3,
@@ -61,13 +88,13 @@ export default {
         { label: "forty", text: "Forty" },
         { label: "fifty", text: "Fifty" },
       ],
-      isFocused:false
+      isFocused: false,
     };
   },
 
   methods: {
-    handle1(e){
-      e.preventDefault()
+    handle1(e) {
+      e.preventDefault();
     },
     handleChange(e) {
       this.activeIndex = this.getIndexByKeyValue(
@@ -83,7 +110,7 @@ export default {
       }
       return -1;
     },
-        handleFocus() {
+    handleFocus() {
       //console.log("handleFocus");
       if (!this.disabled) this.isFocused = true;
     },
@@ -97,11 +124,11 @@ export default {
 </script>
 <style scoped lang="less">
 .select-example {
-  .test{
+  .test {
     position: relative;
-    .text{
+    .text {
       position: absolute;
-      left:200%;
+      left: 200%;
     }
   }
 }

@@ -1,8 +1,13 @@
 <template>
-  <section class="select">
-    <span class="test">{{ isFocused }}</span>
+  <section
+    class="select"
+    :class="classes"
+    :style="{ background: computedBackgroundColor }"
+  >
+    <span class="dev-context" v-if="dev">{{ isFocused }}</span>
     <div
       class="input-wrapper"
+      :style="{padding:computedInputWrapperPadding}"
       @mousedown="handleWannaSelect"
       @mouseenter="handleHoverEnter"
       @mouseleave="handleHoverLeave"
@@ -17,22 +22,24 @@
       />
       <label
         :for="id"
-        v-if="labelDisplayed"
+        v-if="!labelHidden"
         :style="{
           color: computedLabelColor,
+          top:computedLabelPositionTop,
           transform: computedLabelPosition,
         }"
         >{{ computedLabelText }}</label
       >
-      <span class="selected-value" :style="{ color: computedSelectedColor }">{{
+      <span class="selected-value" :style="{ color: computedSelectedColor,top:computedSelectedPositionTop }">{{
         computedDisplayedValue
       }}</span>
       <span class="synchronizing-trick-activeindex" v-show="false">{{
         activeIndex
       }}</span>
       <span
-        class="expand-action"
+        class="menu-control-action"
         :class="menuToggled ? 'towards-up' : 'towards-down'"
+        :style={top:computedMenuControllerPositionTop,right:computedMenuControllerPositionRight}
       >
         <Icon name="down" size="md" :class="disabled ? 'disabled' : ''"></Icon>
       </span>
@@ -51,7 +58,11 @@
       }}</span>
     </div>
     <transition name="fade-from-left">
-      <div class="input-menu" v-if="menuToggled" :style="{top:computedMenuPositionTop}">
+      <div
+        class="input-menu"
+        v-if="menuToggled"
+        :style="{ top: computedMenuPositionTop }"
+      >
         <div class="control-mask" @mousedown="handleStopSelect"></div>
         <div class="item-wrapper">
           <select-item
@@ -79,6 +90,7 @@
 import Icon from "../Icon/Icon.vue";
 import Rippleable from "../../mixins/rippleable";
 import SelectItem from "./SelectItem.vue";
+import { requireOneOf } from "../common/validator";
 //todo flexible width responding to selected-value
 export default {
   name: "Select",
@@ -91,6 +103,14 @@ export default {
       //-1 for None
       type: Number,
       required: false,
+    },
+    variant: {
+      default: "standard",
+      validator: (v) => {
+        return [requireOneOf(["standard", "filled", "outlined"])].some((test) =>
+          test(v)
+        );
+      },
     },
     /* 
     There are 3 types of description text in this component:
@@ -110,9 +130,10 @@ export default {
       type: String,
       required: false,
     },
-    labelDisplayed: {
+    //the following are some control props
+    labelHidden: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     disabled: {
       type: Boolean,
@@ -139,6 +160,11 @@ export default {
     helperColor: {
       //the text color of input-helper
       type: String,
+      required: false,
+    },
+    dev: {
+      //dev mode to show some info
+      type: Boolean,
       required: false,
     },
   },
@@ -168,6 +194,65 @@ export default {
     // console.log("updated", this.id, this.cValue);
   },
   computed: {
+    classes() {
+      return [
+        this.variant,
+        this.disabled ? "disabled" : "",
+        this.readonly ? "readonly" : "",
+        this.labelHidden ? "labelHidden" : "",
+        this.required ? "required" : "",
+      ];
+    },
+    //the following are some varieties decided by the prop of variant
+    computedInputWrapperPadding() {
+      if (this.variant === "standard") return "20px 24px 5px 0";//standard top 4+16
+      else if(this.variant === "filled")return "25px 32px 8px 12px";//filled top 4+16+5
+      else return 0;
+    },
+    computedSelectedPositionTop() {
+      if (this.variant === "standard") return "23px";//standard 7+16
+      else if(this.variant === "filled")return "28px";//filled 7+16+5
+      else return 0;
+    },
+    computedMenuControllerPositionTop() {
+      if (this.variant === "standard") return "20px";//standard 4+16
+      else if(this.variant === "filled")return "16px";
+      else return 0;
+    },
+        computedMenuControllerPositionRight() {
+      if (this.variant === "standard") return 0;//standard 4+16
+      else if(this.variant === "filled")return "8px";
+      else return 0;
+    },
+    computedLabelPositionTop() {
+      if (this.variant === "standard") return "24px";//standard 8+16
+      else if(this.variant === "filled")return "29px";//filled 8+16+5
+      else return 0;
+    },
+    computedLabelPosition() {
+      const floatingEffect =
+        "translateY(calc(-100% - 8px)) translateX(-10%) scale(0.8)";
+      //when the input is focused or the input is valued or the input is placeholdered
+      if (this.isFocused || this.cValue || this.placeholder)
+        return floatingEffect;
+      return null;
+    },
+    computedMenuPositionTop() {
+      const menuPadding = 8;
+      const mainPadding = {"standard":20,"filled":25}[this.variant];
+      const size = 36;
+      for (let [index, el] of this.items.entries()) {
+        if (el.label === this.cValue)
+          return `${mainPadding - menuPadding - (index + 1) * size}px`;
+      }
+      return `${mainPadding - menuPadding}px`;
+    },
+    computedBackgroundColor() {
+      //only for filled
+      if (this.variant !== "filled") return null;
+      else if (this.isHovering) return "rgba(0, 0, 0, 0.09)";
+      else return "rgba(0, 0, 0, 0.06)";
+    },
     computedLabelText() {
       return `${this.label}${this.required ? " * " : ""}`;
     },
@@ -180,14 +265,7 @@ export default {
       else if (this.isFocused) return "rgba(25, 118, 210, 1)";
       else return this.labelColor || "rgba(0, 0, 0, 0.54)";
     },
-    computedLabelPosition() {
-      const floatingEffect =
-        "translateY(calc(-100% - 6px)) translateX(-10%) scale(0.8)";
-      //when the input is focused or the input is valued or the input is placeholdered
-      if (this.isFocused || this.cValue || this.placeholder)
-        return floatingEffect;
-      return null;
-    },
+
     computedHelperColor() {
       if (this.disabled) return "rgba(0, 0, 0, 0.38)";
       else return this.helperColor || "rgba(0, 0, 0, 0.54)";
@@ -207,52 +285,41 @@ export default {
       if (!this.cValue) return this.placeholder;
       else return this.cValue;
     },
-    computedMenuPositionTop(){
-      const size=36
-      for(let [index,el] of this.items.entries()){
-        if(el.label===this.cValue)return `${-8 - (index+1) * size}px`
-      }
-      return 0
-    },
   },
   methods: {
     handleHoverEnter() {
       if (this.disabled) return;
-      console.log("handleHoverEnter");
       this.isHovering = true;
     },
     handleHoverLeave() {
       if (this.disabled) return;
-      console.log("handleHoverLeave");
       this.isHovering = false;
     },
+    //todo maybe its better not to use this.$refs.input.focus(); to control this.isFocused, directly instead.
     handleFocus() {
-      //console.log("handleFocus");
+      console.log("handleFocus");
       if (!this.disabled) this.isFocused = true;
     },
     handleBlur() {
-      //console.log("handleBlur");
+      console.log("handleBlur");
       if (!this.disabled) this.isFocused = false;
     },
     initValue() {
-      //todo safety check
-      if (this.activeIndex !== undefined) {
-        if (this.activeIndex === -1) {
-          this.cValue = null;
-        } else {
-          this.cValue = this.items[this.activeIndex].label;
-        }
-      }
+      if (this.activeIndex === undefined || this.activeIndex === -1)
+        this.cValue = null;
+      else
+        this.cValue = this.items[this.activeIndex]
+          ? this.items[this.activeIndex].label
+          : null;
     },
-    handleClick(e) {
-      this.createRipple(e, false, "default");
-    },
-    handleWannaSelect() {
+    handleWannaSelect(e) {
+      e.preventDefault();
       if (this.disabled || this.readonly) return;
       this.menuToggled = true;
       this.$refs.input.focus();
     },
-    handleStopSelect() {
+    handleStopSelect(e) {
+      e.preventDefault();
       //by clicking control-mask
       this.menuToggled = false;
     },
@@ -260,7 +327,8 @@ export default {
       if (this.disabled) return;
       let { label, index } = e;
       console.log("handleSelectDone", label, index);
-      this.$refs.input.focus();
+      if (label === "$none") this.$refs.input.blur();
+      else this.$refs.input.focus();
       this.cValue = label;
       this.menuToggled = false;
       this.$emit("change", { label, index });
@@ -271,43 +339,33 @@ export default {
 <style lang="less" scoped>
 .select {
   position: relative;
-  width: 120px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  margin-top: 16px;
-  // max-width: 120px;
-  .test {
+  width: 120px;
+  &.filled {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  transition: background-color 200ms cubic-bezier(0.4, 0.2, 0, 1) 0ms;
+  .dev-context {
     position: absolute;
-    right: 200%;
+    left: -150%;
   }
-  .input-helper {
-    //helpful description text below the input
-    width: 100%;
-    margin-top: 3px;
-    word-wrap: break-word;
-    word-break: break-all;
-    .text {
-      font-size: 12px;
-      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-      font-weight: 400;
-      letter-spacing: 0.03333em;
-    }
-  }
+
   .input-wrapper {
-    width: 100%;
     position: relative;
     display: flex;
     cursor: pointer;
+    height: 23px;
     input {
       width: 100%;
-      height: 32px;
-      padding: 6px 24px 7px 0;
-      box-sizing: border-box;
+      padding: 0;
       border: none;
       cursor: pointer;
       color: transparent; //hide focus cursor and value
       user-select: none;
+      background: transparent;
     }
     .hide-selection {
       //todo hide the value of input when selecting
@@ -325,7 +383,6 @@ export default {
     }
     label {
       position: absolute;
-      top: 6px;
       transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
         transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
       font-family: "Roboto", "Helvetica";
@@ -337,7 +394,6 @@ export default {
 
     .selected-value {
       position: absolute;
-      top: 6px;
       color: rgba(0, 0, 0, 0.87);
       font-family: "Roboto", "Helvetica";
       font-size: 16px;
@@ -353,6 +409,7 @@ export default {
       position: absolute;
       width: 100%;
       bottom: 0;
+      left:0;
     }
     .base-underline {
       .underline();
@@ -363,9 +420,8 @@ export default {
       transition: transform 200ms cubic-bezier(0.4, 0.2, 0, 1);
       border-bottom: 2px solid #1976d2;
     }
-    .expand-action {
+    .menu-control-action {
       position: absolute;
-      top: 4px;
       right: 0;
       .icon {
         width: 24px;
@@ -403,6 +459,20 @@ export default {
     }
     .item-wrapper {
       display: flex;
+    }
+  }
+  .input-helper {
+    //helpful description text below the input
+    width: 100%;
+    box-sizing: border-box;
+    padding: 3px 14px 0;
+    .text {
+      font-size: 12px;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.03333em;
+      word-wrap: break-word;
+      word-break: break-all;
     }
   }
 }

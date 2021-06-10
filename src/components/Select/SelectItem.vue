@@ -58,6 +58,7 @@ export default {
       this.isHovering = false;
     },
     handleClick(e){
+      e.preventDefault()
       //to avoid blur conflict use @mousedown not @click
       this.createRipple(e, false, "default");
       this.$emit("select",{label:this.label,index:this.index})
