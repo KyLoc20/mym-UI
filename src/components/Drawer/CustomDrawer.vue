@@ -15,18 +15,18 @@
         @click="handleToggle('button', $event)"
       ></icon-button>
     </div>
-    <transition name="fade">
-      <div
-        class="control-mask"
-        v-if="isToggled"
-        @touchmove.prevent
-        @click="handleToggle('mask', $event)"
-      ></div>
-    </transition>
+
     <transition :name="direction">
       <section class="content-container" v-if="isToggled" :class="direction">
         <slot></slot>
       </section>
+    </transition>
+    <transition name="fade">
+      <div
+        class="control-mask"
+        v-if="isToggled"
+        @click="handleToggle('mask', $event)"
+      ></div>
     </transition>
   </section>
 </template>
@@ -142,15 +142,27 @@ export default {
     right: 0;
     z-index: 1000;
     background-color: rgba(0, 0, 0, 0.5);
+    // pointer-events: none;
   }
 }
+// .fade-enter-active,
+// .fade-leave-active {
+
+// }
+// .fade-enter,
+// .fade-leave-to {
+
+// }
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  //todo Big problem: if using opacity, the mask will cover the button's onMouseleave
+  transition: transform 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  //   transition: opacity 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 .fade-enter,
 .fade-leave-to {
-  opacity: 0;
+   transform: translateX(-100%);
+   //   opacity: 0;
 }
 .translate {
   transition: transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;

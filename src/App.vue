@@ -11,7 +11,6 @@
     </section>
     <section class="right-container">
       <router-view class="scroll-catalog" name="catalog"></router-view>
-      <!-- <scroll-catalog title="contents" :items="scrollItems"></scroll-catalog> -->
     </section>
   </div>
 </template>

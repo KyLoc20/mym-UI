@@ -457,7 +457,7 @@ export default {
       this.cValue = label;
       this.menuToggled = false;
       this.$emit("change", { label, index });
-      // console.log("handleSelectDone", label, index, this.menuToggled);
+      console.log("handleSelectDone", label, index, this.menuToggled);
     },
   },
 };
