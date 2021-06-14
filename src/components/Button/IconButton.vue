@@ -231,6 +231,7 @@ export default {
   background: transparent;
   //default
   .default-size();
+
   button {
     .remove-button-default();
     border-radius: 50%;
@@ -238,6 +239,7 @@ export default {
     box-sizing: border-box;
     height: 100%;
     width: 100%;
+    transition: background 200ms cubic-bezier(0.4, 0.2, 0, 1);
   }
   &.disabled button {
     cursor: default;
