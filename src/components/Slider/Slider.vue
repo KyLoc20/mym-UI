@@ -41,7 +41,7 @@ export default {
       //the length of slider
       //prop controlled only, outer controller not supported
       type: Number,
-      default: 220,
+      default: 120,
     },
     //todo height
     disabled: {
@@ -59,6 +59,16 @@ export default {
     backgroundDisplayed: {
       type: Boolean,
       default: false,
+    },
+    defaultValue: {
+      //progress*100=defaultValue [0,100]
+      type: Number,
+      default: 0,
+    },
+    step: {
+      //discrete controller, the number of steps
+      type: Number,
+      required: false,
     },
     /* the following are the user custom props */
     color: {
@@ -84,7 +94,7 @@ export default {
     return {
       isHovering: false,
       isDragging: false,
-      progress: 0,
+      progress: this.clamp(parseInt(this.defaultValue), 0, 100) / 100,
       throttleTimer: null,
     };
   },
@@ -171,6 +181,10 @@ export default {
           this.parseColor(DefaultColorSet, 0.16)}`;
       return null;
     },
+    calcStepNumber() {
+      if (!this.step) return 0;
+      return this.clamp(parseInt(this.step), 0, 100);
+    },
     progressText() {
       return `${Math.round(this.progress * 100)}%`;
     },
@@ -180,7 +194,6 @@ export default {
     document.addEventListener("mousemove", this.handleMove, false);
     // document.onmousemove=this.handleMove
   },
-  updated() {},
   beforeDestroy() {
     document.removeEventListener("mouseup", this.handleStopDrag);
     document.removeEventListener("mousemove", this.handleMove);
@@ -236,11 +249,20 @@ export default {
     },
     updatePositionByClick(cursorX, cursorY, sliderX, sliderY) {
       // console.log("updatePositionByClick", cursorX, sliderX, cursorY, sliderY);
-      if (!this.vertical) {
-        this.update((cursorX - sliderX) / this.calcDetectionLength);
-      } else {
-        this.update((cursorY - sliderY) / this.calcDetectionLength);
-      }
+      let progress = this.vertical
+        ? (cursorY - sliderY) / this.calcDetectionLength
+        : (cursorX - sliderX) / this.calcDetectionLength;
+
+      //discrete
+      if (this.calcStepNumber)
+        this.update(this.findNearestValue(progress, this.calcStepNumber));
+      //continuous
+      else this.update(progress);
+    },
+    findNearestValue(percentage, step) {
+      // (percentage*100)/(100/step)=percentage*step
+      console.log("findNearestValue",Math.round(percentage * step))
+      return Math.round(percentage * step) / step;
     },
     clamp(number, min, max) {
       if (number < min) {

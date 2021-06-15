@@ -16,9 +16,17 @@
       range.</typography
     >
     <GroupBox>
-      <Slider></Slider>
+      <Slider :defaultValue="30"></Slider>
     </GroupBox>
-
+    <typography variant="h2">Discrete sliders</typography>
+    <typography variant="p"
+      >Discrete sliders can be adjusted to a specific value by referencing its
+      value indicator. By order of demos: You can generate a mark for each step
+      with <code>marks={true}</code>.</typography
+    >
+    <GroupBox>
+      <Slider :defaultValue="30" :step="10"></Slider>
+    </GroupBox>
   </section>
 </template>
 <script>
@@ -28,7 +36,7 @@ import Slider from "../components/Slider/Slider";
 import Typography from "../components/Typography/Typography";
 export default {
   name: "SliderExample",
-  components: { Typography, Slider, GroupBox,  },
+  components: { Typography, Slider, GroupBox },
   data() {
     return {};
   },
