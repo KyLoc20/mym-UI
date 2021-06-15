@@ -25,7 +25,7 @@
       with <code>marks={true}</code>.</typography
     >
     <GroupBox>
-      <Slider :defaultValue="30" :step="10"></Slider>
+      <Slider :defaultValue="30" :step="10" marks></Slider>
     </GroupBox>
   </section>
 </template>

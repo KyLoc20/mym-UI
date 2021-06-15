@@ -27,15 +27,26 @@
           width: computedTrackLength,
         }"
       ></span>
+      <Mark
+        :index="idx"
+        :color="computedMarkColor"
+        :ranged="calcWhetherMarkRanged(idx, mark.position)"
+        :vertical="vertical"
+        :position="mark.position || (1 / step) * idx"
+        :label="mark.label"
+        v-for="(mark, idx) in computedMarks"
+        :key="idx"
+      ></Mark>
     </div>
     <span class="dev-info" v-if="dev">{{ progressText }} {{ isDragging }}</span>
   </section>
 </template>
 <script>
+import Mark from "./_Mark.vue";
 const DefaultColorSet = [25, 118, 210, 1];
 export default {
   name: "Slider",
-  components: {},
+  components: { Mark },
   props: {
     size: {
       //the length of slider
@@ -70,6 +81,11 @@ export default {
       type: Number,
       required: false,
     },
+    marks: {
+      //generate a mark for each step
+      type: Boolean,
+      required: false,
+    },
     /* the following are the user custom props */
     color: {
       //theme color
@@ -86,6 +102,11 @@ export default {
     },
     thumbHaloColor: {
       //a halo appears when hovering or dragging
+      type: String,
+      required: false,
+    },
+    markColor: {
+      //mark unranged color
       type: String,
       required: false,
     },
@@ -157,6 +178,9 @@ export default {
     computedThumbColor() {
       return this.thumbColor || this.computedMainColor;
     },
+    computedMarkColor() {
+      return this.markColor || this.computedMainColor;
+    },
     computedBackgroundColor() {
       if (this.backgroundDisplayed)
         return this.parseColor(DefaultColorSet, 0.04);
@@ -181,8 +205,15 @@ export default {
           this.parseColor(DefaultColorSet, 0.16)}`;
       return null;
     },
+    computedMarks() {
+      //n steps, n+1 marks
+      if (this.step && this.marks)
+        return new Array(this.calcStepNumber + 1).fill({});
+      else return [];
+    },
     calcStepNumber() {
       if (!this.step) return 0;
+      //todo int guarantee
       return this.clamp(parseInt(this.step), 0, 100);
     },
     progressText() {
@@ -216,14 +247,22 @@ export default {
     handleStopDrag() {
       this.isDragging = false;
     },
+    calcWhetherMarkRanged(index, position) {
+      //todo abnormally execution after updatePositionByClick 
+      //todo precision problem 0.1+0.2 -> 0.3000000001
+      return position
+        ? this.progress >= position
+        : this.progress >= this._.floor((1 / this.step) * index,6);
+    },
     update(value) {
       this.progress = this._.round(this.clamp(value, 0, 1), 2);
-      // console.log("update", value, this.progress);
+      console.log("update", value, this.progress);
       this.$emit("change", this.progress);
     },
 
     handleMove(e) {
       if (!this.isDragging || this.throttleTimer) return;
+      console.log("handleMove",this.isDragging)
       this.throttleTimer = setTimeout(() => {
         this.throttleTimer = null;
         //throttle
@@ -240,12 +279,15 @@ export default {
     },
     updatePositionByDragging(cursorX, cursorY, sliderX, sliderY) {
       // console.log("updatePositionByDragging", cursorX, sliderX, cursorY, sliderY);
-      this.update((cursorX - sliderX) / this.calcDetectionLength);
-      if (!this.vertical) {
-        this.update((cursorX - sliderX) / this.calcDetectionLength);
-      } else {
-        this.update((cursorY - sliderY) / this.calcDetectionLength);
-      }
+      let progress = this.vertical
+        ? (cursorY - sliderY) / this.calcDetectionLength
+        : (cursorX - sliderX) / this.calcDetectionLength;
+
+      //discrete
+      if (this.calcStepNumber)
+        this.update(this.findNearestValue(progress, this.calcStepNumber));
+      //continuous
+      else this.update(progress);
     },
     updatePositionByClick(cursorX, cursorY, sliderX, sliderY) {
       // console.log("updatePositionByClick", cursorX, sliderX, cursorY, sliderY);
@@ -261,7 +303,7 @@ export default {
     },
     findNearestValue(percentage, step) {
       // (percentage*100)/(100/step)=percentage*step
-      console.log("findNearestValue",Math.round(percentage * step))
+      // console.log("findNearestValue", Math.round(percentage * step));
       return Math.round(percentage * step) / step;
     },
     clamp(number, min, max) {
@@ -325,11 +367,12 @@ export default {
         height: 12px;
         top: 50%;
         left: 50%;
-        margin-left: -6px;
-        margin-top: -6px;
+        margin-left: -5px;
+        margin-top: -5px;
         border-radius: 50%;
         opacity: 1;
         transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        z-index:20;
       }
     }
   }

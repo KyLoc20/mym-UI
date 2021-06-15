@@ -115,7 +115,7 @@
 <script>
 import Icon from "../Icon/Icon.vue";
 import Rippleable from "../../mixins/rippleable";
-import SelectItem from "./SelectItem.vue";
+import SelectItem from "./_SelectItem.vue";
 import { requireOneOf } from "../common/validator";
 //todo flexible width responding to selected-value
 export default {

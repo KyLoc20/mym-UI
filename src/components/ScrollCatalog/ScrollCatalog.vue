@@ -29,16 +29,17 @@ export default {
     //[anchor:hrefString,text:string]
     items: {
       type: Array,
+      default: () => [],
     },
     //'/avatar'
     path: {
       type: String,
     },
   },
-  computed:{
-    computedPath(){
-      return this.path
-    }
+  computed: {
+    computedPath() {
+      return this.path;
+    },
   },
   data() {
     return {
@@ -51,7 +52,6 @@ export default {
   // console.log("beforeMount",this.path,this.items);
   // },
   mounted() {
-  
     document.addEventListener("scroll", this.handleScroll, true);
   },
   destroyed() {
