@@ -68,7 +68,7 @@ export default {
             { content: { label: "breadcrumbs", text: "Breadcrumbs🚧" } },
             { content: { label: "drawer", text: "Drawer🚧" } },
             { content: { label: "menu", text: "Menu🚧" } },
-            { content: { label: "stepper", text: "Stepper", link: "stepper🚧" } },
+            { content: { label: "stepper", text: "Stepper", link: "stepper" } },
             { content: { label: "tabs", text: "Tabs🚧" } },
           ],
         },

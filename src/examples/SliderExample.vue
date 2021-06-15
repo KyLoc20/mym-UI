@@ -5,23 +5,30 @@
       >Sliders allow users to make selections from a range of
       values.</typography
     >
-    <section class="group-box box-inline center margin-8 bd-1 br-4">
+    <typography variant="p"
+      >Sliders reflect a range of values along a bar, from which users may
+      select a single value. They are ideal for adjusting settings such as
+      volume, brightness, or applying image filters.</typography
+    >
+    <typography variant="h2">Continuous sliders</typography>
+    <typography variant="p"
+      >Continuous sliders allow users to select a value along a subjective
+      range.</typography
+    >
+    <GroupBox>
       <Slider></Slider>
-    </section>
-    <GroupBox block
-      ><GroupRow><Slider></Slider><Slider></Slider><Slider></Slider></GroupRow>
-      <GroupRow><Slider></Slider><Slider></Slider><Slider></Slider></GroupRow>
     </GroupBox>
+
   </section>
 </template>
 <script>
 import GroupBox from "../components/Layout/GroupBox.vue";
-import GroupRow from "../components/Layout/GroupRow.vue";
+// import GroupRow from "../components/Layout/GroupRow.vue";
 import Slider from "../components/Slider/Slider";
 import Typography from "../components/Typography/Typography";
 export default {
   name: "SliderExample",
-  components: { Typography, Slider, GroupBox, GroupRow },
+  components: { Typography, Slider, GroupBox,  },
   data() {
     return {};
   },
