@@ -11,7 +11,13 @@
         @mouseenter="handleHoverEnter"
         @mouseleave="handleHoverLeave"
       >
-        <span class="thumb" :style="{ boxShadow: computedThumbHalo }"></span>
+        <span
+          class="thumb"
+          :style="{
+            boxShadow: computedThumbHalo,
+            background: computedThumbColor,
+          }"
+        ></span>
       </div>
       <span class="rail" :style="{ background: computedBaselineColor }"></span>
       <span
@@ -26,6 +32,7 @@
   </section>
 </template>
 <script>
+const DefaultColorSet = [25, 118, 210, 1];
 export default {
   name: "Slider",
   components: {},
@@ -60,6 +67,10 @@ export default {
       required: false,
     },
     baselineColor: {
+      type: String,
+      required: false,
+    },
+    thumbColor: {
       type: String,
       required: false,
     },
@@ -98,8 +109,8 @@ export default {
       if (!this.vertical) return { width: `${this.size}px` };
       else return { height: `${this.size}px` };
     },
-    calcDetectionLength(){
-      return this.size+14
+    calcDetectionLength() {
+      return this.size + 14;
     },
     computedDetectionArea() {
       //14px larger than the main thickness and length
@@ -127,18 +138,22 @@ export default {
           height: "28px",
         };
     },
-    calcThumbSize(){
-      return 28
+    calcThumbSize() {
+      return 28;
     },
     computedMainColor() {
-      return this.color || "rgba(25, 118, 210, 1)";
+      return this.color || this.parseColor(DefaultColorSet);
+    },
+    computedThumbColor() {
+      return this.thumbColor || this.computedMainColor;
     },
     computedBackgroundColor() {
-      if (this.backgroundDisplayed) return "rgba(25, 118, 210, 0.04)";
+      if (this.backgroundDisplayed)
+        return this.parseColor(DefaultColorSet, 0.04);
       else return null;
     },
     computedBaselineColor() {
-      return this.baselineColor || "rgba(25, 118, 210, 1)";
+      return this.baselineColor || this.computedMainColor;
     },
     computedThumbPositionLeft() {
       return `${this.progress * this.calcDetectionLength -
@@ -150,10 +165,10 @@ export default {
     computedThumbHalo() {
       if (this.isDragging)
         return `0px 0px 0px 14px ${this.thumbHaloColor ||
-          "rgba(25, 118, 210, 0.16)"}`;
+          this.parseColor(DefaultColorSet, 0.16)}`;
       else if (this.isHovering)
         return `0px 0px 0px 8px ${this.thumbHaloColor ||
-          "rgba(25, 118, 210, 0.16)"}`;
+          this.parseColor(DefaultColorSet, 0.16)}`;
       return null;
     },
     progressText() {
@@ -163,11 +178,10 @@ export default {
   mounted() {
     document.addEventListener("mouseup", this.handleStopDrag, false);
     document.addEventListener("mousemove", this.handleMove, false);
-    // document.onmousemove=this.move
+    // document.onmousemove=this.handleMove
   },
   updated() {},
   beforeDestroy() {
-    console.log("beforeDestroy");
     document.removeEventListener("mouseup", this.handleStopDrag);
     document.removeEventListener("mousemove", this.handleMove);
   },
@@ -191,7 +205,7 @@ export default {
     },
     update(value) {
       this.progress = this._.round(this.clamp(value, 0, 1), 2);
-      console.log("update", value, this.progress);
+      // console.log("update", value, this.progress);
       this.$emit("change", this.progress);
     },
 
@@ -236,6 +250,11 @@ export default {
       } else {
         return number;
       }
+    },
+    parseColor(inputColorArray, alpha) {
+      let arr = [...inputColorArray];
+      if (alpha) arr[3] = alpha;
+      return `rgba(${arr[0]},${arr[1]},${arr[2]},${arr[3]})`;
     },
   },
 };
@@ -287,7 +306,6 @@ export default {
         margin-left: -6px;
         margin-top: -6px;
         border-radius: 50%;
-        background: #1976d2;
         opacity: 1;
         transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
       }
