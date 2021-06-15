@@ -1,13 +1,13 @@
 <template>
-  <section class="slider">
+  <section class="slider" :style="{ ...computedLength, ...computedThickness }">
     <div
       class="detection-area"
-      :style="{ background: computedBackgroundColor }"
+      :style="{ background: computedBackgroundColor, ...computedDetectionArea }"
       @mousedown="handleStartDrag"
     >
       <div
         class="thumb-wrapper"
-        :style="{ left: computedThumbPositionLeft }"
+        :style="{ left: computedThumbPositionLeft, ...computedThumbArea }"
         @mouseenter="handleHoverEnter"
         @mouseleave="handleHoverLeave"
       >
@@ -30,6 +30,13 @@ export default {
   name: "Slider",
   components: {},
   props: {
+    size: {
+      //the length of slider
+      //prop controlled only, outer controller not supported
+      type: Number,
+      default: 220,
+    },
+    //todo height
     disabled: {
       type: Boolean,
       default: false,
@@ -47,6 +54,11 @@ export default {
       default: false,
     },
     /* the following are the user custom props */
+    color: {
+      //theme color
+      type: String,
+      required: false,
+    },
     baselineColor: {
       type: String,
       required: false,
@@ -61,13 +73,66 @@ export default {
     return {
       isHovering: false,
       isDragging: false,
-      sliderLength: 134,
-      thumbWrapperWidth: 28,
       progress: 0,
       throttleTimer: null,
     };
   },
   computed: {
+    computedThickness() {
+      //height and padding decide the thickness(horizontally height) of the component together
+      //the height of 2px is the slim slider bar itselt
+      //the padding is the occupied space
+      if (!this.vertical)
+        return {
+          height: "2px",
+          padding: "13px 0",
+        };
+      else
+        return {
+          width: "2px",
+          padding: "0 13px",
+        };
+    },
+    computedLength() {
+      //horizontally width
+      if (!this.vertical) return { width: `${this.size}px` };
+      else return { height: `${this.size}px` };
+    },
+    calcDetectionLength(){
+      return this.size+14
+    },
+    computedDetectionArea() {
+      //14px larger than the main thickness and length
+      //thickness 28px
+      if (!this.vertical)
+        return {
+          width: `${this.size + 14}px`,
+          height: "42px",
+        };
+      else
+        return {
+          width: "42px",
+          height: `${this.size + 14}px`,
+        };
+    },
+    computedThumbArea() {
+      if (!this.vertical)
+        return {
+          width: "28px",
+          height: "100%",
+        };
+      else
+        return {
+          width: "100%",
+          height: "28px",
+        };
+    },
+    calcThumbSize(){
+      return 28
+    },
+    computedMainColor() {
+      return this.color || "rgba(25, 118, 210, 1)";
+    },
     computedBackgroundColor() {
       if (this.backgroundDisplayed) return "rgba(25, 118, 210, 0.04)";
       else return null;
@@ -76,8 +141,8 @@ export default {
       return this.baselineColor || "rgba(25, 118, 210, 1)";
     },
     computedThumbPositionLeft() {
-      return `${this.progress * this.sliderLength -
-        this.thumbWrapperWidth / 2}px`;
+      return `${this.progress * this.calcDetectionLength -
+        this.calcThumbSize / 2}px`;
     },
     computedTrackLength() {
       return `${this.progress * 100}%`;
@@ -147,20 +212,20 @@ export default {
       }, 25);
     },
     updatePositionByDragging(cursorX, cursorY, sliderX, sliderY) {
-      // console.log("updatePositionByClick", cursorX, sliderX, cursorY, sliderY);
-      this.update((cursorX - sliderX) / this.sliderLength);
+      // console.log("updatePositionByDragging", cursorX, sliderX, cursorY, sliderY);
+      this.update((cursorX - sliderX) / this.calcDetectionLength);
       if (!this.vertical) {
-        this.update((cursorX - sliderX) / this.sliderLength);
+        this.update((cursorX - sliderX) / this.calcDetectionLength);
       } else {
-        this.update((cursorY - sliderY) / this.sliderLength);
+        this.update((cursorY - sliderY) / this.calcDetectionLength);
       }
     },
     updatePositionByClick(cursorX, cursorY, sliderX, sliderY) {
       // console.log("updatePositionByClick", cursorX, sliderX, cursorY, sliderY);
       if (!this.vertical) {
-        this.update((cursorX - sliderX) / this.sliderLength);
+        this.update((cursorX - sliderX) / this.calcDetectionLength);
       } else {
-        this.update((cursorY - sliderY) / this.sliderLength);
+        this.update((cursorY - sliderY) / this.calcDetectionLength);
       }
     },
     clamp(number, min, max) {
@@ -176,31 +241,25 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.baseline {
-  z-index: -10;
-  position: absolute;
-  top: 50%;
-  height: 2px;
-}
 .slider {
   display: flex;
-  color: #1976d2;
-  user-select: none;
-  width: 120px;
-  cursor: pointer;
-  height: 2px;
-  padding: 13px 0;
-  margin: 10px 50px;
   position: relative;
   box-sizing: content-box;
+  user-select: none;
+  cursor: pointer;
   touch-action: none;
   .detection-area {
     position: absolute;
-    width: 134px;
-    height: 42px;
+    //14px larger than the main thickness and length
     left: -7px;
     top: -7px;
     z-index: 10;
+    .baseline {
+      z-index: -10;
+      position: absolute;
+      top: 50%;
+      height: 2px;
+    }
     .rail {
       .baseline();
       opacity: 0.38;
@@ -212,10 +271,8 @@ export default {
     }
     .thumb-wrapper {
       position: absolute;
-      width: 28px;
-      height: 100%;
       // background: rgba(0, 0, 0, 0.4);
-      //if you want a circle to grow into a halo, use box-shadow
+      //TIP: if you want a circle to grow into a halo, use box-shadow
       /*       use mouseenter instead
       &:hover .thumb {
         box-shadow: 0px 0px 0px 8px rgba(25, 118, 210, 0.16);
