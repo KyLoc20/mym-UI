@@ -16,7 +16,8 @@
       range.</typography
     >
     <GroupBox>
-      <Slider :defaultValue="30"></Slider>
+      <div class="wrapper"><Icon name="volumeDown" :style="{marginRight:'16px'}"></Icon> <Slider :defaultValue="30"></Slider><Icon name="volumeUp"  :style="{marginLeft:'16px'}"></Icon></div>
+      
     </GroupBox>
     <typography variant="h2">Discrete sliders</typography>
     <typography variant="p"
@@ -33,10 +34,11 @@
 import GroupBox from "../components/Layout/GroupBox.vue";
 // import GroupRow from "../components/Layout/GroupRow.vue";
 import Slider from "../components/Slider/Slider";
+import Icon from "../components/Icon/Icon.vue"
 import Typography from "../components/Typography/Typography";
 export default {
   name: "SliderExample",
-  components: { Typography, Slider, GroupBox },
+  components: { Typography, Slider, GroupBox ,Icon},
   data() {
     return {};
   },
@@ -46,11 +48,9 @@ export default {
 </script>
 <style scoped lang="less">
 .slider-example {
-  .custom {
-    width: 240px;
-    height: 48px;
-    padding: 14px 18px;
-    font-size: 16px;
+  .wrapper{
+    display: flex;
+    margin-bottom: 8px;
   }
 }
 </style>
