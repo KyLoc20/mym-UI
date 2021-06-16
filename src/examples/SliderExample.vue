@@ -26,6 +26,25 @@
         ><Slider :defaultValue="30" :size="200" disabled></Slider
       ></GroupRow>
     </GroupBox>
+    <typography variant="h2">Size</typography>
+    <typography variant="p"
+      >Use the prop <code>size</code> to change the length of the
+      slider.</typography
+    >
+    <GroupBox block>
+      <GroupRow
+        ><div class="wrapper" :style="{ width: '320px' }">
+          <Slider :defaultValue="30" :size="120"></Slider></div
+      ></GroupRow>
+      <GroupRow
+        ><div class="wrapper" :style="{ width: '320px' }">
+          <Slider :defaultValue="30" :size="200"></Slider></div
+      ></GroupRow>
+      <GroupRow
+        ><div class="wrapper" :style="{ width: '320px' }">
+          <Slider :defaultValue="30" :size="300"></Slider></div
+      ></GroupRow>
+    </GroupBox>
     <typography variant="h2">Discrete sliders</typography>
     <typography variant="p"
       >Discrete sliders can be adjusted to a specific value by referencing its
@@ -38,13 +57,67 @@
       ></GroupRow>
       <GroupRow
         ><Slider
-          :defaultValue="30"
+          :defaultValue="20"
           :size="300"
           :step="10"
           marks
           disabled
         ></Slider
       ></GroupRow>
+    </GroupBox>
+    <typography variant="h2">More steps</typography>
+    <typography variant="p"
+      >You can use the prop <code>step</code> to have custom number of
+      steps.</typography
+    >
+    <GroupBox block>
+      <GroupRow
+        ><Slider :defaultValue="30" :size="300" :step="5" marks></Slider
+      ></GroupRow>
+      <GroupRow
+        ><Slider :defaultValue="30" :size="300" :step="10" marks></Slider
+      ></GroupRow>
+      <GroupRow
+        ><Slider :defaultValue="30" :size="300" :step="20" marks></Slider
+      ></GroupRow>
+    </GroupBox>
+    <typography variant="h2">Value Label Visibility</typography>
+    <typography variant="p"
+      >You can keep the value label always visible with
+      <code>valueLabelDisplay="on"</code></typography
+    >
+    <typography variant="p">
+      You can keep the value label always invisible with
+      <code>valueLabelDisplay="on"</code></typography
+    >
+    <typography variant="p">
+      Otherwise let it display automatically with
+      <code>valueLabelDisplay="auto"</code> by default.</typography
+    >
+    <GroupBox block>
+      <GroupRow
+        ><div class="wrapper" :style="{ marginTop: '12px' }">
+          <Slider
+            :defaultValue="30"
+            :size="300"
+            valueLabelDisplay="on"
+          ></Slider>
+        </div>
+      </GroupRow>
+      <GroupRow
+        ><div class="wrapper">
+          <Slider
+            :defaultValue="30"
+            :size="300"
+            valueLabelDisplay="off"
+          ></Slider>
+        </div>
+      </GroupRow>
+      <GroupRow
+        ><div class="wrapper" :style="{ marginTop: '12px' }">
+          <Slider :defaultValue="30" :size="300"></Slider>
+        </div>
+      </GroupRow>
     </GroupBox>
   </section>
 </template>

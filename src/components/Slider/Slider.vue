@@ -23,6 +23,11 @@
             ...computedThumbSize,
           }"
         ></span>
+        <ValueLabel
+          :active="computedValueLabelVisibility"
+          :value="'40'"
+          :color="computedValueLabelColor"
+        ></ValueLabel>
       </div>
       <span class="rail" :style="{ background: computedBaselineColor }"></span>
       <span
@@ -47,11 +52,13 @@
   </section>
 </template>
 <script>
+import { requireOneOf } from "../common/validator";
 import Mark from "./_Mark.vue";
+import ValueLabel from "./_ValueLabel.vue";
 const DefaultColorSet = [25, 118, 210, 1];
 export default {
   name: "Slider",
-  components: { Mark },
+  components: { Mark, ValueLabel },
   props: {
     size: {
       //the length of slider
@@ -76,11 +83,29 @@ export default {
       type: Boolean,
       default: false,
     },
+    valueLabelDisplay: {
+      /* 
+    1.auto: visible when dragging or hovering;
+    2.on: always visible
+    3.off: never visible
+    */
+      default: "auto",
+      validator: (v) => {
+        return [requireOneOf(["auto", "on", "off"])].some((test) => test(v));
+      },
+    },
     defaultValue: {
       //progress*100=defaultValue [0,100]
       type: Number,
       default: 0,
     },
+    /* 
+    1.step and default marks: each step will be marked and valueLabeled;
+    2.step and custom marks: only the positions of custom marks will be marked 
+    while all the available positions will be valueLabeled;
+    3.no step and custom marks: only the positions of custom marks will be marked and valueLabeled
+    4.no step and default marks: invalid
+    */
     step: {
       //discrete controller, the number of steps
       type: Number,
@@ -112,6 +137,10 @@ export default {
     },
     markColor: {
       //mark unranged color
+      type: String,
+      required: false,
+    },
+    valueLabelColor: {
       type: String,
       required: false,
     },
@@ -206,6 +235,10 @@ export default {
       if (this.disabled) return "rgba(189,189,189,1)";
       return this.markColor || this.computedMainColor;
     },
+    computedValueLabelColor() {
+      if (this.disabled) return "rgba(189,189,189,1)";
+      return this.valueLabelColor || this.computedMainColor;
+    },
     computedBackgroundColor() {
       if (this.backgroundDisplayed)
         return this.disabled
@@ -238,6 +271,11 @@ export default {
       if (this.step && this.marks)
         return new Array(this.calcStepNumber + 1).fill({});
       else return [];
+    },
+    computedValueLabelVisibility() {
+      if (this.valueLabelDisplay === "on") return true;
+      else if (this.valueLabelDisplay === "off") return false;
+      else return this.isHovering || this.isDragging;
     },
     calcStepNumber() {
       if (!this.step) return 0;
@@ -286,7 +324,7 @@ export default {
     },
     update(value) {
       this.progress = this._.round(this.clamp(value, 0, 1), 2);
-      console.log("update", value, this.progress);
+      // console.log("update", value, this.progress);
       this.$emit("change", this.progress);
     },
 
