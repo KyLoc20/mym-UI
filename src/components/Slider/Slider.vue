@@ -1,5 +1,9 @@
 <template>
-  <section class="slider" :style="{ ...computedLength, ...computedThickness }">
+  <section
+    class="slider"
+    :class="classes"
+    :style="{ ...computedLength, ...computedThickness }"
+  >
     <div
       class="detection-area"
       :style="{ background: computedBackgroundColor, ...computedDetectionArea }"
@@ -16,6 +20,7 @@
           :style="{
             boxShadow: computedThumbHalo,
             background: computedThumbColor,
+            ...computedThumbSize,
           }"
         ></span>
       </div>
@@ -120,6 +125,9 @@ export default {
     };
   },
   computed: {
+    classes() {
+      return [this.disabled ? "disabled" : ""];
+    },
     computedThickness() {
       //height and padding decide the thickness(horizontally height) of the component together
       //the height of 2px is the slim slider bar itselt
@@ -169,29 +177,49 @@ export default {
           height: "28px",
         };
     },
-    calcThumbSize() {
+    computedThumbSize() {
+      if (this.disabled)
+        return {
+          width: "8px",
+          height: "8px",
+          marginLeft: "-3px",
+          marginTop: "-3px",
+        };
+      return {
+        width: "12px",
+        height: "12px",
+        marginLeft: "-5px",
+        marginTop: "-5px",
+      };
+    },
+    calcThumbAreaSize() {
       return 28;
     },
     computedMainColor() {
       return this.color || this.parseColor(DefaultColorSet);
     },
     computedThumbColor() {
+      if (this.disabled) return "rgba(189,189,189,1)";
       return this.thumbColor || this.computedMainColor;
     },
     computedMarkColor() {
+      if (this.disabled) return "rgba(189,189,189,1)";
       return this.markColor || this.computedMainColor;
     },
     computedBackgroundColor() {
       if (this.backgroundDisplayed)
-        return this.parseColor(DefaultColorSet, 0.04);
+        return this.disabled
+          ? "rgba(189,189,189,0.04)"
+          : this.parseColor(DefaultColorSet, 0.04);
       else return null;
     },
     computedBaselineColor() {
+      if (this.disabled) return "rgba(189,189,189,1)";
       return this.baselineColor || this.computedMainColor;
     },
     computedThumbPositionLeft() {
       return `${this.progress * this.calcDetectionLength -
-        this.calcThumbSize / 2}px`;
+        this.calcThumbAreaSize / 2}px`;
     },
     computedTrackLength() {
       return `${this.progress * 100}%`;
@@ -240,19 +268,21 @@ export default {
       this.isHovering = false;
     },
     handleStartDrag(e) {
+      if (this.disabled) return;
       this.isDragging = true;
       let elBCR = e.currentTarget.getBoundingClientRect();
       this.updatePositionByClick(e.clientX, e.clientY, elBCR.left, elBCR.top);
     },
     handleStopDrag() {
+      if (this.disabled) return;
       this.isDragging = false;
     },
     calcWhetherMarkRanged(index, position) {
-      //todo abnormally execution after updatePositionByClick 
+      //todo abnormally execution after updatePositionByClick
       //todo precision problem 0.1+0.2 -> 0.3000000001
       return position
         ? this.progress >= position
-        : this.progress >= this._.floor((1 / this.step) * index,6);
+        : this.progress >= this._.floor((1 / this.step) * index, 6);
     },
     update(value) {
       this.progress = this._.round(this.clamp(value, 0, 1), 2);
@@ -261,8 +291,7 @@ export default {
     },
 
     handleMove(e) {
-      if (!this.isDragging || this.throttleTimer) return;
-      console.log("handleMove",this.isDragging)
+      if (this.disabled || !this.isDragging || this.throttleTimer) return;
       this.throttleTimer = setTimeout(() => {
         this.throttleTimer = null;
         //throttle
@@ -331,6 +360,9 @@ export default {
   user-select: none;
   cursor: pointer;
   touch-action: none;
+  &.disabled {
+    cursor: default;
+  }
   .detection-area {
     position: absolute;
     //14px larger than the main thickness and length
@@ -363,16 +395,12 @@ export default {
       transition: left 50ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
       .thumb {
         position: absolute;
-        width: 12px;
-        height: 12px;
         top: 50%;
         left: 50%;
-        margin-left: -5px;
-        margin-top: -5px;
         border-radius: 50%;
         opacity: 1;
         transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-        z-index:20;
+        z-index: 20;
       }
     }
   }

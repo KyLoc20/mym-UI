@@ -15,9 +15,16 @@
       >Continuous sliders allow users to select a value along a subjective
       range.</typography
     >
-    <GroupBox>
-      <div class="wrapper"><Icon name="volumeDown" :style="{marginRight:'16px'}"></Icon> <Slider :defaultValue="30"></Slider><Icon name="volumeUp"  :style="{marginLeft:'16px'}"></Icon></div>
-      
+    <GroupBox block>
+      <GroupRow>
+        <div class="wrapper">
+          <Icon name="volumeDown" :style="{ marginRight: '16px' }"></Icon>
+          <Slider :defaultValue="30"></Slider
+          ><Icon name="volumeUp" :style="{ marginLeft: '16px' }"></Icon></div
+      ></GroupRow>
+      <GroupRow
+        ><Slider :defaultValue="30" :size="200" disabled></Slider
+      ></GroupRow>
     </GroupBox>
     <typography variant="h2">Discrete sliders</typography>
     <typography variant="p"
@@ -25,20 +32,31 @@
       value indicator. By order of demos: You can generate a mark for each step
       with <code>marks={true}</code>.</typography
     >
-    <GroupBox>
-      <Slider :defaultValue="30" :step="10" marks></Slider>
+    <GroupBox block>
+      <GroupRow
+        ><Slider :defaultValue="30" :size="300" :step="10" marks></Slider
+      ></GroupRow>
+      <GroupRow
+        ><Slider
+          :defaultValue="30"
+          :size="300"
+          :step="10"
+          marks
+          disabled
+        ></Slider
+      ></GroupRow>
     </GroupBox>
   </section>
 </template>
 <script>
 import GroupBox from "../components/Layout/GroupBox.vue";
-// import GroupRow from "../components/Layout/GroupRow.vue";
+import GroupRow from "../components/Layout/GroupRow.vue";
 import Slider from "../components/Slider/Slider";
-import Icon from "../components/Icon/Icon.vue"
+import Icon from "../components/Icon/Icon.vue";
 import Typography from "../components/Typography/Typography";
 export default {
   name: "SliderExample",
-  components: { Typography, Slider, GroupBox ,Icon},
+  components: { Typography, Slider, GroupBox, GroupRow, Icon },
   data() {
     return {};
   },
@@ -48,7 +66,7 @@ export default {
 </script>
 <style scoped lang="less">
 .slider-example {
-  .wrapper{
+  .wrapper {
     display: flex;
     margin-bottom: 8px;
   }
