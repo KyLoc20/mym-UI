@@ -1,8 +1,17 @@
 <template>
   <transition :name="`fade-${this.vertical ? 'vertical' : 'horizontal'}`"
-    ><section class="value-label" v-show="active">
-      <div class="inner-circle" :style="{ background: computedColor }">
-        <span class="text">{{ value }}</span>
+    ><section
+      class="value-label"
+      :style="{ ...computedPosition }"
+      v-show="active"
+    >
+      <div
+        class="inner-circle"
+        :style="{ background: computedColor, transform: computedRotation }"
+      >
+        <span class="text" :style="{ transform: computedTextRotation }">{{
+          value
+        }}</span>
       </div>
     </section></transition
   >
@@ -34,6 +43,18 @@ export default {
     computedColor() {
       return this.color;
     },
+    computedPosition() {
+      if (this.vertical) return { right: "45px" };//add padding 13px offset 32+13=45
+      else return { top: "-32px" };
+    },
+    computedRotation() {
+      if (this.vertical) return "rotate(225deg)";
+      else return "rotate(-45deg)";
+    },
+    computedTextRotation() {
+      if (this.vertical) return "rotate(-225deg)";
+      else return "rotate(45deg)";
+    },
   },
   methods: {},
 };
@@ -41,7 +62,6 @@ export default {
 <style lang="less" scoped>
 .value-label {
   position: absolute;
-  top: -32px;
   .inner-circle {
     display: flex;
     justify-content: center;
@@ -49,9 +69,7 @@ export default {
     width: 32px;
     height: 32px;
     border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
     .text {
-      transform: rotate(45deg);
       font-size: 12px;
       color: #fff;
     }

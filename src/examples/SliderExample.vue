@@ -138,12 +138,31 @@
       >You can restrict the selectable values to those provided with the
       <code>marks</code> prop without the <code>step</code> prop.</typography
     >
-     <GroupBox>
-      <Slider
-        :defaultValue="37"
-        :size="500"
-        :marks="customMarks"
-      ></Slider>
+    <GroupBox>
+      <Slider :defaultValue="37" :size="500" :marks="customMarks"></Slider>
+    </GroupBox>
+    <typography variant="h2">Vertical sliders</typography>
+    <typography variant="p"
+      >Let your sliders stand up with the
+      <code>vertical</code> prop.</typography
+    >
+    <GroupBox>
+      <div class="wrapper" :style="{ marginLeft: '48px' }">
+        <Slider :defaultValue="60" :size="300" vertical></Slider>
+      </div>
+      <div class="wrapper" :style="{ marginLeft: '48px' }">
+        <Slider :defaultValue="30" :size="300" vertical disabled></Slider>
+      </div>
+      <div class="wrapper" :style="{ marginLeft: '48px' }">
+        <Slider
+          :defaultValue="37"
+          :size="300"
+          :step="10"
+          :marks="customMarks"
+          vertical
+          valueLabelDisplay="on"
+        ></Slider>
+      </div>
     </GroupBox>
   </section>
 </template>
