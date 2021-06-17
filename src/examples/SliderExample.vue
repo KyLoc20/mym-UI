@@ -10,7 +10,9 @@
       select a single value. They are ideal for adjusting settings such as
       volume, brightness, or applying image filters.</typography
     >
-    <typography variant="h2">Continuous sliders</typography>
+    <typography variant="h2" id="ac-continuous-sliders"
+      >Continuous sliders</typography
+    >
     <typography variant="p"
       >Continuous sliders allow users to select a value along a subjective
       range.</typography
@@ -26,7 +28,7 @@
         ><Slider :defaultValue="30" :size="200" disabled></Slider
       ></GroupRow>
     </GroupBox>
-    <typography variant="h2">Size</typography>
+    <typography variant="h2" id="ac-sizes">Sizes</typography>
     <typography variant="p"
       >Use the prop <code>size</code> to change the length of the
       slider.</typography
@@ -45,7 +47,9 @@
           <Slider :defaultValue="30" :size="300"></Slider></div
       ></GroupRow>
     </GroupBox>
-    <typography variant="h2">Discrete sliders</typography>
+    <typography variant="h2" id="ac-discrete-sliders"
+      >Discrete sliders</typography
+    >
     <typography variant="p"
       >Discrete sliders can be adjusted to a specific value by referencing its
       value indicator. By order of demos: You can generate a mark for each step
@@ -65,7 +69,7 @@
         ></Slider
       ></GroupRow>
     </GroupBox>
-    <typography variant="h2">More steps</typography>
+    <typography variant="h2" id="ac-more-steps">More steps</typography>
     <typography variant="p"
       >You can use the prop <code>step</code> to have custom number of
       steps.</typography
@@ -81,7 +85,9 @@
         ><Slider :defaultValue="30" :size="300" :step="20" marks></Slider
       ></GroupRow>
     </GroupBox>
-    <typography variant="h2">Value Label Visibility</typography>
+    <typography variant="h2" id="ac-value-lable-visibility"
+      >Value Label Visibility</typography
+    >
     <typography variant="p"
       >You can keep the value label always visible with
       <code>valueLabelDisplay="on"</code></typography
@@ -119,7 +125,7 @@
         </div>
       </GroupRow>
     </GroupBox>
-    <typography variant="h2">Custom marks</typography>
+    <typography variant="h2" id="ac-custom-marks">Custom marks</typography>
     <typography variant="p"
       >You can have custom marks by providing a rich array to the
       <code>marks</code> prop.</typography
@@ -133,7 +139,9 @@
       ></Slider>
     </GroupBox>
 
-    <typography variant="h2">Restricted marks</typography>
+    <typography variant="h2" id="ac-restricted-marks"
+      >Restricted marks</typography
+    >
     <typography variant="p"
       >You can restrict the selectable values to those provided with the
       <code>marks</code> prop without the <code>step</code> prop.</typography
@@ -141,7 +149,9 @@
     <GroupBox>
       <Slider :defaultValue="37" :size="500" :marks="customMarks"></Slider>
     </GroupBox>
-    <typography variant="h2">Vertical sliders</typography>
+    <typography variant="h2" id="ac-vertical-sliders"
+      >Vertical sliders</typography
+    >
     <typography variant="p"
       >Let your sliders stand up with the
       <code>vertical</code> prop.</typography
@@ -175,6 +185,16 @@ import Typography from "../components/Typography/Typography";
 export default {
   name: "SliderExample",
   components: { Typography, Slider, GroupBox, GroupRow, Icon },
+  anchors: [
+    { anchor: "ac-continuous-sliders", text: "Continuous sliders" },
+    { anchor: "ac-sizes", text: "Sizes" },
+    { anchor: "ac-discrete-sliders", text: "Discrete sliders" },
+    { anchor: "ac-more-steps", text: "More steps" },
+    { anchor: "ac-value-lable-visibility", text: "Value Label Visibility" },
+    { anchor: "ac-custom-marks", text: "Custom marks" },
+    { anchor: "ac-restricted-marks", text: "Restricted marks" },
+    { anchor: "ac-vertical-sliders", text: "Vertical sliders" },
+  ],
   data() {
     return {
       customMarks: [

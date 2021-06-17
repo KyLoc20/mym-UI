@@ -12,7 +12,7 @@
         >
           <section class="menu-header">
             <section class="title">MyMaterial-UI</section>
-            <section class="version">v0.0.3</section>
+            <section class="version">v0.0.4</section>
           </section>
           <divider></divider>
           <catalog
