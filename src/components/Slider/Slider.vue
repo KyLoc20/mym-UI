@@ -44,7 +44,7 @@
         :vertical="vertical"
         :progress="calcMarkPosition(idx, mark.progress)"
         :label="mark.label"
-        :labelOffset="13"
+        :labelOffset="computedSliderPadding"
         v-for="(mark, idx) in computedMarks"
         :key="idx"
       ></Mark>
@@ -163,6 +163,9 @@ export default {
     classes() {
       return [this.disabled ? "disabled" : ""];
     },
+    computedSliderPadding(){
+      return 13
+    },
     computedThickness() {
       //height and padding decide the thickness(horizontally height) of the component together
       //the height of 2px is the slim slider bar itselt
@@ -170,12 +173,12 @@ export default {
       if (!this.vertical)
         return {
           height: "2px",
-          padding: "13px 0",
+          padding: `${this.computedSliderPadding}px 0`,
         };
       else
         return {
           width: "2px",
-          padding: "0 13px",
+          padding: `0 ${this.computedSliderPadding}px`,
         };
     },
     computedLength() {
