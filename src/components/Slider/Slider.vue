@@ -2,7 +2,12 @@
   <section
     class="slider"
     :class="classes"
-    :style="{ ...computedLength, ...computedThickness, ...computedMarginSpace }"
+    :style="{
+      ...computedLength,
+      ...computedThickness,
+      ...computedMarginSpace,
+      ...computedSliderDirection,
+    }"
   >
     <div
       class="detection-area"
@@ -11,7 +16,7 @@
     >
       <div
         class="thumb-wrapper"
-        :style="{ left: computedThumbPositionLeft, ...computedThumbArea }"
+        :style="{ ...computedThumbPosition, ...computedThumbArea }"
         @mouseenter="handleHoverEnter"
         @mouseleave="handleHoverLeave"
       >
@@ -27,14 +32,19 @@
           :active="computedValueLabelVisibility"
           :value="computedParsedValue"
           :color="computedValueLabelColor"
+          :vertical="vertical"
         ></ValueLabel>
       </div>
-      <span class="rail" :style="{ background: computedBaselineColor }"></span>
+      <span
+        class="rail"
+        :style="{ ...computedBaselineArea, background: computedBaselineColor }"
+      ></span>
       <span
         class="track"
         :style="{
+          ...computedBaselineArea,
+          ...computedTrackLength,
           background: computedBaselineColor,
-          width: computedTrackLength,
         }"
       ></span>
       <Mark
@@ -163,8 +173,17 @@ export default {
     classes() {
       return [this.disabled ? "disabled" : ""];
     },
-    computedSliderPadding(){
-      return 13
+    computedSliderDirection() {
+      //for reverse
+      return null;
+      // if (this.vertical) return { transform: "rotate(180deg)" };
+      // else return null;
+    },
+    computedSliderPadding() {
+      return 13;
+    },
+    computedSliderSize() {
+      return 2;
     },
     computedThickness() {
       //height and padding decide the thickness(horizontally height) of the component together
@@ -172,12 +191,12 @@ export default {
       //the padding is the occupied space
       if (!this.vertical)
         return {
-          height: "2px",
+          height: `${this.computedSliderSize}px`,
           padding: `${this.computedSliderPadding}px 0`,
         };
       else
         return {
-          width: "2px",
+          width: `${this.computedSliderSize}px`,
           padding: `0 ${this.computedSliderPadding}px`,
         };
     },
@@ -214,6 +233,12 @@ export default {
           width: "100%",
           height: "28px",
         };
+    },
+    computedThumbPosition() {
+      const value =
+        this.progress * this.calcDetectionLength - this.calcThumbAreaSize / 2;
+      if (this.vertical) return { bottom: `${value}px` };
+      else return { left: `${value}px` };
     },
     computedThumbSize() {
       if (this.disabled)
@@ -259,12 +284,15 @@ export default {
       if (this.disabled) return "rgba(189,189,189,1)";
       return this.baselineColor || this.computedMainColor;
     },
-    computedThumbPositionLeft() {
-      return `${this.progress * this.calcDetectionLength -
-        this.calcThumbAreaSize / 2}px`;
+    computedBaselineArea() {
+      if (this.vertical)
+        return { left: "50%", bottom: 0, height: "100%", width: "2px" };
+      else return { top: "50%", height: "2px", width: "100%" };
     },
+
     computedTrackLength() {
-      return `${this.progress * 100}%`;
+      if (this.vertical) return { height: `${this.progress * 100}%` };
+      else return { width: `${this.progress * 100}%` };
     },
     computedThumbHalo() {
       if (this.isDragging)
@@ -302,7 +330,8 @@ export default {
       //only for custom marks' labels
       const labelLineHeight = 20;
       if (!this.marks || !Array.isArray(this.marks)) return null;
-      else return this.vertical ? null : { marginBottom: `${labelLineHeight}px` };
+      else
+        return this.vertical ? null : { marginBottom: `${labelLineHeight}px` };
     },
     computedValueLabelVisibility() {
       if (this.valueLabelDisplay === "on") return true;
@@ -386,12 +415,12 @@ export default {
       this.doUpdatePosition(cursorX, cursorY, sliderX, sliderY);
     },
     updatePositionByClick(cursorX, cursorY, sliderX, sliderY) {
-      // console.log("updatePositionByClick", cursorX, sliderX, cursorY, sliderY);
+      console.log("updatePositionByClick", cursorX, sliderX, cursorY, sliderY);
       this.doUpdatePosition(cursorX, cursorY, sliderX, sliderY);
     },
     doUpdatePosition(cursorX, cursorY, sliderX, sliderY) {
       let progress = this.vertical
-        ? (cursorY - sliderY) / this.calcDetectionLength
+        ? 1 - (cursorY - sliderY) / this.calcDetectionLength
         : (cursorX - sliderX) / this.calcDetectionLength;
       //continuous
       if (!this.step && !this.marks) this.update(progress);
@@ -474,13 +503,10 @@ export default {
     .baseline {
       z-index: -10;
       position: absolute;
-      top: 50%;
-      height: 2px;
     }
     .rail {
       .baseline();
       opacity: 0.38;
-      width: 100%;
     }
     .track {
       .baseline();
