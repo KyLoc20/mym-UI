@@ -119,6 +119,14 @@
         </div>
       </GroupRow>
     </GroupBox>
+    <typography variant="h2">Custom marks</typography>
+    <typography variant="p"
+      >You can have custom marks by providing a rich array to the
+      <code>marks</code> prop.</typography
+    >
+    <GroupBox>
+      <Slider :defaultValue="30" :size="500" :step="10" :marks="customMarks"></Slider>
+    </GroupBox>
   </section>
 </template>
 <script>
@@ -131,7 +139,14 @@ export default {
   name: "SliderExample",
   components: { Typography, Slider, GroupBox, GroupRow, Icon },
   data() {
-    return {};
+    return {
+      customMarks: [
+        { progress: 0, label: "0°C" },
+        { progress: 0.2, label: "20°C" },
+        { progress: 0.37, label: "37°C" },
+        { progress: 1, label: "100°C" },
+      ],
+    };
   },
   methods: {},
   computed: {},
@@ -141,7 +156,7 @@ export default {
 .slider-example {
   .wrapper {
     display: flex;
-    margin-bottom: 8px;
+    margin-bottom: 15px;
   }
 }
 </style>

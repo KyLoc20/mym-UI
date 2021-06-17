@@ -25,7 +25,7 @@
         ></span>
         <ValueLabel
           :active="computedValueLabelVisibility"
-          :value="'40'"
+          :value="computedParsedValue"
           :color="computedValueLabelColor"
         ></ValueLabel>
       </div>
@@ -40,15 +40,17 @@
       <Mark
         :index="idx"
         :color="computedMarkColor"
-        :ranged="calcWhetherMarkRanged(idx, mark.position)"
+        :ranged="calcWhetherMarkRanged(idx, mark.progress)"
         :vertical="vertical"
-        :position="mark.position || (1 / step) * idx"
+        :progress="calcMarkPosition(idx, mark.progress)"
         :label="mark.label"
         v-for="(mark, idx) in computedMarks"
         :key="idx"
       ></Mark>
     </div>
-    <span class="dev-info" v-if="dev">{{ progressText }} {{ isDragging }}</span>
+    <span class="dev-info" v-if="dev"
+      >{{ computedParsedValue }} {{ isDragging }}</span
+    >
   </section>
 </template>
 <script>
@@ -100,8 +102,9 @@ export default {
       default: 0,
     },
     /* 
-    1.step and default marks: each step will be marked and valueLabeled;
-    2.step and custom marks: only the positions of custom marks will be marked 
+    see computedMarks
+    1.step and default marks(marks=true): each step will be marked and valueLabeled;
+    2.step and custom marks(marks=[progress,label,]): only the positions of custom marks will be marked 
     while all the available positions will be valueLabeled;
     3.no step and custom marks: only the positions of custom marks will be marked and valueLabeled
     4.no step and default marks: invalid
@@ -113,7 +116,8 @@ export default {
     },
     marks: {
       //generate a mark for each step
-      type: Boolean,
+      //[{position,label,}]
+      type: [Boolean, Array],
       required: false,
     },
     /* the following are the user custom props */
@@ -267,23 +271,40 @@ export default {
       return null;
     },
     computedMarks() {
+      if (!this.marks) return [];
+      if (Array.isArray(this.marks)) {
+        //step and custom marks
+        if (this.step)
+          return [
+            ...new Array(this.calcStepNumber + 1).fill({}),
+            ...this.marks,
+          ];
+        //no step and custom marks
+        else return [...this.marks];
+      }
+      //step and default marks
       //n steps, n+1 marks
-      if (this.step && this.marks)
-        return new Array(this.calcStepNumber + 1).fill({});
-      else return [];
+      else {
+        if (this.step) return new Array(this.calcStepNumber + 1).fill({});
+        else return [];
+      }
+    },
+    computedCustomMarks() {
+      if (!this.marks || !Array.isArray(this.marks)) return [];
+      else return this.marks.map((mark) => mark.progress);
     },
     computedValueLabelVisibility() {
       if (this.valueLabelDisplay === "on") return true;
       else if (this.valueLabelDisplay === "off") return false;
       else return this.isHovering || this.isDragging;
     },
+    computedParsedValue() {
+      return `${Math.round(this.progress * 100)}`;
+    },
     calcStepNumber() {
       if (!this.step) return 0;
       //todo int guarantee
       return this.clamp(parseInt(this.step), 0, 100);
-    },
-    progressText() {
-      return `${Math.round(this.progress * 100)}%`;
     },
   },
   mounted() {
@@ -315,12 +336,17 @@ export default {
       if (this.disabled) return;
       this.isDragging = false;
     },
-    calcWhetherMarkRanged(index, position) {
+    calcWhetherMarkRanged(index, progress) {
       //todo abnormally execution after updatePositionByClick
       //todo precision problem 0.1+0.2 -> 0.3000000001
-      return position
-        ? this.progress >= position
+      return progress !== undefined
+        ? this.progress >= progress
         : this.progress >= this._.floor((1 / this.step) * index, 6);
+    },
+    calcMarkPosition(index, progress) {
+      return progress !== undefined
+        ? progress
+        : this._.floor((1 / this.step) * index, 6);
     },
     update(value) {
       this.progress = this._.round(this.clamp(value, 0, 1), 2);
@@ -346,32 +372,59 @@ export default {
     },
     updatePositionByDragging(cursorX, cursorY, sliderX, sliderY) {
       // console.log("updatePositionByDragging", cursorX, sliderX, cursorY, sliderY);
-      let progress = this.vertical
-        ? (cursorY - sliderY) / this.calcDetectionLength
-        : (cursorX - sliderX) / this.calcDetectionLength;
-
-      //discrete
-      if (this.calcStepNumber)
-        this.update(this.findNearestValue(progress, this.calcStepNumber));
-      //continuous
-      else this.update(progress);
+      this.doUpdatePosition(cursorX, cursorY, sliderX, sliderY);
     },
     updatePositionByClick(cursorX, cursorY, sliderX, sliderY) {
       // console.log("updatePositionByClick", cursorX, sliderX, cursorY, sliderY);
+      this.doUpdatePosition(cursorX, cursorY, sliderX, sliderY);
+    },
+    doUpdatePosition(cursorX, cursorY, sliderX, sliderY) {
       let progress = this.vertical
         ? (cursorY - sliderY) / this.calcDetectionLength
         : (cursorX - sliderX) / this.calcDetectionLength;
-
-      //discrete
-      if (this.calcStepNumber)
-        this.update(this.findNearestValue(progress, this.calcStepNumber));
       //continuous
-      else this.update(progress);
+      if (!this.step && !this.marks) this.update(progress);
+      //discrete
+      else
+        this.update(
+          this.findNearestValue(
+            progress,
+            this.calcStepNumber,
+            this.computedCustomMarks
+          )
+        );
     },
-    findNearestValue(percentage, step) {
-      // (percentage*100)/(100/step)=percentage*step
-      // console.log("findNearestValue", Math.round(percentage * step));
-      return Math.round(percentage * step) / step;
+    findNearestValue(percentage, step, marks) {
+      /* marks:custom position in the form of percentage [0.12,0.27,.0.37] */
+      //invalid
+      if (!marks && !step) return null;
+      //only step
+      else if (step && !marks) {
+        // (percentage*100)/(100/step)=percentage*step
+        let closest = Math.round(percentage * step) / step;
+        console.log("only step", closest);
+        return closest;
+      }
+      //only custom marks
+      else if (marks && !step) {
+        let closest = marks[0];
+        for (let value of marks) {
+          if (Math.abs(closest - percentage) > Math.abs(value - percentage))
+            closest = value;
+        }
+        console.log("only custom marks", closest);
+        return closest;
+      }
+      //both step and custom marks
+      else {
+        let closest = Math.round(percentage * step) / step;
+        for (let value of marks) {
+          if (Math.abs(closest - percentage) > Math.abs(value - percentage))
+            closest = value;
+        }
+        console.log("both step and custom marks", closest);
+        return closest;
+      }
     },
     clamp(number, min, max) {
       if (number < min) {
@@ -424,7 +477,6 @@ export default {
     }
     .thumb-wrapper {
       position: absolute;
-      // background: rgba(0, 0, 0, 0.4);
       //TIP: if you want a circle to grow into a halo, use box-shadow
       /*       use mouseenter instead
       &:hover .thumb {

@@ -1,5 +1,11 @@
 <template>
-  <section class="mark" :class="classes" :style="{ ...computedPosition,background:computedColor }"></section>
+  <section
+    class="mark"
+    :class="classes"
+    :style="{ ...computedPosition, background: computedColor }"
+  >
+    <span class="label">{{ label }}</span>
+  </section>
 </template>
 <script>
 export default {
@@ -9,8 +15,8 @@ export default {
     index: {
       type: Number,
     },
-    //a percentage number to decide its position
-    position: {
+    //a percentage number to decide its position in the slider
+    progress: {
       type: Number,
     },
     color: {
@@ -40,12 +46,15 @@ export default {
     },
     computedPosition() {
       return this.vertical
-        ? { bottom: `${this.position * 100}%`, left: "50%" }
-        : { left: `${this.position * 100}%`, top: "50%"};
+        ? { bottom: `${this.progress * 100}%`, left: "50%" }
+        : { left: `${this.progress * 100}%`, top: "50%" };
     },
     computedColor() {
       if (this.ranged) return "rgba(255,255,255,1)";
       else return this.color;
+    },
+    computedLabelPosition() {
+      return 1;
     },
   },
   methods: {},
@@ -56,5 +65,15 @@ export default {
   position: absolute;
   width: 2px;
   height: 2px;
+  .label {
+    position: absolute;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+    color: rgba(0, 0, 0, 0.87);
+    top: 26px;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
 }
 </style>
