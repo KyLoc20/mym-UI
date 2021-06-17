@@ -30,7 +30,7 @@ const genRouteWithCatalog = (path, vNode) => ({
     }
 })
 const routes = [
-    { path: '/', ...genRouteWithCatalog('/avatar', AvatarExample), },
+    { path: '/', ...genRouteWithCatalog('/slider', SliderExample), },
     { path: '/avatar', ...genRouteWithCatalog('/avatar', AvatarExample), },
     { path: '/stepper', ...genRouteWithCatalog('/stepper', StepperExample), },
     { path: '/float-action-button', ...genRouteWithCatalog('/float-action-button', FloatActionButtonExample), },
