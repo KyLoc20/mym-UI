@@ -4,7 +4,7 @@
     :class="classes"
     :style="{ ...computedPosition, background: computedColor }"
   >
-    <span class="label">{{ label }}</span>
+    <span class="label" :style="{ ...computedLabelPosition }">{{ label }}</span>
   </section>
 </template>
 <script>
@@ -36,6 +36,11 @@ export default {
       type: String,
       required: false,
     },
+    labelOffset: {
+      //distance to the rail
+      type: Number,
+      required: false,
+    },
   },
   data() {
     return {};
@@ -54,7 +59,10 @@ export default {
       else return this.color;
     },
     computedLabelPosition() {
-      return 1;
+      if (this.vertical)
+        return { left: `${this.labelOffset}px`, transform: "translateY(-50%)" };
+      else
+        return { top: `${this.labelOffset}px`, transform: "translateX(-50%)" };
     },
   },
   methods: {},
@@ -71,8 +79,6 @@ export default {
     line-height: 20px;
     letter-spacing: 0.01em;
     color: rgba(0, 0, 0, 0.87);
-    top: 26px;
-    transform: translateX(-50%);
     white-space: nowrap;
   }
 }

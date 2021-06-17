@@ -2,7 +2,7 @@
   <section
     class="slider"
     :class="classes"
-    :style="{ ...computedLength, ...computedThickness }"
+    :style="{ ...computedLength, ...computedThickness, ...computedMarginSpace }"
   >
     <div
       class="detection-area"
@@ -44,6 +44,7 @@
         :vertical="vertical"
         :progress="calcMarkPosition(idx, mark.progress)"
         :label="mark.label"
+        :labelOffset="13"
         v-for="(mark, idx) in computedMarks"
         :key="idx"
       ></Mark>
@@ -62,6 +63,7 @@ export default {
   name: "Slider",
   components: { Mark, ValueLabel },
   props: {
+    //todo 0.value map 1.range slider 2.vertical slider 3.custom color 4.disabled all sliders
     size: {
       //the length of slider
       //prop controlled only, outer controller not supported
@@ -292,6 +294,12 @@ export default {
     computedCustomMarks() {
       if (!this.marks || !Array.isArray(this.marks)) return [];
       else return this.marks.map((mark) => mark.progress);
+    },
+    computedMarginSpace() {
+      //only for custom marks' labels
+      const labelLineHeight = 20;
+      if (!this.marks || !Array.isArray(this.marks)) return null;
+      else return this.vertical ? null : { marginBottom: `${labelLineHeight}px` };
     },
     computedValueLabelVisibility() {
       if (this.valueLabelDisplay === "on") return true;

@@ -125,7 +125,25 @@
       <code>marks</code> prop.</typography
     >
     <GroupBox>
-      <Slider :defaultValue="30" :size="500" :step="10" :marks="customMarks"></Slider>
+      <Slider
+        :defaultValue="30"
+        :size="500"
+        :step="10"
+        :marks="customMarks"
+      ></Slider>
+    </GroupBox>
+
+    <typography variant="h2">Restricted marks</typography>
+    <typography variant="p"
+      >You can restrict the selectable values to those provided with the
+      <code>marks</code> prop without the <code>step</code> prop.</typography
+    >
+     <GroupBox>
+      <Slider
+        :defaultValue="37"
+        :size="500"
+        :marks="customMarks"
+      ></Slider>
     </GroupBox>
   </section>
 </template>
