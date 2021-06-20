@@ -495,24 +495,24 @@ export default {
       padding: 0;
       border: none;
       cursor: inherit;
-      color: transparent; //hide focus cursor and value
       user-select: none;
-      background: transparent;
-    }
-    .hide-selection {
-      //todo hide the value of input when selecting
-      background: transparent;
-      color: transparent;
-    }
-    input::selection {
-      .hide-selection();
-    }
-    input:focus {
-      outline: none;
+      .content-hidden {
+        //hide the value of input and the cursor including situations when text-selected, focused
+        color: transparent;
+        background: transparent;
+      }
+      .content-hidden();
       &::selection {
-        .hide-selection();
+        .content-hidden();
+      }
+      &:focus {
+        outline: none;
+        &::selection {
+          .content-hidden();
+        }
       }
     }
+
     label,
     .tricky-label-for-fitting {
       position: absolute;

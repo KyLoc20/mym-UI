@@ -12,6 +12,7 @@ Vue.prototype._ = _
 import ScrollCatalog from "./components//ScrollCatalog/ScrollCatalog";
 import StepperExample from "./examples/StepperExample"
 import AvatarExample from "./examples/AvatarExample"
+import AutocompleteExample from "./examples/AutocompleteExample"
 import FloatActionButtonExample from "./examples/FloatActionButtonExample"
 import ButtonExample from "./examples/ButtonExample"
 import SliderExample from "./examples/SliderExample"
@@ -41,6 +42,7 @@ const routes = [
     { path: '/chip', ...genRouteWithCatalog('/chip', ChipExample), },
     { path: '/slider', ...genRouteWithCatalog('/slider', SliderExample), },
     { path: '/select', ...genRouteWithCatalog('/select', SelectExample), },
+    { path: '/autocomplete', ...genRouteWithCatalog('/autocomplete', AutocompleteExample), },
 ]
 
 const router = new VueRouter({
