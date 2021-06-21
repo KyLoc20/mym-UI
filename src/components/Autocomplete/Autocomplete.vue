@@ -67,7 +67,7 @@ export default {
       return [this.disabled ? "disabled" : ""];
     },
     computedMatchingContent() {
-      return `inputValue: ${this.inputValue} cValue: ${this.cValue} `;
+      return `inputValue: ${this.inputValue} cValue: ${this.cValue} ${this.availableOptions}`;
     },
     computedInputBorder() {
       //only for outlined
@@ -75,8 +75,12 @@ export default {
       else if (this.isHovering) return "1px solid rgba(0, 0, 0, 1)";
       else return "1px solid rgba(0, 0, 0, 0.23)";
     },
+    parsedOptions() {
+      if (!this.options) return [];
+      else return this.options.map((item) => item.label.toLowerCase());
+    },
     availableOptions() {
-      return this.options;
+      return this.doPreciseMatching(this.inputValue, this.options);
     },
   },
   methods: {
@@ -112,8 +116,13 @@ export default {
       this.menuToggled = false;
       console.log("handleDoneSelect", e, label);
     },
-    doPreciseMatching() {
-      return 1;
+    doPreciseMatching(input, candidates) {
+      /* candidates:[{label},] */
+      if (!input) return candidates;
+      else
+        return candidates.filter(
+          (item) => item.label.toLowerCase().indexOf(input.toLowerCase()) > -1
+        );
     },
     doFuzzyMatching() {
       return 1;
