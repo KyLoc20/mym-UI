@@ -29,7 +29,7 @@ export default {
         {
           content: { label: "inputs", text: "Inputs" },
           children: [
-            { content: { label: "autocomplete", text: "Autocomplete", link: "autocomplete" } },
+            { content: { label: "autocomplete", text: "Autocomplete🚧", link: "autocomplete" } },
             { content: { label: "button", text: "Button", link: "button" } },
             {
               content: {

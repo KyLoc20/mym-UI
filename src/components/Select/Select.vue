@@ -531,7 +531,6 @@ export default {
     }
     .selected-value {
       position: absolute;
-      color: rgba(0, 0, 0, 0.87);
       font-family: "Roboto", "Helvetica";
       font-size: 16px;
       line-height: 18px;

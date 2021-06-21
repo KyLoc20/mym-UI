@@ -26,7 +26,7 @@
       >The value must be chosen from a predefined set of allowed values. Use the
       prop <code>options</code> to predefine them.</typography
     >
-    <GroupBox> <Autocomplete :options="movieOptions" dev></Autocomplete> </GroupBox>
+    <GroupBox> <Autocomplete :options="movieOptions" placeholder="Movie" dev></Autocomplete> </GroupBox>
   </section>
 </template>
 <script>
@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       movieOptions: [
-        { label: "The Shawshank Redemption", year: 1994 },
+        { label: "The Shawshank Redemption111111111111111111111111111111111", year: 1994 },
         { label: "The Godfather", year: 1972 },
         { label: "The Godfather: Part II", year: 1974 },
         { label: "The Dark Knight", year: 2008 },

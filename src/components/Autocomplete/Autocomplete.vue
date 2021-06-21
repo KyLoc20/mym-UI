@@ -9,6 +9,8 @@
       >
         <input
           type="text"
+          :id="id"
+          :placeholder="placeholder"
           ref="input"
           v-model.trim="inputValue"
           @keyup.enter="handleInput"
@@ -18,32 +20,35 @@
       </section>
       <transition name="fade-from-center">
         <section class="option-menu" v-if="menuToggled">
-          <div class="control-mask" @click="handleStopSelect"></div>
-          <section
-            class="option"
+          <div class="control-mask" @click="handleStopSelectByMask"></div>
+          <Option
+            class="none"
+            v-if="availableOptions.length === 0"
+            :label="noneOptionText"
+            disabled
+          ></Option>
+          <Option
             v-for="item in availableOptions"
             :key="item.label"
-            @mousedown="handleDoneSelect($event, item.label)"
-          >
-            <div class="text">
-              {{ item.label }}
-            </div>
-          </section>
-        </section></transition
-      >
+            :label="item.label"
+            @select="handleDoneSelect"
+          ></Option></section
+      ></transition>
     </div>
     <span class="dev-info" v-if="dev">{{ computedMatchingContent }}</span>
   </section>
 </template>
 <script>
 // import { requireOneOf } from "../common/validator";
+import Option from "./_Option.vue";
 export default {
   name: "Autocomplete",
-  components: {},
+  components: { Option },
   props: {
     options: {
       type: Array,
     },
+
     disabled: {
       type: Boolean,
       default: false,
@@ -52,9 +57,19 @@ export default {
       type: Boolean,
       default: false,
     },
+    placeholder: {
+      type: String,
+      required: false,
+    },
+    //the following are user custom props
+    noneOptionText: {
+      type: String,
+      default: "No options",
+    },
   },
   data() {
     return {
+      id: null,
       isHovering: false,
       isFocused: false,
       menuToggled: false,
@@ -62,12 +77,15 @@ export default {
       cValue: null, //currently user selected value
     };
   },
+  mounted() {
+    this.id = this._uid;
+  },
   computed: {
     classes() {
       return [this.disabled ? "disabled" : ""];
     },
     computedMatchingContent() {
-      return `inputValue: ${this.inputValue} cValue: ${this.cValue} ${this.availableOptions}`;
+      return `inputValue: ${this.inputValue} cValue: ${this.cValue}`;
     },
     computedInputBorder() {
       //only for outlined
@@ -84,7 +102,13 @@ export default {
     },
   },
   methods: {
-    resetContent() {
+    restoreInput() {
+      //clear when input unmatched
+      if (!this.cValue) this.clearInput();
+      //back to the last matched input
+      else this.inputValue = this.cValue;
+    },
+    clearInput() {
       this.inputValue = "";
     },
     handleHoverEnter() {
@@ -96,25 +120,33 @@ export default {
       this.isHovering = false;
     },
     handleFocus() {
-      if (!this.disabled) this.isFocused, (this.menuToggled = true);
+      // console.log("handleFocus");
+      if (this.disabled) return;
+      this.isFocused = true;
+      this.menuToggled = true;
     },
     handleBlur() {
-      if (!this.disabled) this.isFocused = false;
+      // console.log("handleBlur");
+      if (this.disabled) return;
+      this.isFocused = false;
+      this.menuToggled = false;
+      this.restoreInput();
     },
     handleInput() {
       if (!this.inputValue) return;
       console.log("handleInput", this.inputValue);
-      this.resetContent();
+      this.clearInput();
     },
-    handleStopSelect() {
-      // e.preventDefault();
-      this.menuToggled = false;
-      console.log("handleStopSelect", this.menuToggled);
+    handleStopSelectByMask() {
+      this.$refs.input.blur();
+      // this.menuToggled = false;
+      // console.log("handleStopSelect", this.menuToggled);
     },
-    handleDoneSelect(e, label) {
-      this.cValue = label;
+    handleDoneSelect(e) {
+      this.cValue = e.label;
+      this.inputValue = e.label;
       this.menuToggled = false;
-      console.log("handleDoneSelect", e, label);
+      console.log("handleDoneSelect", e.label);
     },
     doPreciseMatching(input, candidates) {
       /* candidates:[{label},] */
@@ -151,20 +183,8 @@ export default {
         color: rgba(0, 0, 0, 0.87);
         font-weight: 400;
         font-size: 16px;
-        .content-hidden {
-          // hide the value of input and the cursor including situations when text-selected, focused
-          color: transparent;
-          background: transparent;
-        }
-        // .content-hidden();
-        &::selection {
-          .content-hidden();
-        }
         &:focus {
           outline: none;
-          &::selection {
-            .content-hidden();
-          }
         }
       }
     }
@@ -175,7 +195,7 @@ export default {
       display: flex;
       flex-direction: column;
       width: 100%;
-      height: 120px;
+      max-height: 304px; //36*8+16=304
       padding: 8px 0;
       border-radius: 4px;
       overflow-y: scroll;
@@ -190,29 +210,6 @@ export default {
         left: 0;
         right: 0;
         z-index: 1;
-      }
-      .option {
-        flex-shrink: 0;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 6px 16px;
-        box-sizing: border-box;
-        cursor: pointer;
-        transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-        z-index: 10;
-        min-height: 36px;
-        .text {
-          width: 100%;
-          line-height: 24px;
-          font-size: 16px;
-          user-select: none;
-          word-break: break-all;
-        }
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.04);
-        }
       }
     }
   }
