@@ -9,11 +9,14 @@
       >
         <input
           type="text"
+          autocomplete="off"
           :id="id"
           :placeholder="placeholder"
           ref="input"
           v-model.trim="inputValue"
-          @keyup.enter="handleInput"
+          @keyup.enter="handleDoneSelect(currentLabel)"
+          @keydown.up="handleLookUp($event, 'up')"
+          @keydown.down="handleLookUp($event, 'down')"
           @focus="handleFocus"
           @blur="handleBlur"
         />
@@ -28,10 +31,11 @@
             disabled
           ></Option>
           <Option
-            v-for="item in availableOptions"
+            v-for="(item, idx) in availableOptions"
             :key="item.label"
             :label="item.label"
-            @select="handleDoneSelect"
+            :touched="lookupIndex === idx"
+            @select="handleDoneSelect(item.label)"
           ></Option></section
       ></transition>
     </div>
@@ -75,23 +79,44 @@ export default {
       menuToggled: false,
       inputValue: null, //currently user input value
       cValue: null, //currently user selected value
+      lookupIndex: null, //keyborad controller
     };
   },
   mounted() {
     this.id = this._uid;
+  },
+  watch: {
+    inputValue: function(newValue) {
+      //todo condition of stopping recursive matching, another is to stop when availableOptions has newValue
+      //now the condition of stopping: to stop when availableOptions has the only option that is equal to the changed newValue
+      if (
+        this.availableOptions.length === 1 &&
+        newValue === this.availableOptions[0].label
+      );
+      else this.menuToggled = true;
+    },
+    lookupIndex: function(newValue) {
+      if (newValue !== null) this.menuToggled = true;
+    },
   },
   computed: {
     classes() {
       return [this.disabled ? "disabled" : ""];
     },
     computedMatchingContent() {
-      return `inputValue: ${this.inputValue} cValue: ${this.cValue}`;
+      return `inputValue: ${this.inputValue} cValue: ${this.cValue} idx:${this.lookupIndex} label:${this.currentLabel} ${this.availableOptions.length} ${this.menuToggled}`;
     },
     computedInputBorder() {
       //only for outlined
       if (this.isFocused) return "1px solid rgba(25, 118, 210, 1)";
       else if (this.isHovering) return "1px solid rgba(0, 0, 0, 1)";
       else return "1px solid rgba(0, 0, 0, 0.23)";
+    },
+    currentLabel() {
+      if (this.lookupIndex === null) return undefined;
+      const optionObj = this.availableOptions[this.lookupIndex];
+      if (optionObj === undefined) return undefined;
+      else return optionObj.label;
     },
     parsedOptions() {
       if (!this.options) return [];
@@ -110,6 +135,25 @@ export default {
     },
     clearInput() {
       this.inputValue = "";
+    },
+    handleLookUp(e, direction) {
+      if (this.disabled) return;
+      e.preventDefault();
+      if (this.lookupIndex === null)
+        this.lookupIndex =
+          this.direction === "up" ? this.availableOptions.length - 1 : 0;
+      else {
+        if (direction === "up")
+          this.lookupIndex =
+            this.lookupIndex === 0
+              ? this.availableOptions.length - 1
+              : this.lookupIndex - 1;
+        else
+          this.lookupIndex =
+            this.lookupIndex === this.availableOptions.length - 1
+              ? 0
+              : this.lookupIndex + 1;
+      }
     },
     handleHoverEnter() {
       if (this.disabled) return;
@@ -130,23 +174,19 @@ export default {
       if (this.disabled) return;
       this.isFocused = false;
       this.menuToggled = false;
+      this.lookupIndex = null;
       this.restoreInput();
-    },
-    handleInput() {
-      if (!this.inputValue) return;
-      console.log("handleInput", this.inputValue);
-      this.clearInput();
     },
     handleStopSelectByMask() {
       this.$refs.input.blur();
-      // this.menuToggled = false;
-      // console.log("handleStopSelect", this.menuToggled);
     },
-    handleDoneSelect(e) {
-      this.cValue = e.label;
-      this.inputValue = e.label;
+    handleDoneSelect(label) {
+      if (label === undefined) return;
+      this.cValue = label;
+      this.inputValue = label;
       this.menuToggled = false;
-      console.log("handleDoneSelect", e.label);
+      this.lookupIndex = null;
+      console.log("handleDoneSelect", label);
     },
     doPreciseMatching(input, candidates) {
       /* candidates:[{label},] */
