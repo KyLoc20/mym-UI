@@ -33,14 +33,70 @@
         dev
       ></Autocomplete>
     </GroupBox>
+
+    <typography variant="h2">Options structure</typography>
+    <typography variant="p"
+      >The component accepts the following options structures by
+      default.</typography
+    >
+    <pre>
+      <code>
+        <span>[{label: String}]</span>
+      </code>
+    </pre>
+    <typography variant="quote">
+      <typography variant="p"
+        ><strong>Note: </strong> the <code>label</code> property must be existed
+        and unique.</typography
+      >
+    </typography>
+    <typography variant="p"
+      >You can set other properties as you want in each option.</typography
+    >
+    <pre>
+      <code>
+        <span>[{label: 'Canada', code: 'CA', phone: '1', suggested: true}]</span>
+      </code>
+    </pre>
+
+    <GroupBox>
+      <Autocomplete
+        :options="countryOptions"
+        :parseOption="countryOptionsParser"
+        placeholder="Select a country"
+      ></Autocomplete>
+    </GroupBox>
+
+    <typography variant="h2">Combo box</typography>
+    <typography variant="p"
+      >The value must be chosen from a predefined set of allowed values. Use the
+      prop <code>options</code> to predefine them.</typography
+    >
+    <GroupBox>
+      <Autocomplete :options="movieOptions" placeholder="Movie"></Autocomplete>
+    </GroupBox>
   </section>
 </template>
 <script>
+/* 
+      renderOption={(props, option) => (
+        <Box
+          component="li"
+          sx={{ fontSize: 15, '& > span': { mr: '10px', fontSize: 18 } }}
+          {...props}
+        >
+          <span>{countryToFlag(option.code)}</span>
+          {option.label} ({option.code}) +{option.phone}
+        </Box>
+      )}
+    */
+
 import GroupBox from "../components/Layout/GroupBox.vue";
 // import GroupRow from "../components/Layout/GroupRow.vue";
 // import Icon from "../components/Icon/Icon.vue";
 import Autocomplete from "../components/Autocomplete/Autocomplete.vue";
 import Typography from "../components/Typography/Typography";
+import {getCountryOptions} from "./data/country-options";
 export default {
   name: "AutocompleteExample",
   components: { Typography, Autocomplete, GroupBox },
@@ -69,10 +125,15 @@ export default {
           year: 2001,
         },
       ],
+      countryOptions: getCountryOptions(),
     };
   },
   methods: {},
-  computed: {},
+  computed: {
+    countryOptionsParser() {
+      return (option) => `${option.label} (${option.code}) +${option.phone}`;
+    },
+  },
 };
 </script>
 <style scoped lang="less">
@@ -80,6 +141,24 @@ export default {
   .wrapper {
     display: flex;
     margin-bottom: 15px;
+  }
+  pre {
+    display: flex;
+    margin: 24px 0;
+    padding: 16px;
+    overflow: auto;
+    border-radius: 4px;
+    background-color: #272c34;
+    code {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background: transparent;
+      color: #fff;
+      font-size: 0.9em;
+      line-height: 1.5;
+      padding: 0 3px;
+    }
   }
 }
 </style>

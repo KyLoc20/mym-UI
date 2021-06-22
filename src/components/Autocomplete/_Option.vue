@@ -8,7 +8,7 @@
     :style="{ background: computedColor }"
   >
     <span class="text" :style="{ color: computedTextColor }">
-      {{ label }}
+      {{ computedLabelText }}
     </span>
   </section>
 </template>
@@ -19,6 +19,10 @@ export default {
   props: {
     label: {
       type: String,
+    },
+    option: {
+      //{label:String,...others}
+      type: Object,
     },
     disabled: {
       type: Boolean,
@@ -42,6 +46,10 @@ export default {
       type: String,
       required: false,
     },
+    parser: {
+      type: Function,
+      required: false,
+    },
   },
   data() {
     return {
@@ -51,6 +59,11 @@ export default {
   computed: {
     classes() {
       return [this.disabled ? "disabled" : ""];
+    },
+    computedLabelText() {
+      console.log("computedLabelText", this.parser, this.option);
+      if (this.parser) return this.parser(this.option);
+      else return this.label;
     },
     computedTextColor() {
       if (this.disabled) return "rgba(0, 0, 0, 0.38)";

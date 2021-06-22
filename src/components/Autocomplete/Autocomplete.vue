@@ -45,7 +45,9 @@
           ></Option>
           <Option
             v-for="(item, idx) in availableOptions"
+            :parser="parseOption"
             :key="item.label"
+            :option="item"
             :label="item.label"
             :touched="lookupIndex === idx"
             :selected="cValue === item.label"
@@ -84,6 +86,25 @@ export default {
     noneOptionText: {
       type: String,
       default: "No options",
+    },
+    //todo renderOption
+    /* 
+      renderOption={(props, option) => (
+        <Box
+          component="li"
+          sx={{ fontSize: 15, '& > span': { mr: '10px', fontSize: 18 } }}
+          {...props}
+        >
+          <span>{countryToFlag(option.code)}</span>
+          {option.label} ({option.code}) +{option.phone}
+        </Box>
+      )}
+    */
+    parseOption: {
+      //define how to parse the label text by the props of each option
+      //called by [_Option]
+      type: Function,
+      required: false,
     },
   },
   data() {
@@ -188,8 +209,8 @@ export default {
 
       if (this.cValue === null) return;
       console.log("handleClearInput");
-      this.cValue = null
-      this.restoreInput()
+      this.cValue = null;
+      this.restoreInput();
       this.$refs.input.focus();
     },
     handleLookUp(e, direction) {
@@ -307,7 +328,7 @@ export default {
         right: 8px;
         top: 50%;
         transform: translateY(-50%);
-        z-index: 10;
+        z-index: 100;
       }
     }
     .option-menu {
@@ -325,13 +346,14 @@ export default {
       box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
         0px 8px 10px 1px rgba(0, 0, 0, 0.14),
         0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+      z-index: 5;
       .control-mask {
         position: fixed;
         top: 0;
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 1;
+        z-index: 10;
       }
     }
   }
