@@ -58,7 +58,15 @@
         <span>[{label: 'Canada', code: 'CA', phone: '1', suggested: true}]</span>
       </code>
     </pre>
-
+    <typography variant="p"
+      >You can use the <code>parseOption</code> prop to define a parser function
+      which parses each option text.</typography
+    >
+    <pre>
+      <code>
+        <span>(option) => `${option.label} (${option.code}) +${option.phone}`</span>
+      </code>
+    </pre>
     <GroupBox>
       <Autocomplete
         :options="countryOptions"
@@ -67,36 +75,17 @@
       ></Autocomplete>
     </GroupBox>
 
-    <typography variant="h2">Combo box</typography>
-    <typography variant="p"
-      >The value must be chosen from a predefined set of allowed values. Use the
-      prop <code>options</code> to predefine them.</typography
-    >
-    <GroupBox>
-      <Autocomplete :options="movieOptions" placeholder="Movie"></Autocomplete>
-    </GroupBox>
+
+    <typography variant="p" :style="{marginBottom:'300px'}"></typography>
   </section>
 </template>
 <script>
-/* 
-      renderOption={(props, option) => (
-        <Box
-          component="li"
-          sx={{ fontSize: 15, '& > span': { mr: '10px', fontSize: 18 } }}
-          {...props}
-        >
-          <span>{countryToFlag(option.code)}</span>
-          {option.label} ({option.code}) +{option.phone}
-        </Box>
-      )}
-    */
-
 import GroupBox from "../components/Layout/GroupBox.vue";
 // import GroupRow from "../components/Layout/GroupRow.vue";
 // import Icon from "../components/Icon/Icon.vue";
 import Autocomplete from "../components/Autocomplete/Autocomplete.vue";
 import Typography from "../components/Typography/Typography";
-import {getCountryOptions} from "./data/country-options";
+import { getCountryOptions } from "./data/country-options";
 export default {
   name: "AutocompleteExample",
   components: { Typography, Autocomplete, GroupBox },
