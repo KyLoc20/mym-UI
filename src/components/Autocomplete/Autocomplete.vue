@@ -113,10 +113,10 @@ export default {
           behavior: "smooth",
         });
     },
-    availableOptions:function(){
+    availableOptions: function() {
       //this is for updating lookupIndex responding to availableOptions
       this.lookupIndex = this.calcIndexOfAvailableOptions(this.cValue);
-    }
+    },
   },
   computed: {
     classes() {
@@ -151,8 +151,13 @@ export default {
   },
   methods: {
     restoreInput() {
+      //input content has been clear when blurred, reset to null
+      if (this.inputValue === "") {
+        this.inputValue = null;
+        this.cValue = null;
+      }
       //clear to null or go back to the last matched input
-      this.inputValue = this.cValue;
+      else this.inputValue = this.cValue;
     },
     handleLookUp(e, direction) {
       if (this.disabled) return;
