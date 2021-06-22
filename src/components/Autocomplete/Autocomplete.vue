@@ -21,6 +21,7 @@
           @focus="handleFocus"
           @blur="handleBlur"
         />
+        <label :for="id" ref="label"></label>
       </section>
       <transition name="fade-from-center">
         <section class="option-menu" v-if="menuToggled" ref="menu">
@@ -239,6 +240,7 @@ export default {
   position: relative;
   .text-field-wrapper {
     .test-input-component {
+      position: relative;
       width: 300px;
       height: 56px;
       padding: 9px 39px 9px 9px;
@@ -258,6 +260,15 @@ export default {
         &:focus {
           outline: none;
         }
+      }
+      label {
+        border-radius: inherit;
+        position: absolute;
+        top: 0;
+        left: 0;
+        cursor: text;
+        width: 100%;
+        height: 100%;
       }
     }
     .option-menu {
