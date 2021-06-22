@@ -24,6 +24,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    selected: {
+      //currently selected
+      type: Boolean,
+      default: false,
+    },
     touched: {
       //wanna select by keyboard
       type: Boolean,
@@ -52,7 +57,8 @@ export default {
       else return this.textColor || null;
     },
     computedColor() {
-      if (this.isHovering || this.touched) return "rgba(0, 0, 0, 0.04)";
+      if (this.selected) return "rgba(25, 118, 210, 0.08)";
+      else if (this.isHovering || this.touched) return "rgba(0, 0, 0, 0.04)";
       else return null;
     },
   },
@@ -85,7 +91,6 @@ export default {
   cursor: pointer;
   transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   z-index: 10;
-  min-height: 36px;
   &.disabled {
     cursor: default;
   }

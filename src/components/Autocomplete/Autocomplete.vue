@@ -17,13 +17,14 @@
           @keyup.enter="handleDoneSelect(currentLabel)"
           @keydown.up="handleLookUp($event, 'up')"
           @keydown.down="handleLookUp($event, 'down')"
+          @keydown.esc="handleStopSelect"
           @focus="handleFocus"
           @blur="handleBlur"
         />
       </section>
       <transition name="fade-from-center">
-        <section class="option-menu" v-if="menuToggled">
-          <div class="control-mask" @click="handleStopSelectByMask"></div>
+        <section class="option-menu" v-if="menuToggled" ref="menu">
+          <div class="control-mask" @click="handleStopSelect"></div>
           <Option
             class="none"
             v-if="availableOptions.length === 0"
@@ -35,6 +36,7 @@
             :key="item.label"
             :label="item.label"
             :touched="lookupIndex === idx"
+            :selected="cValue === item.label"
             @select="handleDoneSelect(item.label)"
           ></Option></section
       ></transition>
@@ -76,6 +78,8 @@ export default {
       id: null,
       isHovering: false,
       isFocused: false,
+      isSelectionConfirmed: false, //go true when a label is selected which allows availableOptions to have all options next time when focused
+      //the only 2 ways to close the menu when handleBlur or handleDoneSelect
       menuToggled: false,
       inputValue: null, //currently user input value
       cValue: null, //currently user selected value
@@ -87,24 +91,41 @@ export default {
   },
   watch: {
     inputValue: function(newValue) {
-      //todo condition of stopping recursive matching, another is to stop when availableOptions has newValue
-      //now the condition of stopping: to stop when availableOptions has the only option that is equal to the changed newValue
-      if (
-        this.availableOptions.length === 1 &&
-        newValue === this.availableOptions[0].label
-      );
-      else this.menuToggled = true;
+      //this is for opening the closed menu due to handleDoneSelect or handleBlur when changing the input
+      let shouldReopen = true;
+      //after handleBlur is called, this.inputValue will be restored to this.cValue
+      //NOTICE this condition will also be triggered when handleDoneSelect, however it makes sense too
+      if (newValue === this.cValue) shouldReopen = false;
+      console.log("inputValue changed shouldReopen: ", shouldReopen);
+      this.menuToggled = shouldReopen;
+
+      //this is for force availableOptions to return to normal function which filters options exactly
+      if (this.isSelectionConfirmed && newValue !== this.cValue)
+        this.isSelectionConfirmed = false;
     },
     lookupIndex: function(newValue) {
-      if (newValue !== null) this.menuToggled = true;
+      //todo scroll when looking up by keydown, however the size is default option height 36px, problems could appear when many large-sized options exist
+      const elMenu = this.$refs.menu;
+      if (elMenu)
+        elMenu.scroll({
+          top: newValue * 36,
+          left: 0,
+          behavior: "smooth",
+        });
     },
+    availableOptions:function(){
+      //this is for updating lookupIndex responding to availableOptions
+      this.lookupIndex = this.calcIndexOfAvailableOptions(this.cValue);
+    }
   },
   computed: {
     classes() {
       return [this.disabled ? "disabled" : ""];
     },
     computedMatchingContent() {
-      return `inputValue: ${this.inputValue} cValue: ${this.cValue} idx:${this.lookupIndex} label:${this.currentLabel} ${this.availableOptions.length} ${this.menuToggled}`;
+      return `inputValue: ${this.inputValue} cValue: ${this.cValue} idx:${this.lookupIndex} 
+      label:${this.currentLabel} availableOptions-num:${this.availableOptions.length} 
+      menuToggled:${this.menuToggled} isSelectionConfirmed:${this.isSelectionConfirmed}`;
     },
     computedInputBorder() {
       //only for outlined
@@ -123,18 +144,15 @@ export default {
       else return this.options.map((item) => item.label.toLowerCase());
     },
     availableOptions() {
+      if (this.isSelectionConfirmed)
+        return this.doNoneMatching(this.inputValue, this.options);
       return this.doPreciseMatching(this.inputValue, this.options);
     },
   },
   methods: {
     restoreInput() {
-      //clear when input unmatched
-      if (!this.cValue) this.clearInput();
-      //back to the last matched input
-      else this.inputValue = this.cValue;
-    },
-    clearInput() {
-      this.inputValue = "";
+      //clear to null or go back to the last matched input
+      this.inputValue = this.cValue;
     },
     handleLookUp(e, direction) {
       if (this.disabled) return;
@@ -174,10 +192,9 @@ export default {
       if (this.disabled) return;
       this.isFocused = false;
       this.menuToggled = false;
-      this.lookupIndex = null;
       this.restoreInput();
     },
-    handleStopSelectByMask() {
+    handleStopSelect() {
       this.$refs.input.blur();
     },
     handleDoneSelect(label) {
@@ -185,8 +202,18 @@ export default {
       this.cValue = label;
       this.inputValue = label;
       this.menuToggled = false;
-      this.lookupIndex = null;
+      this.isSelectionConfirmed = true; //enable availableOptions to have all options next time when focused
+      //todo maybe problem when availableOptions updated
       console.log("handleDoneSelect", label);
+    },
+    calcIndexOfAvailableOptions(label) {
+      const arr = this.availableOptions.map((option) => option.label);
+      const index = arr.indexOf(label);
+      return index === -1 ? null : index;
+    },
+    doNoneMatching(input, candidates) {
+      //give back all candidates
+      return input ? candidates : candidates;
     },
     doPreciseMatching(input, candidates) {
       /* candidates:[{label},] */
