@@ -22,6 +22,17 @@
           @blur="handleBlur"
         />
         <label :for="id" ref="label"></label>
+
+        <div class="btn-wrapper">
+          <transition>
+            <IconButton
+              v-show="shouldClearButtonDisplayed"
+              icon="cross"
+              v-bind="computedButtonStyles"
+              @click="handleClearInput"
+            ></IconButton>
+          </transition>
+        </div>
       </section>
       <transition name="fade-from-center">
         <section class="option-menu" v-if="menuToggled" ref="menu">
@@ -48,9 +59,10 @@
 <script>
 // import { requireOneOf } from "../common/validator";
 import Option from "./_Option.vue";
+import IconButton from "../Button/IconButton.vue";
 export default {
   name: "Autocomplete",
-  components: { Option },
+  components: { Option, IconButton },
   props: {
     options: {
       type: Array,
@@ -123,6 +135,17 @@ export default {
     classes() {
       return [this.disabled ? "disabled" : ""];
     },
+
+    shouldClearButtonDisplayed() {
+      return this.cValue !== null && (this.isFocused || this.isHovering);
+    },
+    computedButtonStyles() {
+      return {
+        size: 28,
+        iconSize: 20,
+        disrippled: true,
+      };
+    },
     computedMatchingContent() {
       return `inputValue: ${this.inputValue} cValue: ${this.cValue} idx:${this.lookupIndex} 
       label:${this.currentLabel} availableOptions-num:${this.availableOptions.length} 
@@ -159,6 +182,15 @@ export default {
       }
       //clear to null or go back to the last matched input
       else this.inputValue = this.cValue;
+    },
+    handleClearInput() {
+      if (this.disabled) return;
+
+      if (this.cValue === null) return;
+      console.log("handleClearInput");
+      this.cValue = null
+      this.restoreInput()
+      this.$refs.input.focus();
     },
     handleLookUp(e, direction) {
       if (this.disabled) return;
@@ -270,6 +302,13 @@ export default {
         width: 100%;
         height: 100%;
       }
+      .btn-wrapper {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+      }
     }
     .option-menu {
       position: absolute;
@@ -317,5 +356,13 @@ export default {
     transform: translateY(-5%);
     opacity: 0;
   }
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 200ms cubic-bezier(0.4, 0.2, 0, 1);
+}
+.v-enter,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
