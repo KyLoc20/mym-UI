@@ -75,49 +75,78 @@
       ></Autocomplete>
     </GroupBox>
 
+    <typography variant="h2">Controlled states</typography>
+    <typography variant="p"
+      >The component has two states that can be controlled:</typography
+    >
+    <ul>
+      <li>
+        The "value" with the <code>cValue</code>/<code>onChange</code>
+        combination which represents the value selected by the user.
+      </li>
+      <li>
+        The "inputValue" with the <code>inputValue</code>/<code
+          >onInputChange</code
+        >
+        combination which represents the value displayed in the textfield and
+        availabel to edit.
+      </li>
+    </ul>
+    <GroupBox block>
+      <GroupRow>
+        <div
+          class="wrapper"
+          :style="{ display: 'flex', flexDirection: 'column',width:'316px',padding:'0 16px' }"
+        >
+          <div :style="{ lineHeight: '24px' }">
+            <span>value: </span>'{{ controlledValue }}'<span></span>
+          </div>
+          <div :style="{ lineHeight: '24px' }">
+            <span>inputValue: </span>'{{ controlledInputValue }}'<span></span>
+          </div></div
+      ></GroupRow>
+      <GroupRow>
+        <Autocomplete
+          :options="controlledOptions"
+          placeholder="Controllalbe"
+          @change="handleChangeControlledValue"
+          @inputchange="handleChangeControlledInputValue"
+        ></Autocomplete
+      ></GroupRow>
+    </GroupBox>
 
-    <typography variant="p" :style="{marginBottom:'300px'}"></typography>
+    <typography variant="p" :style="{ marginBottom: '300px' }"></typography>
   </section>
 </template>
 <script>
 import GroupBox from "../components/Layout/GroupBox.vue";
-// import GroupRow from "../components/Layout/GroupRow.vue";
+import GroupRow from "../components/Layout/GroupRow.vue";
 // import Icon from "../components/Icon/Icon.vue";
 import Autocomplete from "../components/Autocomplete/Autocomplete.vue";
 import Typography from "../components/Typography/Typography";
 import { getCountryOptions } from "./data/country-options";
+import { getMovieOptions } from "./data/movie-options";
 export default {
   name: "AutocompleteExample",
-  components: { Typography, Autocomplete, GroupBox },
+  components: { Typography, Autocomplete, GroupBox, GroupRow },
   anchors: [],
   data() {
     return {
-      movieOptions: [
-        { label: "The Shawshank Redemption", year: 1994 },
-        {
-          label:
-            "The Lord of the Rings: The Return of the King The Lord of the Rings: The Return of the King The Lord of the Rings: The Return of the King ",
-          year: 2003,
-        },
-
-        { label: "The Godfather", year: 1972 },
-        { label: "The Godfather: Part II", year: 1974 },
-        { label: "The Dark Knight", year: 2008 },
-        { label: "12 Angry Men", year: 1957 },
-        { label: "Schindler's List", year: 1993 },
-        { label: "Pulp Fiction", year: 1994 },
-
-        { label: "The Good, the Bad and the Ugly", year: 1966 },
-        { label: "Fight Club", year: 1999 },
-        {
-          label: "The Lord of the Rings: The Fellowship of the Ring",
-          year: 2001,
-        },
-      ],
+      controlledValue: null,
+      controlledInputValue: null,
+      controlledOptions: [{ label: "Option1" }, { label: "Option2" }],
+      movieOptions: getMovieOptions(),
       countryOptions: getCountryOptions(),
     };
   },
-  methods: {},
+  methods: {
+    handleChangeControlledValue(e) {
+      this.controlledValue = e.value;
+    },
+    handleChangeControlledInputValue(e) {
+      this.controlledInputValue = e.value;
+    },
+  },
   computed: {
     countryOptionsParser() {
       return (option) => `${option.label} (${option.code}) +${option.phone}`;
@@ -129,7 +158,8 @@ export default {
 .autocomplete-example {
   .wrapper {
     display: flex;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
   }
   pre {
     display: flex;

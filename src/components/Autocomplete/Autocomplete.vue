@@ -124,6 +124,9 @@ export default {
     this.id = this._uid;
   },
   watch: {
+    cValue:function(newValue) {
+      this.$emit("change",{value:newValue})
+    },
     inputValue: function(newValue) {
       //this is for opening the closed menu due to handleDoneSelect or handleBlur when changing the input
       let shouldReopen = true;
@@ -136,6 +139,8 @@ export default {
       //this is for force availableOptions to return to normal function which filters options exactly
       if (this.isSelectionConfirmed && newValue !== this.cValue)
         this.isSelectionConfirmed = false;
+
+      this.$emit("inputchange",{value:newValue})
     },
     lookupIndex: function(newValue) {
       //todo scroll when looking up by keydown, however the size is default option height 36px, problems could appear when many large-sized options exist
@@ -202,11 +207,13 @@ export default {
         this.cValue = null;
       }
       //clear to null or go back to the last matched input
-      else this.inputValue = this.cValue;
+      else{
+        console.log("clear to null or go back to the last matched input")
+        this.inputValue = this.cValue;
+      } 
     },
     handleClearInput() {
       if (this.disabled) return;
-
       if (this.cValue === null) return;
       console.log("handleClearInput");
       this.cValue = null;
