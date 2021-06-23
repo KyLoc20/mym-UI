@@ -21,7 +21,7 @@
         similar or previous searches to save the user time: free solo.
       </li>
     </ul>
-    <typography variant="h2">Combo box</typography>
+    <typography variant="h2" id="ac-combo-box">Combo box</typography>
     <typography variant="p"
       >The value must be chosen from a predefined set of allowed values. Use the
       prop <code>options</code> to predefine them.</typography
@@ -30,11 +30,12 @@
       <Autocomplete
         :options="movieOptions"
         placeholder="Movie"
-        dev
       ></Autocomplete>
     </GroupBox>
 
-    <typography variant="h2">Options structure</typography>
+    <typography variant="h2" id="ac-options-structure"
+      >Options structure</typography
+    >
     <typography variant="p"
       >The component accepts the following options structures by
       default.</typography
@@ -75,7 +76,7 @@
       ></Autocomplete>
     </GroupBox>
 
-    <typography variant="h2">Clearable</typography>
+    <typography variant="h2" id="ac-clearable">Clearable</typography>
     <typography variant="p"
       >Use the <code>clearable</code> prop with <code>false</code> to unable the
       clear behaviors.</typography
@@ -88,7 +89,9 @@
       ></Autocomplete>
     </GroupBox>
 
-    <typography variant="h2">Keyborad</typography>
+    <typography variant="h2" id="ac-keyboard-shortcut"
+      >Keyborad shortcut</typography
+    >
     <typography variant="p"
       >You can use keyboard conveniently when the component is
       focused.</typography
@@ -105,10 +108,15 @@
         Stop the selection process when pressing <span class="key">esc</span>.
       </li>
       <li>
-        Clear the inputValue when pressing <span class="key">ctrl</span>+<span class="key">delete</span>.
+        Clear the inputValue when pressing <span class="key">ctrl</span>+<span
+          class="key"
+          >delete</span
+        >.
       </li>
     </ul>
-    <typography variant="h2">Controlled states</typography>
+    <typography variant="h2" id="ac-controlled-states"
+      >Controlled states</typography
+    >
     <typography variant="p"
       >The component has two states that can be controlled:</typography
     >
@@ -167,7 +175,13 @@ import { getMovieOptions } from "./data/movie-options";
 export default {
   name: "AutocompleteExample",
   components: { Typography, Autocomplete, GroupBox, GroupRow },
-  anchors: [],
+  anchors: [
+    { anchor: "ac-combo-box", text: "Combo box" },
+    { anchor: "ac-options-structure", text: "Options structure" },
+    { anchor: "ac-clearable", text: "Clearable" },
+    { anchor: "ac-keyboard-shortcut", text: "Keyborad shortcut" },
+    { anchor: "ac-controlled-states", text: "Controlled states" },
+  ],
   data() {
     return {
       controlledValue: null,
