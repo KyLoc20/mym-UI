@@ -75,6 +75,39 @@
       ></Autocomplete>
     </GroupBox>
 
+    <typography variant="h2">Clearable</typography>
+    <typography variant="p"
+      >Use the <code>clearable</code> prop with <code>false</code> to unable the
+      clear behaviors.</typography
+    >
+    <GroupBox>
+      <Autocomplete
+        :options="movieOptions"
+        placeholder="Movie"
+        :clearable="false"
+      ></Autocomplete>
+    </GroupBox>
+
+    <typography variant="h2">Keyborad</typography>
+    <typography variant="p"
+      >You can use keyboard conveniently when the component is
+      focused.</typography
+    >
+    <ul>
+      <li>
+        Look up the selection when pressing <span class="key">up</span> or
+        <span class="key">down</span>.
+      </li>
+      <li>
+        Confirm your selection when pressing <span class="key">enter</span>.
+      </li>
+      <li>
+        Stop the selection process when pressing <span class="key">esc</span>.
+      </li>
+      <li>
+        Clear the inputValue when pressing <span class="key">ctrl</span>+<span class="key">delete</span>.
+      </li>
+    </ul>
     <typography variant="h2">Controlled states</typography>
     <typography variant="p"
       >The component has two states that can be controlled:</typography
@@ -96,7 +129,12 @@
       <GroupRow>
         <div
           class="wrapper"
-          :style="{ display: 'flex', flexDirection: 'column',width:'316px',padding:'0 16px' }"
+          :style="{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '316px',
+            padding: '0 16px',
+          }"
         >
           <div :style="{ lineHeight: '24px' }">
             <span>value: </span>'{{ controlledValue }}'<span></span>
@@ -160,6 +198,20 @@ export default {
     display: flex;
     margin-bottom: 5px;
     box-sizing: border-box;
+  }
+  .key {
+    font: 11px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    color: rgba(0, 0, 0, 0.87);
+    border: 1px solid #d1d5da;
+    margin: 0 1px;
+    display: inline-block;
+    padding: 4px 5px;
+    box-shadow: inset 0 -1px 0 #d1d5da;
+    line-height: 10px;
+    white-space: nowrap;
+    border-radius: 6px;
+    vertical-align: middle;
+    background-color: #fafbfc;
   }
   pre {
     display: flex;
