@@ -161,7 +161,7 @@
       ></GroupRow>
     </GroupBox>
 
-    <typography variant="p" :style="{ marginBottom: '300px' }"></typography>
+    <typography variant="p" :style="{ marginBottom: '80px' }"></typography>
   </section>
 </template>
 <script>
