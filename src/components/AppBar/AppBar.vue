@@ -18,6 +18,8 @@
           <catalog
             :items="itemsDrawer"
             :selectedOne="curSelectedOne"
+            :layer="3"
+            :indent="24"
             @select="handleSelectFromCatalog"
           ></catalog>
         </drawer>

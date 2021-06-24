@@ -7,9 +7,9 @@
       :children="item.children"
       :selectedOne="selectedLabel"
       :layer="1"
-      :layerNum="3"
-      :tabSize="24"
-      @select="handleSelect({ label: 'catalog', layer: 0 }, $event)"
+      :layerNum="layer"
+      :tabSize="indent"
+      @select="handleSelect({ label: '$root', layer: 0 }, $event)"
     ></RecursiveItem>
   </section>
 </template>
@@ -19,6 +19,16 @@ export default {
   name: "Catalog",
   components: { RecursiveItem },
   props: {
+    layer:{
+      //number of layers
+      //todo automatically calc
+      type: Number,
+    },
+    indent:{
+      //for RecursiveItem
+      type: Number,
+      default:24
+    },
     //[content:Object,children?:[item]]
     items: {
       type: Array,
@@ -32,9 +42,6 @@ export default {
     return {
       selectedLabel: this.selectedOne,
     };
-  },
-  mounted() {
-    console.log(this.items);
   },
   methods: {
     handleSelect(current, where) {
