@@ -1,12 +1,22 @@
 <template>
   <section class="item">
-    <div class="content" :style="itemStyle" @click="handleClick">
+    <div
+      class="content"
+      :style="{
+        paddingLeft: computedContentIndent,
+        fontWeight: computedFontWeight,
+        background: computedContentColor,
+        color: computedContentTextColor,
+      }"
+      @click="handleClick"
+      @mouseenter="handleHoverEnter"
+      @mouseleave="handleHoverLeave"
+    >
       {{ content.text }}
     </div>
     <section
       class="children"
-      :style="childrenStyle"
-      :class="isChildrenCollapsed ? 'collapsed' : ''"
+      :class="shouldChildrenCollapsed ? 'collapsed' : ''"
     >
       <recursive-item
         v-for="(child, idx) in children"
@@ -63,45 +73,67 @@ export default {
       type: Number,
       default: 24,
     },
+    rippleable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      isChildrenCollapsed: false,
+      isHovering: false,
+      shouldChildrenCollapsed: false,
     };
   },
   computed: {
-    itemStyle() {
-      let label = this.content.label;
-      let paddingLeft = `${this.tabSize}px`;
-      let color = "rgba(0, 0, 0, 0.87)";
-      if (label === this.selectedOne) color = "#1976D2";
-      let fontWeight = 500;
-      if (this.layerNum > this.layer || label === this.selectedOne)
-        fontWeight = 600;
-      return { paddingLeft, color, fontWeight };
-    },
-    childrenStyle() {
-      return { padding: "8px 0" };
-    },
-  },
-  methods: {
-    handleClick(e) {
-      this.createRipple(e, false, "default", true);
-      let label = this.content.label;
-      let layer = this.layer;
-      let link = this.content.link;
-      console.log("handleClick originally from: ", label, layer);
-      this.$emit("select", { label, layer,link });
-      //whether collapse its childrem items
-      if (this.hasChildren()) {
-        this.isChildrenCollapsed = !this.isChildrenCollapsed;
-        console.log("---->", this.isChildrenCollapsed);
-      }
+    isSelected() {
+      return this.content.label === this.selectedOne;
     },
     hasChildren() {
       //to check whether it has children
       return this.layer < this.layerNum;
     },
+    computedFontWeight() {
+      if (this.hasChildren || this.isSelected) return 600;
+      else return 500;
+    },
+    computedContentIndent() {
+      //padding-left
+      return `${this.tabSize}px`;
+    },
+    computedContentColor() {
+      if (this.isSelected)
+        return this.isHovering
+          ? "rgba(25, 118, 210, 0.12)"
+          : "rgba(25, 118, 210, 0.08)";
+      else return this.isHovering ? "rgba(0, 0, 0, 0.04)" : null;
+    },
+    computedContentTextColor() {
+      if (this.isSelected) return "#1976d2";
+      else
+        return this.isHovering ? "rgba(0, 0, 0, 0.87)" : "rgba(0, 0, 0, 0.6)";
+    },
+  },
+  methods: {
+    handleHoverEnter() {
+      this.isHovering = true;
+    },
+    handleHoverLeave() {
+      this.isHovering = false;
+    },
+    handleClick(e) {
+      if (this.rippleable) this.createRipple(e, false, "default", true);
+      let label = this.content.label;
+      let layer = this.layer;
+      let link = this.content.link;
+      console.log("handleClick originally from: ", label, layer);
+      this.$emit("select", { label, layer, link });
+      //whether collapse its childrem items
+      if (this.hasChildren) {
+        this.shouldChildrenCollapsed = !this.shouldChildrenCollapsed;
+        console.log("---->", this.shouldChildrenCollapsed);
+      }
+    },
+
     handleSelect(where) {
       let label = this.content.label;
       let layer = this.layer;
@@ -118,20 +150,17 @@ export default {
     align-items: center;
     padding: 6px 8px;
     height: 24px;
-    color: rgba(0, 0, 0, 0.87);
+    border-radius: 4px;
     font-family: "Roboto", Helvetica, sans-serif;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     user-select: none;
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
   }
   .children {
     //todo leave enough space
     max-height: 500vh;
-    transition: all 450ms cubic-bezier(0.4, 0, 0.2, 1) 50ms;
+    transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     overflow: hidden;
   }
   .collapsed {

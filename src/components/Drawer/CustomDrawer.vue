@@ -145,14 +145,6 @@ export default {
     // pointer-events: none;
   }
 }
-// .fade-enter-active,
-// .fade-leave-active {
-
-// }
-// .fade-enter,
-// .fade-leave-to {
-
-// }
 .fade-enter-active,
 .fade-leave-active {
   //todo Big problem: if using opacity, the mask will cover the button's onMouseleave

@@ -1,23 +1,23 @@
 <template>
   <section class="catalog">
-    <item
+    <RecursiveItem
       v-for="(item, idx) in items"
       :key="idx"
       :content="item.content"
       :children="item.children"
       :selectedOne="selectedLabel"
       :layer="1"
-      :layerNum="2"
+      :layerNum="3"
       :tabSize="24"
       @select="handleSelect({ label: 'catalog', layer: 0 }, $event)"
-    ></item>
+    ></RecursiveItem>
   </section>
 </template>
 <script>
-import Item from "./RecursiveItem";
+import RecursiveItem from "./RecursiveItem";
 export default {
   name: "Catalog",
-  components: { Item },
+  components: { RecursiveItem },
   props: {
     //[content:Object,children?:[item]]
     items: {
@@ -60,5 +60,6 @@ export default {
 .catalog {
   display: flex;
   flex-direction: column;
+  padding:0 8px;
 }
 </style>

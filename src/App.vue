@@ -18,90 +18,99 @@
 <script>
 import AppBar from "./components/AppBar/AppBar";
 import Divider from "./components/Divider/Divider";
-// import ScrollCatalog from "./components//ScrollCatalog/ScrollCatalog";
+const getDrawerItems = () => [
+  {
+    content: { label: "components", text: "Components" },
+    children: [
+      {
+        content: { label: "inputs", text: "Inputs" },
+        children: [
+          {
+            content: {
+              label: "autocomplete",
+              text: "Autocomplete⚡",
+              link: "autocomplete",
+            },
+          },
+          { content: { label: "button", text: "Button", link: "button" } },
+          {
+            content: {
+              label: "checkbox",
+              text: "Checkbox",
+              link: "checkbox",
+            },
+          },
+          {
+            content: {
+              label: "float-action-button",
+              text: "Float Action Button",
+              link: "float-action-button",
+            },
+          },
+          {
+            content: {
+              label: "radio",
+              text: "Radio Button",
+              link: "radio-button",
+            },
+          },
+          { content: { label: "select", text: "Select⚡", link: "select" } },
+          { content: { label: "slider", text: "Slider⚡", link: "slider" } },
+          { content: { label: "textfield", text: "Text Field🚧" } },
+        ],
+      },
+      {
+        content: { label: "navigation", text: "Navigation" },
+        children: [
+          {
+            content: {
+              label: "bottom-navigation",
+              text: "Bottom Navigation🚧",
+            },
+          },
+          { content: { label: "breadcrumbs", text: "Breadcrumbs🚧" } },
+          { content: { label: "drawer", text: "Drawer🚧" } },
+          { content: { label: "menu", text: "Menu🚧" } },
+          { content: { label: "stepper", text: "Stepper", link: "stepper" } },
+          { content: { label: "tabs", text: "Tabs🚧" } },
+        ],
+      },
+      {
+        content: { label: "surfaces", text: "Surfaces" },
+        children: [
+          { content: { label: "app-bar", text: "App Bar🚧" } },
+          { content: { label: "card", text: "Card🚧", link: "card" } },
+        ],
+      },
+      {
+        content: { label: "feedback", text: "Feedback" },
+        children: [
+          { content: { label: "progress", text: "Progress🚧" } },
+          { content: { label: "snackbar", text: "Snackbar🚧" } },
+        ],
+      },
+      {
+        content: { label: "data-display", text: "Data Display" },
+        children: [
+          { content: { label: "avatar", text: "Avatar", link: "avatar" } },
+          { content: { label: "badge", text: "Badge🚧" } },
+          { content: { label: "chip", text: "Chip", link: "chip" } },
+        ],
+      },
+    ],
+  },
+  {
+    content: { label: "playground", text: "Playground" },
+    children: [],
+  },
+];
 export default {
   name: "App",
   components: { AppBar, Divider },
   data() {
     return {
       scrollerWidth: null,
-      drawerItems: [
-        {
-          content: { label: "inputs", text: "Inputs" },
-          children: [
-            { content: { label: "autocomplete", text: "Autocomplete⚡", link: "autocomplete" } },
-            { content: { label: "button", text: "Button", link: "button" } },
-            {
-              content: {
-                label: "checkbox",
-                text: "Checkbox",
-                link: "checkbox",
-              },
-            },
-            {
-              content: {
-                label: "float-action-button",
-                text: "Float Action Button",
-                link: "float-action-button",
-              },
-            },
-            {
-              content: {
-                label: "radio",
-                text: "Radio Button",
-                link: "radio-button",
-              },
-            },
-            { content: { label: "select", text: "Select⚡", link: "select" } },
-            { content: { label: "slider", text: "Slider⚡", link: "slider" } },
-            { content: { label: "textfield", text: "Text Field🚧" } },
-          ],
-        },
-        {
-          content: { label: "navigation", text: "Navigation" },
-          children: [
-            {
-              content: {
-                label: "bottom-navigation",
-                text: "Bottom Navigation🚧",
-              },
-            },
-            { content: { label: "breadcrumbs", text: "Breadcrumbs🚧" } },
-            { content: { label: "drawer", text: "Drawer🚧" } },
-            { content: { label: "menu", text: "Menu🚧" } },
-            { content: { label: "stepper", text: "Stepper", link: "stepper" } },
-            { content: { label: "tabs", text: "Tabs🚧" } },
-          ],
-        },
-        {
-          content: { label: "surfaces", text: "Surfaces" },
-          children: [
-            { content: { label: "app-bar", text: "App Bar🚧" } },
-            { content: { label: "card", text: "Card🚧", link: "card" } },
-          ],
-        },
-        {
-          content: { label: "feedback", text: "Feedback" },
-          children: [
-            { content: { label: "progress", text: "Progress🚧" } },
-            { content: { label: "snackbar", text: "Snackbar🚧" } },
-          ],
-        },
-        {
-          content: { label: "data-display", text: "Data Display" },
-          children: [
-            { content: { label: "avatar", text: "Avatar", link: "avatar" } },
-            { content: { label: "badge", text: "Badge🚧" } },
-            { content: { label: "chip", text: "Chip", link: "chip" } },
-          ],
-        },
-      ],
-      scrollItems: [
-        { anchor: "ac-image", text: "Image avatars" },
-        { anchor: "ac-letter", text: "Letter avatars" },
-        { anchor: "ac-sizes", text: "Sizes" },
-        { anchor: "ac-badge", text: "With badge" },
-      ],
+      drawerItems: getDrawerItems(),
     };
   },
   mounted() {
