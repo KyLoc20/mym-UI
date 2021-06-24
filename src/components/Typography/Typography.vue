@@ -42,7 +42,6 @@ export default {
   },
   computed: {
     componentType() {
-      console.log("componentType", `Cpt${mapType[this.variant]}`);
       return `Cpt${mapType[this.variant]}`;
     },
   },

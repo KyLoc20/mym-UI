@@ -57,22 +57,9 @@ export default {
       default: true,
     },
   },
-  data() {
-    return {
-      toggled: false,
-    };
-  },
   watch: {
-    active(newValue) {
-      if (newValue === false) {
-        console.log(
-          "the Drawer was closed outer controller active -> inacitve"
-        );
-        this.toggled = false;
-      }
-    },
-    toggled(newValue) {
-      if (newValue) {
+    toggled() {
+      if (this.toggled) {
         //when the drawer is open
         document.documentElement.style.overflow = "hidden";
       } else {
@@ -83,9 +70,13 @@ export default {
   },
   computed: {
     isToggled() {
-      console.log("isToggled", this.toggled && this.active);
       return this.toggled && this.active;
     },
+  },
+  data() {
+    return {
+      toggled: false,
+    };
   },
   methods: {
     handleToggle(from) {
@@ -93,15 +84,11 @@ export default {
       if (from === "button" && !this.active) {
         //this situation is that the menu last time was closed by the upper cpt due to goto a link
         //telling the upper cpt to activate the drawer
-        //the this.toggled is still true waiting the upper to change the prop active to true
-        console.log(
-          "telling the upper cpt to activate the drawer",
-          this.active,
-          this.toggled
-        );
+        //the this.toggled still true just wait the upper change the prop active to true
         this.$emit("ready");
+      } else {
+        this.toggled = !this.toggled;
       }
-      this.toggled = !this.toggled;
     },
   },
 };
@@ -166,8 +153,8 @@ export default {
 }
 .fade-enter,
 .fade-leave-to {
-  transform: translateX(-100%);
-  //   opacity: 0;
+   transform: translateX(-100%);
+   //   opacity: 0;
 }
 .translate {
   transition: transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;

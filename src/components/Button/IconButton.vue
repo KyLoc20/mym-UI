@@ -195,12 +195,10 @@ export default {
         this.createRippleByAddingLayer(e, true, this.rippleRenderColor);
     },
     handleHoverEnter() {
-      console.log("----->handleHoverEnter");
       if (!this.isActive) return;
       this.isHovering = true;
     },
     handleHoverLeave() {
-      console.log("<-----handleHoverLeave");
       if (!this.isActive) return;
       this.isHovering = false;
     },

@@ -1,24 +1,7 @@
 <template>
   <div id="app" :style="pageWidth">
     <section class="header">
-      <AppBar>
-        <Drawer
-          :style="{...computedDrawerMargin}"
-          icon="menu"
-          :active="isDrawerActive"
-          @ready="handleReadyToOpenDrawer"
-        >
-          <ProjectMeta version="v0.5.0" title="MyMaterial-UI"></ProjectMeta>
-          <divider></divider>
-          <catalog
-            :items="drawerItems"
-            :selectedOne="curSelectedOne"
-            :layer="3"
-            :indent="24"
-            @select="handleSelectFromCatalog"
-          ></catalog>
-        </Drawer>
-      </AppBar>
+      <app-bar :itemsDrawer="drawerItems"></app-bar>
     </section>
     <section class="main-container">
       <router-view></router-view>
@@ -35,9 +18,6 @@
 <script>
 import AppBar from "./components/AppBar/AppBar";
 import Divider from "./components/Divider/Divider";
-import Catalog from "./components/Catalog/Catalog";
-import Drawer from "./components/Drawer/CustomDrawer";
-import ProjectMeta from "./local/components/ProjectMeta.vue";
 const getDrawerItems = () => [
   {
     content: { label: "components", text: "Components" },
@@ -126,13 +106,11 @@ const getDrawerItems = () => [
 ];
 export default {
   name: "App",
-  components: { AppBar, Divider, Drawer, Catalog, ProjectMeta },
+  components: { AppBar, Divider },
   data() {
     return {
       scrollerWidth: null,
       drawerItems: getDrawerItems(),
-      isDrawerActive: true,
-      curSelectedOne: null,
     };
   },
   mounted() {
@@ -143,41 +121,6 @@ export default {
   computed: {
     pageWidth() {
       return { width: `calc(100vw - ${this.scrollerWidth}px)` };
-    },
-    computedDrawerMargin() {
-      return { marginLeft: "-12px", marginRight: "16px" };
-    },
-  },
-  methods: {
-    handleSelectFromCatalog(where) {
-      //deal with going somewhere
-      console.log("handleSelectFromCatalog", where);
-      let link = where.link;
-      if (link) {
-        this.curSelectedOne = where.label;
-        this.goToLink(link);
-        //control to close the drawer
-        this.closeDrawer();
-      }
-    },
-    handleReadyToOpenDrawer() {
-      this.isDrawerActive = true;
-      //when the drawer is open
-      //todo not recommended
-      document.documentElement.style.overflow = "hidden";
-    },
-    closeDrawer() {
-      this.isDrawerActive = false;
-      //when the drawer is close
-      //todo not auto for position:sticky
-      document.documentElement.style.overflow = "visible";
-    },
-    goToLink(link) {
-      if (link) {
-        console.log("------>goToLink: ", this.$route.params, this.$route);
-        //todo check valid link
-        this.$router.push("/" + link);
-      }
     },
   },
 };
