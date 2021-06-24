@@ -1,7 +1,7 @@
 <template>
   <section class="project-meta">
-    <section class="title">MyMaterial-UI</section>
-    <section class="version">v0.5.0</section>
+    <section class="title">{{title}}</section>
+    <section class="version">{{version}}</section>
   </section>
 </template>
 <script>
