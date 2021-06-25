@@ -67,6 +67,6 @@ export default {
 .catalog {
   display: flex;
   flex-direction: column;
-  padding:0 8px;
+  padding:16px 8px;
 }
 </style>

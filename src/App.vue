@@ -14,7 +14,7 @@
             :items="drawerItems"
             :selectedOne="curSelectedOne"
             :layer="3"
-            :indent="24"
+            :indent="6"
             @select="handleSelectFromCatalog"
           ></catalog>
         </Drawer>
@@ -74,7 +74,8 @@ const getDrawerItems = () => [
               link: "radio-button",
             },
           },
-          { content: { label: "select", text: "Select⚡", link: "select" } },
+          { content: { label: "rating", text: "Rating⚡", link: "rating" } },
+          { content: { label: "select", text: "Select", link: "select" } },
           { content: { label: "slider", text: "Slider⚡", link: "slider" } },
           { content: { label: "textfield", text: "Text Field🚧" } },
         ],
