@@ -1,19 +1,26 @@
 <template>
   <section class="rating" :class="classes" :style="{}">
+    <div class="unit-wrapper" v-for="ratingValue in computedRatings" :key="ratingValue">
+      <Unit :rating="ratingValue" :value="value"></Unit>
+    </div>
     <span class="dev-info" v-if="dev"></span>
   </section>
 </template>
 <script>
-// import { requireOneOf } from "../common/validator";
-//import IconButton from "../Button/IconButton.vue";
+import Unit from "./_Unit.vue"
 export default {
   name: "Rating",
-  components: {},
+  components: { Unit },
   props: {
     value: {
+      //currently value by user
       type: Number,
     },
-        name: {
+    max: {
+      type: Number,
+      default: 5,
+    },
+    name: {
       type: String,
       required: false,
     },
@@ -39,6 +46,9 @@ export default {
     classes() {
       return [this.disabled ? "disabled" : ""];
     },
+    computedRatings() {
+      return new Array(this.max).fill(1).map((element, index) => index + 1);
+    },
   },
   methods: {
     handleHoverEnter() {
@@ -55,6 +65,7 @@ export default {
 <style lang="less" scoped>
 .rating {
   position: relative;
+  display: flex;
   .dev-info {
     position: absolute;
     line-height: 28px;
