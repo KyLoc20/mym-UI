@@ -10,6 +10,7 @@
       <Unit
         :rating="ratingValue"
         :value="value"
+        :size="calcSize"
         :scaled="calcScaledForUnit(ratingValue)"
         :colored="calcColoredForUnit(ratingValue)"
         :disabled="disabled"
@@ -17,11 +18,17 @@
         @select="handleDoneSelect"
       ></Unit>
     </div>
-    <span class="dev-info" v-if="dev">{{ value }}+{{selectedUnit}}</span>
+    <span class="dev-info" v-if="dev">{{ value }}+{{ selectedUnit }}</span>
   </section>
 </template>
 <script>
 import Unit from "./_Unit.vue";
+import { requireOneOf, requirePositiveNumber } from "../common/validator";
+const SizeMap = {
+  sm: 18,
+  md: 24,
+  lg: 30,
+};
 export default {
   name: "Rating",
   components: { Unit },
@@ -30,9 +37,19 @@ export default {
       //currently value by user
       type: Number,
     },
+
     max: {
       type: Number,
       default: 5,
+    },
+    size: {
+      validator: (v) => {
+        return [
+          requirePositiveNumber(),
+          requireOneOf(["sm", "md", "lg"]),
+        ].some((test) => test(v));
+      },
+      required: false,
     },
     name: {
       type: String,
@@ -70,6 +87,11 @@ export default {
     computedRatings() {
       return new Array(this.max).fill(1).map((element, index) => index + 1);
     },
+    calcSize() {
+      const input = this.size;
+      if (typeof input === "number") return input;
+      else return SizeMap[input] || SizeMap["md"];
+    },
   },
   methods: {
     calcScaledForUnit(rating) {
@@ -83,18 +105,23 @@ export default {
       else return this.selectedUnit >= rating;
     },
     handleHoverEnter(which) {
-      if (this.disabled||this.readonly) return;
+      if (this.disabled || this.readonly) return;
       this.hoveringUnit = which;
     },
     handleHoverLeave() {
-      if (this.disabled||this.readonly) return;
+      if (this.disabled || this.readonly) return;
       this.hoveringUnit = 0;
     },
     handleDoneSelect(e) {
       let newValue = e.value;
       //repeat selection will reset
-      if (newValue === this.selectedUnit) newValue = 0,this.hoveringUnit=0;
-      this.$emit("change", { beforeValue: this.selectedUnit, value: newValue });
+      if (newValue === this.selectedUnit)
+        (newValue = 0), (this.hoveringUnit = 0);
+      this.$emit("change", {
+        name: this.name,
+        beforeValue: this.selectedUnit,
+        value: newValue,
+      });
       this.selectedUnit = newValue;
       // console.log("handleDoneSelect", e, this.selectedUnit);
     },

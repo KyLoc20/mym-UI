@@ -1,10 +1,18 @@
 <template>
-  <section class="unit" :class="classes" :style="{}" @click="handleClick">
+  <section
+    class="unit"
+    :class="classes"
+    :style="{ width: computedSize, height: computedSize }"
+    @click="handleClick"
+  >
     <Icon
       :name="computedDisplayIcon"
       :size="size"
       :color="computedColor"
-      :style="{ transform: computedScale, opacity: computedOpacity }"
+      :style="{
+        transform: computedScale,
+        opacity: computedOpacity,
+      }"
     ></Icon>
   </section>
 </template>
@@ -66,9 +74,9 @@ export default {
     isActive() {
       return this.colored;
     },
-    computedDisplayIcon(){
-      if(this.isActive)return this.activeIcon
-      else return this.icon
+    computedDisplayIcon() {
+      if (this.isActive) return this.activeIcon;
+      else return this.icon;
     },
     computedColor() {
       if (this.colored) return this.color || "rgba(250, 175, 0,1)";
@@ -81,6 +89,9 @@ export default {
     computedScale() {
       if (this.scaled) return "scale(1.2)";
       else return null;
+    },
+    computedSize() {
+      return `${this.size}px`;
     },
   },
   methods: {
@@ -100,8 +111,6 @@ export default {
   &.readonly {
     cursor: default;
   }
-  width: 24px;
-  height: 24px;
   .icon {
     position: absolute;
     left: 0;

@@ -36,7 +36,33 @@
         </div>
       </GroupRow>
     </GroupBox>
-
+    <typography variant="h2">Size</typography>
+    <GroupBox block>
+      <GroupRow>
+        <div class="wrapper">
+          <span>Small</span>
+          <Rating :value="ratingValue" size="sm" @change="handleRatingSubmit"></Rating>
+        </div>
+      </GroupRow>
+      <GroupRow>
+        <div class="wrapper">
+          <span>Medium</span>
+          <Rating :value="ratingValue" size="md" @change="handleRatingSubmit"></Rating>
+        </div>
+      </GroupRow>
+      <GroupRow>
+        <div class="wrapper">
+          <span>Large</span>
+          <Rating :value="ratingValue" size="lg" @change="handleRatingSubmit"></Rating>
+        </div>
+      </GroupRow>
+      <GroupRow>
+        <div class="wrapper">
+          <span>Custom: 48px</span>
+          <Rating :value="ratingValue" :size="48" @change="handleRatingSubmit"></Rating>
+        </div>
+      </GroupRow>
+    </GroupBox>
     <typography variant="h2">Rating precision</typography>
     <GroupBox>
       <Rating name="precision" :value="ratingValue"></Rating>
@@ -67,6 +93,7 @@ export default {
 <style scoped lang="less">
 .rating-example {
   .wrapper {
+    width:300px;
     display: flex;
     flex-direction: column;
     margin-bottom: 5px;
