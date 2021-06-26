@@ -1,13 +1,27 @@
 <template>
   <section class="rating" :class="classes" :style="{}">
-    <div class="unit-wrapper" v-for="ratingValue in computedRatings" :key="ratingValue">
-      <Unit :rating="ratingValue" :value="value"></Unit>
+    <div
+      class="unit-wrapper"
+      v-for="ratingValue in computedRatings"
+      :key="ratingValue"
+      @mouseenter="handleHoverEnter(ratingValue)"
+      @mouseleave="handleHoverLeave(ratingValue)"
+    >
+      <Unit
+        :rating="ratingValue"
+        :value="value"
+        :scaled="calcScaledForUnit(ratingValue)"
+        :colored="calcColoredForUnit(ratingValue)"
+        :disabled="disabled"
+        :readonly="readonly"
+        @select="handleDoneSelect"
+      ></Unit>
     </div>
-    <span class="dev-info" v-if="dev"></span>
+    <span class="dev-info" v-if="dev">{{ value }}+{{selectedUnit}}</span>
   </section>
 </template>
 <script>
-import Unit from "./_Unit.vue"
+import Unit from "./_Unit.vue";
 export default {
   name: "Rating",
   components: { Unit },
@@ -39,25 +53,50 @@ export default {
   },
   data() {
     return {
-      isHovering: false,
+      hoveringUnit: 0, //[1,max] by ratingValue
+      selectedUnit: this.value,
     };
+  },
+  watch: {
+    value(newValue) {
+      //outer controller when prop value updates
+      this.selectedUnit = newValue;
+    },
   },
   computed: {
     classes() {
-      return [this.disabled ? "disabled" : ""];
+      return [];
     },
     computedRatings() {
       return new Array(this.max).fill(1).map((element, index) => index + 1);
     },
   },
   methods: {
-    handleHoverEnter() {
-      if (this.disabled) return;
-      this.isHovering = true;
+    calcScaledForUnit(rating) {
+      //this.hoveringUnit===rating exactly hovering
+      //this.hoveringUnit=2.5 rating=3 half hovering
+      return rating - this.hoveringUnit < 1 && rating - this.hoveringUnit >= 0;
+    },
+    calcColoredForUnit(rating) {
+      //once hovering, color from the far left
+      if (this.hoveringUnit) return this.hoveringUnit >= rating;
+      else return this.selectedUnit >= rating;
+    },
+    handleHoverEnter(which) {
+      if (this.disabled||this.readonly) return;
+      this.hoveringUnit = which;
     },
     handleHoverLeave() {
-      if (this.disabled) return;
-      this.isHovering = false;
+      if (this.disabled||this.readonly) return;
+      this.hoveringUnit = 0;
+    },
+    handleDoneSelect(e) {
+      let newValue = e.value;
+      //repeat selection will reset
+      if (newValue === this.selectedUnit) newValue = 0,this.hoveringUnit=0;
+      this.$emit("change", { beforeValue: this.selectedUnit, value: newValue });
+      this.selectedUnit = newValue;
+      // console.log("handleDoneSelect", e, this.selectedUnit);
     },
   },
 };

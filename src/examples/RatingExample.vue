@@ -13,19 +13,28 @@
     <typography variant="h2">Basic rating</typography>
     <GroupBox block>
       <GroupRow>
-        <Rating
-          name="controlled"
-          :value="ratingValue"
-          @change="handleRatingSubmit"
-        ></Rating
-      ></GroupRow>
+        <div class="wrapper">
+          <span>Controlled</span>
+          <Rating
+            name="controlled"
+            :value="ratingValue"
+            @change="handleRatingSubmit"
+            dev
+          ></Rating>
+        </div>
+      </GroupRow>
       <GroupRow>
-        <Rating name="read-only" :value="ratingValue" readonly></Rating
-      ></GroupRow>
+        <div class="wrapper">
+          <span>Read only</span>
+          <Rating name="read-only" :value="ratingValue" readonly dev></Rating>
+        </div>
+      </GroupRow>
       <GroupRow>
-        <Rating name="read-only" :value="ratingValue" disabled> </Rating
-      ></GroupRow>
-      <GroupRow> <Rating name="none-value" :value="null"></Rating></GroupRow>
+        <div class="wrapper">
+          <span>Disabled</span>
+          <Rating name="read-only" :value="ratingValue" disabled dev> </Rating>
+        </div>
+      </GroupRow>
     </GroupBox>
 
     <typography variant="h2">Rating precision</typography>
@@ -59,6 +68,7 @@ export default {
 .rating-example {
   .wrapper {
     display: flex;
+    flex-direction: column;
     margin-bottom: 5px;
     box-sizing: border-box;
   }

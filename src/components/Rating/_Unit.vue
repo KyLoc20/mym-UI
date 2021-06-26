@@ -1,25 +1,10 @@
 <template>
-  <section
-    class="unit"
-    :class="classes"
-    :style="{}"
-    @mouseenter="handleHoverEnter"
-    @mouseleave="handleHoverLeave"
-  >
+  <section class="unit" :class="classes" :style="{}" @click="handleClick">
     <Icon
-      class="base-icon"
-      :name="icon"
+      :name="computedDisplayIcon"
       :size="size"
       :color="computedColor"
-      :style="{ transform: computedScale }"
-    ></Icon>
-    <Icon
-      class="active-icon"
-      v-show="shouldDisplayActiveIcon"
-      :name="activeIcon"
-      :size="size"
-      :color="computedColor"
-      :style="{ transform: computedScale }"
+      :style="{ transform: computedScale, opacity: computedOpacity }"
     ></Icon>
   </section>
 </template>
@@ -46,51 +31,62 @@ export default {
     rating: {
       type: Number,
     },
-    value: {
-      //currently value by user
-      type: Number,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
+    scaled: {
+      type: Boolean,
+      default: false,
+    },
+    colored: {
+      type: Boolean,
+      default: false,
+    },
+    defaultColor: {
+      type: String,
+      required: false,
     },
     color: {
       type: String,
-    },
-    activeColor: {
-      //hovering or selected
-      type: String,
+      required: false,
     },
   },
   data() {
-    return {
-      isHovering: false,
-    };
+    return {};
   },
   computed: {
     classes() {
-      return [this.disabled ? "disabled" : ""];
+      return [this.disabled ? "disabled" : "", this.readonly ? "readonly" : ""];
     },
-    isActive(){
-      return this.value>=this.rating
+    isActive() {
+      return this.colored;
     },
-    shouldDisplayActiveIcon(){
-      if(this.isActive)return true
-      return false
+    computedDisplayIcon(){
+      if(this.isActive)return this.activeIcon
+      else return this.icon
     },
     computedColor() {
-      if(this.isActive)return this.activeColor||"rgba(250, 175, 0,1)"
-      return this.color||"rgba(0, 0, 0, 0.26)";
+      if (this.colored) return this.color || "rgba(250, 175, 0,1)";
+      else return this.defaultColor || "rgba(0, 0, 0, 0.26)";
+    },
+    computedOpacity() {
+      if (this.disabled) return 0.38;
+      else return null;
     },
     computedScale() {
-      if (this.isHovering) return "scale(1.2)";
+      if (this.scaled) return "scale(1.2)";
       else return null;
     },
   },
   methods: {
-    handleHoverEnter() {
-      if (this.disabled) return;
-      this.isHovering = true;
-    },
-    handleHoverLeave() {
-      if (this.disabled) return;
-      this.isHovering = false;
+    handleClick() {
+      if (this.disabled || this.readonly) return;
+      this.$emit("select", { value: this.rating });
     },
   },
 };
@@ -100,12 +96,16 @@ export default {
   display: flex;
   position: relative;
   cursor: pointer;
-  width:24px;
-  height:24px;
+  &.disabled,
+  &.readonly {
+    cursor: default;
+  }
+  width: 24px;
+  height: 24px;
   .icon {
     position: absolute;
-    left:0;
-    top:0;
+    left: 0;
+    top: 0;
     transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   }
 }
