@@ -105,12 +105,7 @@
       <GroupRow>
         <div class="wrapper">
           <span>Precision: 0.25</span>
-          <Rating
-            :value="ratingValue025"
-            :precision="0.25"
-            :size="48"
-            dev
-          ></Rating>
+          <Rating :value="ratingValue025" :precision="0.25" :size="48"></Rating>
         </div>
       </GroupRow>
     </GroupBox>
@@ -149,7 +144,7 @@
           <Rating
             :value="ratingValue050"
             :precision="0.5"
-            icon='heart'
+            icon="heart"
             activeIcon="heartFill"
             color="rgba(255, 109, 117,1)"
           ></Rating>
@@ -164,8 +159,21 @@
     </GroupBox>
 
     <typography variant="h2">Radio group</typography>
+    <typography variant="p"
+      >Use the <code>iconGroup</code> prop to make your rating behave like a
+      radio group.</typography
+    >
     <GroupBox>
-      <Rating :value="ratingValue"></Rating>
+      <Rating
+        :value="ratingValue"
+        :iconGroup="[
+          { icon: 'faceSad', activeIcon: 'faceSad' },
+          { icon: 'faceUnhappy', activeIcon: 'faceUnhappy' },
+          { icon: 'faceSoso', activeIcon: 'faceSoso' },
+          { icon: 'facePleased', activeIcon: 'facePleased' },
+          { icon: 'faceHappy', activeIcon: 'faceHappy' },
+        ]"
+      ></Rating>
     </GroupBox>
   </section>
 </template>
@@ -194,12 +202,9 @@ export default {
       ratingValue: 2,
       ratingValue050: 2.5,
       ratingValue025: 2,
-      ratingValue10Stars:8,
+      ratingValue10Stars: 8,
       feedback: "",
     };
-  },
-  mounted() {
-    this.feedback = FeedbackMap[this.ratingValue050];
   },
   methods: {
     handleRatingSubmit(e) {

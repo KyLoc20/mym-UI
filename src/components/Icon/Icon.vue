@@ -16,6 +16,13 @@
       :viewBox="viewBox"
       aria-hidden="true"
     >
+      <circle
+        :cx="circle.cx"
+        :cy="circle.cy"
+        :r="circle.r"
+        v-for="(circle, idx) in iconCircles"
+        :key="idx"
+      ></circle>
       <path :d="path" v-for="(path, idx) in iconPaths" :key="idx"></path>
     </svg>
   </span>
@@ -66,6 +73,11 @@ export default {
       let oPath = iconMap[this.name].path;
       if (typeof oPath === "string") return [oPath];
       else return oPath;
+    },
+    iconCircles() {
+      let oCircle = iconMap[this.name].circle;
+      if (oCircle) return typeof oPath === "string" ? [oCircle] : oCircle;
+      else return [];
     },
     viewBox() {
       return iconMap[this.name].viewBox;

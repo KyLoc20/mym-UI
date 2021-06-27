@@ -16,8 +16,8 @@
         :colorRange="calcColorRangeForUnit(ratingValue)"
         :disabled="disabled"
         :readonly="readonly"
-        :activeIcon="activeIcon"
-        :icon="icon"
+        :icon="getIcon(ratingValue)"
+        :activeIcon="getIcon(ratingValue, true)"
         :color="color"
       ></Unit>
     </div>
@@ -81,6 +81,11 @@ export default {
       default: false,
     },
     //custom
+    color: {
+      type: String,
+      required: false,
+    },
+    //todo icon management
     icon: {
       //inactive: unselected
       type: String,
@@ -91,8 +96,13 @@ export default {
       type: String,
       required: false,
     },
-    color: {
-      type: String,
+    iconGroup: {
+      /* 
+      custom icons for each rating
+      [{icon,activeIcon},{icon,activeIcon},{icon,activeIcon},{icon,activeIcon},{icon,activeIcon},]
+      the index corresponding to rating, if not use the default
+      */
+      type: Array,
       required: false,
     },
   },
@@ -135,6 +145,13 @@ export default {
     },
   },
   methods: {
+    getIcon(rating, needActive) {
+      if (this.iconGroup) {
+        return needActive
+          ? this.iconGroup[rating - 1]?.activeIcon || this.activeIcon
+          : this.iconGroup[rating - 1]?.icon || this.icon;
+      } else return needActive ? this.activeIcon : this.icon;
+    },
     calcScaledForUnit(rating) {
       //this.hoveringUnit===rating exactly hovering
       //this.hoveringUnit=2.5 rating=3 half hovering
@@ -148,9 +165,16 @@ export default {
           let num = Math.ceil(this.hoverRange / this.computedPrecision);
           this.hoveringValue = num * this.computedPrecision + (rating - 1);
           return num * this.computedPrecision;
-        } else return this.hoveringUnit >= rating ? 1 : 0;
+        } else {
+          if (this.iconGroup) return this.hoveringUnit === rating ? 1 : 0;
+          return this.hoveringUnit >= rating ? 1 : 0;
+        }
       } else {
-        //directly dicided by this.selectedUnit
+        //when not hovering, directly dicided by this.selectedUnit
+        if (this.iconGroup) {
+          //only one unit colored
+          return this.selectedUnit === rating ? 1 : 0;
+        }
         if (rating > Math.ceil(this.selectedUnit)) {
           return 0;
         } else {
