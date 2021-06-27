@@ -4,10 +4,10 @@
       class="unit-wrapper"
       v-for="ratingValue in computedRatings"
       :key="ratingValue"
-      @mousemove="handleHover($event,ratingValue)"
+      @mousemove="handleHover($event, ratingValue)"
       @mouseenter="handleHoverEnter(ratingValue)"
       @mouseleave="handleHoverLeave(ratingValue)"
-      @click="handleDoneSelect(ratingValue)"
+      @mousedown="handleDoneSelect($event,ratingValue)"
     >
       <Unit
         :rating="ratingValue"
@@ -23,6 +23,7 @@
       <span>selectedUnit-{{ selectedUnit }}</span>
       <span>hoveringUnit-{{ hoveringUnit }}</span>
       <span>hoverRange-{{ hoverRange }}</span>
+      <span>hoveringValue-{{ hoveringValue }}</span>
     </div>
   </section>
 </template>
@@ -82,12 +83,19 @@ export default {
       hoverRange: 1, //records the cursor position to the Unit width [0,1]
       hoveringUnit: 0, //[1,max] by ratingValue
       selectedUnit: this.value,
+      hoveringValue: this.value, //current hovering value, this triggers onHoverChange
     };
   },
   watch: {
     value(newValue) {
       //outer controller when prop value updates
       this.selectedUnit = newValue;
+    },
+    selectedUnit(newValue) {
+      this.hoveringValue = newValue;
+    },
+    hoveringValue(newValue) {
+      this.$emit("hoverchange", { value: newValue });
     },
   },
   computed: {
@@ -120,6 +128,7 @@ export default {
         //only for the hovering Unit with precision, calc the colorRange
         if (rating === this.hoveringUnit) {
           let num = Math.ceil(this.hoverRange / this.computedPrecision);
+          this.hoveringValue = num * this.computedPrecision + (rating - 1);
           return num * this.computedPrecision;
         } else return this.hoveringUnit >= rating ? 1 : 0;
       } else {
@@ -139,8 +148,9 @@ export default {
         }
       }
     },
-    handleHover(e,rating) {
+    handleHover(e, rating) {
       //todo throttle
+      if (this.disabled || this.readonly) return;
       //const elBCR = e.currentTarget.getBoundingClientRect();
       //e.clientX-elBCR.left will be influenced by scale
       this.hoveringUnit = rating;
@@ -155,8 +165,11 @@ export default {
     handleHoverLeave() {
       if (this.disabled || this.readonly) return;
       this.hoveringUnit = 0;
+      this.hoveringValue = this.selectedUnit;
     },
-    handleDoneSelect(rating) {
+    handleDoneSelect(e,rating) {
+      e.preventDefault()
+      if (this.disabled || this.readonly) return;
       let newValue = null;
       if (this.computedPrecision !== 1) {
         //require to calc precision

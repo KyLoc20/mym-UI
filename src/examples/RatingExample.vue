@@ -89,17 +89,17 @@
       <GroupRow>
         <div class="wrapper">
           <span>Precision: 0.5</span>
-          <Rating :value="ratingValue050" :precision="0.5" @change="handleRatingSubmit050"></Rating>
+          <Rating
+            :value="ratingValue050"
+            :precision="0.5"
+            @change="handleRatingSubmit050"
+          ></Rating>
         </div>
       </GroupRow>
       <GroupRow>
         <div class="wrapper">
           <span>Precision: 0.5 disabled</span>
-          <Rating
-            :value="ratingValue050"
-            :precision="0.5"
-            disabled
-          ></Rating>
+          <Rating :value="ratingValue050" :precision="0.5" disabled></Rating>
         </div>
       </GroupRow>
       <GroupRow>
@@ -121,7 +121,14 @@
       value with the <code>onHoverChange</code> prop.</typography
     >
     <GroupBox>
-      <Rating :value="ratingValue"></Rating>
+      <div class="wrapper-feedback">
+        <Rating
+          :value="ratingValue050"
+          :precision="0.5"
+          @hoverchange="handleHoverChange"
+        ></Rating>
+        <span class="text">{{ feedback }}</span>
+      </div>
     </GroupBox>
 
     <typography variant="h2">Customized rating</typography>
@@ -140,6 +147,18 @@ import GroupBox from "../components/Layout/GroupBox.vue";
 import GroupRow from "../components/Layout/GroupRow.vue";
 import Rating from "../components/Rating/Rating.vue";
 import Typography from "../components/Typography/Typography";
+const FeedbackMap = {
+  0.5: "Useless",
+  1: "Useless+",
+  1.5: "Poor",
+  2: "Poor+",
+  2.5: "Ok",
+  3: "Ok+",
+  3.5: "Good",
+  4: "Good+",
+  4.5: "Excellent",
+  5: "Excellent+",
+};
 export default {
   name: "RatingExample",
   components: { Typography, Rating, GroupBox, GroupRow },
@@ -148,7 +167,11 @@ export default {
       ratingValue: 2,
       ratingValue050: 2.5,
       ratingValue025: 2,
+      feedback: "",
     };
+  },
+  mounted() {
+    this.feedback = FeedbackMap[this.ratingValue050];
   },
   methods: {
     handleRatingSubmit(e) {
@@ -156,6 +179,10 @@ export default {
     },
     handleRatingSubmit050(e) {
       this.ratingValue050 = e.value;
+    },
+    handleHoverChange(e) {
+      console.log("handleHoverChange", e);
+      this.feedback = FeedbackMap[e.value];
     },
   },
   computed: {},
@@ -169,6 +196,16 @@ export default {
     flex-direction: column;
     margin-bottom: 5px;
     box-sizing: border-box;
+  }
+  .wrapper-feedback{
+    display: flex;
+    width:200px;
+    .text{
+      margin-left: 16px;
+      line-height: 24px;
+      user-select: none;
+
+    }
   }
 }
 </style>
