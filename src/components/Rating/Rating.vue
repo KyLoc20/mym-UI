@@ -4,21 +4,26 @@
       class="unit-wrapper"
       v-for="ratingValue in computedRatings"
       :key="ratingValue"
+      @mousemove="handleHover($event,ratingValue)"
       @mouseenter="handleHoverEnter(ratingValue)"
       @mouseleave="handleHoverLeave(ratingValue)"
+      @click="handleDoneSelect(ratingValue)"
     >
       <Unit
         :rating="ratingValue"
-        :value="value"
         :size="calcSize"
         :scaled="calcScaledForUnit(ratingValue)"
-        :colored="calcColoredForUnit(ratingValue)"
+        :colorRange="calcColorRangeForUnit(ratingValue)"
         :disabled="disabled"
         :readonly="readonly"
-        @select="handleDoneSelect"
       ></Unit>
     </div>
-    <span class="dev-info" v-if="dev">{{ value }}+{{ selectedUnit }}</span>
+    <div class="dev-info" v-if="dev">
+      <span>value-{{ value }}</span>
+      <span>selectedUnit-{{ selectedUnit }}</span>
+      <span>hoveringUnit-{{ hoveringUnit }}</span>
+      <span>hoverRange-{{ hoverRange }}</span>
+    </div>
   </section>
 </template>
 <script>
@@ -37,7 +42,6 @@ export default {
       //currently value by user
       type: Number,
     },
-
     max: {
       type: Number,
       default: 5,
@@ -49,6 +53,11 @@ export default {
           requireOneOf(["sm", "md", "lg"]),
         ].some((test) => test(v));
       },
+      required: false,
+    },
+    precision: {
+      //to split one unit to parts, at least 2 -> (0,0.5]
+      type: Number,
       required: false,
     },
     name: {
@@ -70,6 +79,7 @@ export default {
   },
   data() {
     return {
+      hoverRange: 1, //records the cursor position to the Unit width [0,1]
       hoveringUnit: 0, //[1,max] by ratingValue
       selectedUnit: this.value,
     };
@@ -87,6 +97,11 @@ export default {
     computedRatings() {
       return new Array(this.max).fill(1).map((element, index) => index + 1);
     },
+    computedPrecision() {
+      if (this.precision && this.precision <= 0.5) return this.precision;
+      //by default no splits
+      else return 1;
+    },
     calcSize() {
       const input = this.size;
       if (typeof input === "number") return input;
@@ -99,21 +114,55 @@ export default {
       //this.hoveringUnit=2.5 rating=3 half hovering
       return rating - this.hoveringUnit < 1 && rating - this.hoveringUnit >= 0;
     },
-    calcColoredForUnit(rating) {
+    calcColorRangeForUnit(rating) {
       //once hovering, color from the far left
-      if (this.hoveringUnit) return this.hoveringUnit >= rating;
-      else return this.selectedUnit >= rating;
+      if (this.hoveringUnit) {
+        //only for the hovering Unit with precision, calc the colorRange
+        if (rating === this.hoveringUnit) {
+          let num = Math.ceil(this.hoverRange / this.computedPrecision);
+          return num * this.computedPrecision;
+        } else return this.hoveringUnit >= rating ? 1 : 0;
+      } else {
+        //directly dicided by this.selectedUnit
+        if (rating > Math.ceil(this.selectedUnit)) {
+          return 0;
+        } else {
+          if (rating <= this.selectedUnit) {
+            //not consider precision
+            return 1;
+          } else {
+            let num = Math.floor(
+              (this.selectedUnit - (rating - 1)) / this.computedPrecision
+            );
+            return num * this.computedPrecision;
+          }
+        }
+      }
     },
-    handleHoverEnter(which) {
+    handleHover(e,rating) {
+      //todo throttle
+      //const elBCR = e.currentTarget.getBoundingClientRect();
+      //e.clientX-elBCR.left will be influenced by scale
+      this.hoveringUnit = rating;
+      if (this.computedPrecision !== 1) {
+        this.hoverRange = e.offsetX / this.calcSize;
+      }
+    },
+    handleHoverEnter(rating) {
       if (this.disabled || this.readonly) return;
-      this.hoveringUnit = which;
+      this.hoveringUnit = rating;
     },
     handleHoverLeave() {
       if (this.disabled || this.readonly) return;
       this.hoveringUnit = 0;
     },
-    handleDoneSelect(e) {
-      let newValue = e.value;
+    handleDoneSelect(rating) {
+      let newValue = null;
+      if (this.computedPrecision !== 1) {
+        //require to calc precision
+        let num = Math.ceil(this.hoverRange / this.computedPrecision);
+        newValue = rating - 1 + num * this.computedPrecision;
+      } else newValue = rating;
       //repeat selection will reset
       if (newValue === this.selectedUnit)
         (newValue = 0), (this.hoveringUnit = 0);
@@ -123,7 +172,7 @@ export default {
         value: newValue,
       });
       this.selectedUnit = newValue;
-      // console.log("handleDoneSelect", e, this.selectedUnit);
+      //console.log("handleDoneSelect", rating, this.selectedUnit);
     },
   },
 };
@@ -134,6 +183,9 @@ export default {
   display: flex;
   .dev-info {
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
     line-height: 28px;
     top: 50%;
     left: 110%;

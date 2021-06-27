@@ -2,18 +2,29 @@
   <section
     class="unit"
     :class="classes"
-    :style="{ width: computedSize, height: computedSize }"
-    @click="handleClick"
+    :style="{ width: computedSize, height: computedSize,opacity: computedOpacity, }"
   >
     <Icon
-      :name="computedDisplayIcon"
+      class="main"
+      :name="activeIcon"
       :size="size"
       :color="computedColor"
       :style="{
         transform: computedScale,
-        opacity: computedOpacity,
+        ...computedDisplayArea,
+        zIndex: 10,
       }"
     ></Icon>
+    <Icon
+      class="base"
+      :name="icon"
+      :size="size"
+      :color="'rgba(0, 0, 0, 0.26)'"
+      :style="{
+        transform: computedScale,
+      }"
+    ></Icon>
+    <span class="dev" v-if="false">{{ colorRange }}</span>
   </section>
 </template>
 <script>
@@ -51,9 +62,12 @@ export default {
       type: Boolean,
       default: false,
     },
-    colored: {
-      type: Boolean,
-      default: false,
+    colorRange: {
+      //the width percentage of colored area for precision [0,1]
+      //when 0 means its not colored
+      //when 1 means its fully colored
+      type: Number,
+      default: 0,
     },
     defaultColor: {
       type: String,
@@ -72,17 +86,21 @@ export default {
       return [this.disabled ? "disabled" : "", this.readonly ? "readonly" : ""];
     },
     isActive() {
-      return this.colored;
+      return this.colorRange > 0;
     },
-    computedDisplayIcon() {
-      if (this.isActive) return this.activeIcon;
-      else return this.icon;
+    computedDisplayArea() {
+      return { width: `${this.colorRange * 100}%` };
     },
     computedColor() {
-      if (this.colored) return this.color || "rgba(250, 175, 0,1)";
+      if (this.isActive) return this.color || "rgba(250, 175, 0,1)";
+      else return this.defaultColor || "rgba(0, 0, 0, 0.26)";
+    },
+    computedBaseColor() {
+      if (this.isActive) return this.color || "rgba(250, 175, 0,1)";
       else return this.defaultColor || "rgba(0, 0, 0, 0.26)";
     },
     computedOpacity() {
+      //todo IMPORTANT it should be applied to the whole cpt instead of both icons separately
       if (this.disabled) return 0.38;
       else return null;
     },
@@ -94,12 +112,7 @@ export default {
       return `${this.size}px`;
     },
   },
-  methods: {
-    handleClick() {
-      if (this.disabled || this.readonly) return;
-      this.$emit("select", { value: this.rating });
-    },
-  },
+  methods: {},
 };
 </script>
 <style lang="less" scoped>
@@ -113,9 +126,15 @@ export default {
   }
   .icon {
     position: absolute;
+    overflow: hidden;
     left: 0;
     top: 0;
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    // transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transform-origin: 0 0;
+  }
+  .dev {
+    position: absolute;
+    top: 150%;
   }
 }
 </style>
