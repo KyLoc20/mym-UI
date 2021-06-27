@@ -132,8 +132,35 @@
     </GroupBox>
 
     <typography variant="h2">Customized rating</typography>
-    <GroupBox>
-      <Rating :value="ratingValue"></Rating>
+    <ul>
+      <li>
+        Use the <code>color</code> prop to custom the color of the rating.
+      </li>
+      <li>
+        Use the <code>icon</code> and the <code>activeIcon</code> props to
+        custom the icon.
+      </li>
+      <li>Use the <code>max</code> prop to custom the number of the rating.</li>
+    </ul>
+    <GroupBox block>
+      <GroupRow>
+        <div class="wrapper">
+          <span>Custom icon and color </span>
+          <Rating
+            :value="ratingValue050"
+            :precision="0.5"
+            icon='heart'
+            activeIcon="heartFill"
+            color="rgba(255, 109, 117,1)"
+          ></Rating>
+        </div>
+      </GroupRow>
+      <GroupRow>
+        <div class="wrapper">
+          <span>10 stars</span>
+          <Rating :value="ratingValue10Stars" :max="10"></Rating>
+        </div>
+      </GroupRow>
     </GroupBox>
 
     <typography variant="h2">Radio group</typography>
@@ -167,6 +194,7 @@ export default {
       ratingValue: 2,
       ratingValue050: 2.5,
       ratingValue025: 2,
+      ratingValue10Stars:8,
       feedback: "",
     };
   },
@@ -197,14 +225,13 @@ export default {
     margin-bottom: 5px;
     box-sizing: border-box;
   }
-  .wrapper-feedback{
+  .wrapper-feedback {
     display: flex;
-    width:200px;
-    .text{
+    width: 200px;
+    .text {
       margin-left: 16px;
       line-height: 24px;
       user-select: none;
-
     }
   }
 }

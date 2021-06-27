@@ -2,7 +2,7 @@
   <section
     class="unit"
     :class="classes"
-    :style="{ width: computedSize, height: computedSize,opacity: computedOpacity, }"
+    :style="{ transform: computedScale,width: computedSize, height: computedSize,opacity: computedOpacity, }"
   >
     <Icon
       class="main"
@@ -10,7 +10,6 @@
       :size="size"
       :color="computedColor"
       :style="{
-        transform: computedScale,
         ...computedDisplayArea,
         zIndex: 10,
       }"
@@ -20,9 +19,6 @@
       :name="icon"
       :size="size"
       :color="'rgba(0, 0, 0, 0.26)'"
-      :style="{
-        transform: computedScale,
-      }"
     ></Icon>
     <span class="dev" v-if="false">{{ colorRange }}</span>
   </section>
@@ -130,7 +126,6 @@ export default {
     left: 0;
     top: 0;
     // transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    transform-origin: 0 0;
   }
   .dev {
     position: absolute;

@@ -7,7 +7,7 @@
       @mousemove="handleHover($event, ratingValue)"
       @mouseenter="handleHoverEnter(ratingValue)"
       @mouseleave="handleHoverLeave(ratingValue)"
-      @mousedown="handleDoneSelect($event,ratingValue)"
+      @mousedown="handleDoneSelect($event, ratingValue)"
     >
       <Unit
         :rating="ratingValue"
@@ -16,6 +16,9 @@
         :colorRange="calcColorRangeForUnit(ratingValue)"
         :disabled="disabled"
         :readonly="readonly"
+        :activeIcon="activeIcon"
+        :icon="icon"
+        :color="color"
       ></Unit>
     </div>
     <div class="dev-info" v-if="dev">
@@ -76,6 +79,21 @@ export default {
     dev: {
       type: Boolean,
       default: false,
+    },
+    //custom
+    icon: {
+      //inactive: unselected
+      type: String,
+      required: false,
+    },
+    activeIcon: {
+      //hovering or selected
+      type: String,
+      required: false,
+    },
+    color: {
+      type: String,
+      required: false,
     },
   },
   data() {
@@ -167,8 +185,8 @@ export default {
       this.hoveringUnit = 0;
       this.hoveringValue = this.selectedUnit;
     },
-    handleDoneSelect(e,rating) {
-      e.preventDefault()
+    handleDoneSelect(e, rating) {
+      e.preventDefault();
       if (this.disabled || this.readonly) return;
       let newValue = null;
       if (this.computedPrecision !== 1) {
