@@ -5,12 +5,7 @@
       >Ratings provide insights regarding others' opinions and experiences and
       allow the users to submit ratings of their own.</typography
     >
-    <typography variant="p"
-      >The widget is useful for setting the value of a single-line textbox in
-      one of two types of scenarios:</typography
-    >
-
-    <typography variant="h2">Basic rating</typography>
+    <typography variant="h2" id="ac-basic-rating">Basic rating</typography>
     <GroupBox block>
       <GroupRow>
         <div class="wrapper">
@@ -35,7 +30,7 @@
         </div>
       </GroupRow>
     </GroupBox>
-    <typography variant="h2">Size</typography>
+    <typography variant="h2" id="ac-size">Size</typography>
     <GroupBox block>
       <GroupRow>
         <div class="wrapper">
@@ -79,7 +74,9 @@
       </GroupRow>
     </GroupBox>
 
-    <typography variant="h2">Rating precision</typography>
+    <typography variant="h2" id="ac-rating-precision"
+      >Rating precision</typography
+    >
     <typography variant="p"
       >The rating can display any float number with the <code>value</code> prop.
       Use the <code>precision</code> prop to define the minimum increment value
@@ -110,7 +107,7 @@
       </GroupRow>
     </GroupBox>
 
-    <typography variant="h2">Hover feedback</typography>
+    <typography variant="h2" id="ac-hover-feedback">Hover feedback</typography>
     <typography variant="p"
       >You can display a label on hover to help the user pick the correct rating
       value with the <code>onHoverChange</code> prop.</typography
@@ -126,7 +123,7 @@
       </div>
     </GroupBox>
 
-    <typography variant="h2">Customized rating</typography>
+    <typography variant="h2" id="ac-custom-rating">Custom rating</typography>
     <ul>
       <li>
         Use the <code>color</code> prop to custom the color of the rating.
@@ -158,7 +155,7 @@
       </GroupRow>
     </GroupBox>
 
-    <typography variant="h2">Radio group</typography>
+    <typography variant="h2" id="ac-radio-group">Radio group</typography>
     <typography variant="p"
       >Use the <code>iconGroup</code> prop to make your rating behave like a
       radio group.</typography
@@ -197,6 +194,14 @@ const FeedbackMap = {
 export default {
   name: "RatingExample",
   components: { Typography, Rating, GroupBox, GroupRow },
+  anchors: [
+    { anchor: "ac-basic-rating", text: "Basic rating" },
+    { anchor: "ac-size", text: "Size" },
+    { anchor: "ac-rating-precision", text: "Rating precision" },
+    { anchor: "ac-hover-feedback", text: "Hover feedback" },
+    { anchor: "ac-custom-rating", text: "Custom rating" },
+    { anchor: "ac-radio-group", text: "Radio group" },
+  ],
   data() {
     return {
       ratingValue: 2,

@@ -8,7 +8,7 @@
           :active="isDrawerActive"
           @ready="handleReadyToOpenDrawer"
         >
-          <ProjectMeta version="v0.5.1" title="MyMaterial-UI"></ProjectMeta>
+          <ProjectMeta version="v0.6.0" title="MyMaterial-UI"></ProjectMeta>
           <divider></divider>
           <catalog
             :items="drawerItems"
