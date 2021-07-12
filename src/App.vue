@@ -8,7 +8,7 @@
           :active="isDrawerActive"
           @ready="handleReadyToOpenDrawer"
         >
-          <ProjectMeta version="v0.6.0" title="MyMaterial-UI"></ProjectMeta>
+          <ProjectMeta version="v0.7.0" title="MyMaterial-UI"></ProjectMeta>
           <divider></divider>
           <catalog
             :items="drawerItems"
@@ -92,6 +92,7 @@ const getDrawerItems = () => [
           { content: { label: "breadcrumbs", text: "Breadcrumbs🚧" } },
           { content: { label: "drawer", text: "Drawer🚧" } },
           { content: { label: "menu", text: "Menu🚧" } },
+          { content: { label: "timeline", text: "Timeline🚧", link: "timeline" } },
           { content: { label: "stepper", text: "Stepper", link: "stepper" } },
           { content: { label: "tabs", text: "Tabs🚧" } },
         ],

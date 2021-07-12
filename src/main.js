@@ -11,6 +11,7 @@ import _ from 'lodash'
 Vue.prototype._ = _
 import ScrollCatalog from "./components//ScrollCatalog/ScrollCatalog";
 import StepperExample from "./examples/StepperExample"
+import TimelineExample from "./examples/TimelineExample"
 import AvatarExample from "./examples/AvatarExample"
 import AutocompleteExample from "./examples/AutocompleteExample"
 import FloatActionButtonExample from "./examples/FloatActionButtonExample"
@@ -45,6 +46,7 @@ const routes = [
     { path: '/select', ...genRouteWithCatalog('/select', SelectExample), },
     { path: '/autocomplete', ...genRouteWithCatalog('/autocomplete', AutocompleteExample), },
     { path: '/rating', ...genRouteWithCatalog('/rating', RatingExample), },
+    { path: '/timeline', ...genRouteWithCatalog('/timeline', TimelineExample), },
 ]
 
 const router = new VueRouter({

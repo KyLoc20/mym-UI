@@ -1,11 +1,11 @@
 <template>
   <div class="circular-progress" :style="boxSize">
-    <svg viewBox="22 22 44 44" :class="classOuter">
+    <svg viewBox="22 22 44 44" :class="classesOuter">
       <circle
-        :class="classInner"
+        :class="classesInner"
         :cx="44"
         :cy="44"
-        :r="strokeRadius"
+        :r="computedStrokeRadius"
         fill="none"
         :stroke="colorStroke"
         :stroke-width="strokeWidth"
@@ -52,18 +52,18 @@ export default {
     console.log(this.value);
   },
   computed: {
-    classOuter() {
+    classesOuter() {
       if (this.isIndeterminate) return "indeterminate outer-animate";
       else return "determinate";
     },
-    classInner() {
+    classesInner() {
       if (this.isIndeterminate) return "indeterminate inner-animate";
       else return "determinate";
     },
     colorStroke() {
       return this.color ? this.color : "currentColor";
     },
-    strokeRadius() {
+    computedStrokeRadius() {
       //this decides the size of the circle
       return this.size;
     },

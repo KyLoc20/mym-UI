@@ -127,7 +127,7 @@ export default {
       let link = this.content.link;
       console.log("handleClick originally from: ", label, layer);
       this.$emit("select", { label, layer, link });
-      //whether collapse its childrem items
+      //whether collapse its children items
       if (this.hasChildren) {
         this.shouldChildrenCollapsed = !this.shouldChildrenCollapsed;
         console.log("---->", this.shouldChildrenCollapsed);

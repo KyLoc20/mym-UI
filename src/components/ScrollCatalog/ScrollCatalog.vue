@@ -43,7 +43,6 @@ export default {
   },
   data() {
     return {
-      selectedLabel: this.selectedOne,
       throttleTimer: null,
       activeAnchor: null, //when scrolling
     };
@@ -86,9 +85,7 @@ export default {
     },
     handleScroll() {
       // console.log("handleScroll");
-      if (this.throttleTimer) {
-        return;
-      }
+      if (this.throttleTimer) return;
       this.throttleTimer = setTimeout(() => {
         this.throttleTimer = null;
         this.activeAnchor = this.locateByScrolling();
