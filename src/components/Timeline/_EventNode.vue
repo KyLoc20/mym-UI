@@ -1,11 +1,22 @@
 <template>
   <section class="event-node" :class="classes" :style="{}">
-    <div class="description left">{{ descriptionLeft }}</div>
-    <div class="axis">
-      <div class="dot"></div>
-      <div class="bar" v-if="!last"></div>
+    <div class="description left" :style="{ color: computedTextColor }">
+      {{ descriptionLeft }}
     </div>
-    <div class="description right">{{ descriptionRight }}</div>
+    <div class="axis">
+      <div
+        class="dot"
+        :style="{ background: computedDotColor, border: computedBorder }"
+      ></div>
+      <div
+        class="bar"
+        :style="{ background: computedBarColor }"
+        v-if="!last"
+      ></div>
+    </div>
+    <div class="description right" :style="{ color: computedTextColor }">
+      {{ descriptionRight }}
+    </div>
   </section>
 </template>
 <script>
@@ -20,7 +31,23 @@ export default {
       type: String,
     },
     last: {
-      type: Boolean,//the last one has no [bar]
+      type: Boolean, //the last one has no [bar]
+    },
+    dotColor: {
+      type: String,
+      required: false,
+    },
+    textColor: {
+      type: String,
+      required: false,
+    },
+    barColor: {
+      type: String,
+      required: false,
+    },
+    outlined: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -29,6 +56,20 @@ export default {
   computed: {
     classes() {
       return [];
+    },
+    computedBorder() {
+      return this.outlined ? `2px solid ${this.dotColor || "rgba(189, 189, 189, 1)"}` : null;
+    },
+    computedDotColor() {
+      return this.outlined
+        ? "transparent"
+        : this.dotColor || "rgba(189, 189, 189, 1)";
+    },
+    computedBarColor() {
+      return this.barColor || "rgba(189, 189, 189, 1)";
+    },
+    computedTextColor() {
+      return this.textColor || "rgba(0, 0, 0, 0.87)";
     },
   },
   methods: {},
@@ -46,16 +87,15 @@ export default {
     width: 12px;
     min-height: 70px;
     .dot {
+      box-sizing: border-box;
       border-radius: 50%;
       width: 12px;
       height: 12px;
       margin: 11.5px 0;
-      background: rgba(189, 189, 189, 1);
     }
     .bar {
       width: 2px;
       height: calc(100% - 35px);
-      background: rgba(189, 189, 189, 1);
     }
   }
   .description {
@@ -65,7 +105,6 @@ export default {
     min-height: 70px;
     line-height: 24px;
     padding: 6px 16px;
-    color: rgba(0, 0, 0, 0.87);
     font-size: 16px;
     &.left {
       justify-content: flex-end;

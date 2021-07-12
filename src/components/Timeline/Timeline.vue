@@ -9,6 +9,10 @@
         :descriptionLeft="event.left"
         :descriptionRight="event.right"
         :last="idx === computedEventNum - 1"
+        :dotColor="event.dotColor || color"
+        :textColor="event.textColor || textColor"
+        :barColor="event.barColor || barColor"
+        :outlined="event.outlined || outlined"
       ></EventNode>
     </div>
   </section>
@@ -68,7 +72,14 @@ export default {
           else return { right: item };
         } else if (typeof item === "object")
           //its not controlled by alternating or leftPositioned
-          return { right: item.right, left: item.left };
+          return {
+            right: item.right,
+            left: item.left,
+            dotColor: item.color,
+            textColor: item.textColor,
+            barColor: item.barColor,
+            outlined: item.outlined,
+          };
         else return {};
       });
     },

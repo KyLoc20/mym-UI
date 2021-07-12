@@ -69,17 +69,6 @@
       ></Timeline
     ></GroupBox>
 
-    <GroupBox block>
-      <GroupRow><Timeline></Timeline></GroupRow>
-    </GroupBox>
-
-    <typography variant="h2" id="ac-alternating">Alternating</typography>
-    <typography variant="p"
-      >Use the prop <code>alternating</code> to display the events on
-      alternating sides.</typography
-    >
-    <GroupBox> </GroupBox>
-
     <typography variant="h2" id="ac-color">Color</typography>
     <ul>
       <li>
@@ -95,25 +84,41 @@
         <strong>event bar</strong>.
       </li>
     </ul>
-    <GroupBox> </GroupBox>
+    <GroupBox>
+      <Timeline
+        :events="['Eat', 'Code', 'Sleep']"
+        color="rgb(76, 175, 80)"
+        textColor="rgb(25, 118, 210)"
+        barColor="rgb(156, 39, 176)"
+      ></Timeline
+    ></GroupBox>
 
     <typography variant="h2" id="ac-outlined">Outlined</typography>
     <typography variant="p"
       >Use the prop <code>outlined</code> to alter the <code>event dot</code> to
       outlined-style.</typography
     >
-    <GroupBox> </GroupBox>
+    <GroupBox>
+      <Timeline
+        outlined
+        :events="[
+          'Eat',
+          { left: 'Code', color: 'rgb(25, 118, 210)' },
+          'Sleep',
+          { left: 'Repeat', color: 'rgb(156, 39, 176)' },
+        ]"
+      ></Timeline>
+    </GroupBox>
   </section>
 </template>
 <script>
 import GroupBox from "../components/Layout/GroupBox.vue";
-import GroupRow from "../components/Layout/GroupRow.vue";
 import Timeline from "../components/Timeline/Timeline.vue";
 import Typography from "../components/Typography/Typography";
 
 export default {
   name: "TimelineExample",
-  components: { Typography, Timeline, GroupBox, GroupRow },
+  components: { Typography, Timeline, GroupBox },
   anchors: [
     { anchor: "ac-basic-timeline", text: "Basic timeline" },
     { anchor: "ac-position", text: "Position" },
