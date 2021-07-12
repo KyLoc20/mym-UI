@@ -8,9 +8,18 @@
     <typography variant="h2" id="ac-basic-timeline">Basic timeline</typography>
     <typography variant="p"
       >A basic timeline showing list of events consisting of
-      <strong>event nodes</strong>.</typography
+      <strong>event nodes</strong>. The component accepts the following
+      <code>events</code> structures by default.</typography
     >
-    <GroupBox> <Timeline></Timeline></GroupBox>
+
+    <pre>
+      <code>
+        <span>['Eat','Code','Sleep']</span>
+      </code>
+    </pre>
+    <GroupBox>
+      <Timeline :events="['Eat', 'Code', 'Sleep']"></Timeline
+    ></GroupBox>
 
     <typography variant="h2" id="ac-position">Position</typography>
     <typography variant="p"
@@ -78,5 +87,23 @@ export default {
 </script>
 <style scoped lang="less">
 .timeline-example {
+  pre {
+    display: flex;
+    margin: 24px 0;
+    padding: 16px;
+    overflow: auto;
+    border-radius: 4px;
+    background-color: #272c34;
+    code {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background: transparent;
+      color: #fff;
+      font-size: 0.9em;
+      line-height: 1.5;
+      padding: 0 3px;
+    }
+  }
 }
 </style>

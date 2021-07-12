@@ -1,16 +1,27 @@
 <template>
   <section class="timeline" :class="classes" :style="{}">
-    123
+    <div
+      class="event-wrapper"
+      v-for="(event, idx) in computedEvents"
+      :key="idx"
+    >
+      <EventNode
+        :descriptionLeft="event.left"
+        :descriptionRight="event.right"
+        :last="idx === computedEventNum - 1"
+      ></EventNode>
+    </div>
   </section>
 </template>
 <script>
 // import { requireOneOf, requirePositiveNumber } from "../common/validator";
+import EventNode from "./_EventNode.vue";
 export default {
   name: "Timeline",
-  components: {},
+  components: { EventNode },
   props: {
     events: {
-      type: Array,
+      type: Array, //"Eat" or {left: "10:00 am", right: "Eat",}
     },
     alternating: {
       type: Boolean,
@@ -40,6 +51,18 @@ export default {
     classes() {
       return [];
     },
+    computedEventNum() {
+      return this.events.length;
+    },
+    computedEvents() {
+      if (!this.events) return [];
+      return this.events.map((item) => {
+        if (typeof item === "string") return { right: item };
+        else if (typeof item === "object")
+          return { right: item.right, left: item.left };
+        else return { right: undefined };
+      });
+    },
   },
   methods: {},
 };
@@ -48,5 +71,12 @@ export default {
 .timeline {
   position: relative;
   display: flex;
+  flex-direction: column;
+  flex: 1;
+  .event-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 </style>
