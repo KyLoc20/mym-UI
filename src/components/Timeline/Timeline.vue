@@ -27,6 +27,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    leftPositioned: {
+      type: Boolean,
+      default: false,
+    },
     outlined: {
       type: Boolean,
       default: false,
@@ -56,11 +60,16 @@ export default {
     },
     computedEvents() {
       if (!this.events) return [];
-      return this.events.map((item) => {
-        if (typeof item === "string") return { right: item };
-        else if (typeof item === "object")
+      return this.events.map((item, index) => {
+        if (typeof item === "string") {
+          if (this.alternating)
+            return index % 2 === 0 ? { right: item } : { left: item };
+          else if (this.leftPositioned) return { left: item };
+          else return { right: item };
+        } else if (typeof item === "object")
+          //its not controlled by alternating or leftPositioned
           return { right: item.right, left: item.left };
-        else return { right: undefined };
+        else return {};
       });
     },
   },

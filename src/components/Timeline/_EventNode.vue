@@ -68,6 +68,7 @@ export default {
     color: rgba(0, 0, 0, 0.87);
     font-size: 16px;
     &.left {
+      justify-content: flex-end;
       text-align: right;
     }
     &.right {

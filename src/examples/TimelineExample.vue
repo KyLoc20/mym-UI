@@ -11,7 +11,6 @@
       <strong>event nodes</strong>. The component accepts the following
       <code>events</code> structures by default.</typography
     >
-
     <pre>
       <code>
         <span>['Eat','Code','Sleep']</span>
@@ -20,12 +19,56 @@
     <GroupBox>
       <Timeline :events="['Eat', 'Code', 'Sleep']"></Timeline
     ></GroupBox>
+    <typography variant="p"
+      >You can specify the positions of descriptions or have two descriptions on
+      the both sides with the following
+      <code>events</code> structures.</typography
+    >
+    <pre>
+      <code>
+        <span>['Eat', {left:'Code',right:'10:00 am'}, {right:'Run'}, {left:'18:00 pm',right:'Drink'}, 'Sleep']</span>
+      </code>
+    </pre>
+    <GroupBox>
+      <Timeline
+        :events="[
+          'Eat',
+          { left: 'Code', right: '10:00 am' },
+          { right: 'Run' },
+          { left: '18:00 pm', right: 'Drink' },
+          'Sleep',
+        ]"
+      ></Timeline
+    ></GroupBox>
 
     <typography variant="h2" id="ac-position">Position</typography>
     <typography variant="p"
-      >The description content of the events can be positioned on the left side
-      or the right side or the both relative to the time axis.</typography
+      >The descriptions of the events can be positioned in the different
+      positions (by default they are on the right side) relative to the time
+      axis.</typography
     >
+    <typography variant="quote">
+      <strong>Note:</strong> the events with two descriptions aren't
+      affected.</typography
+    >
+    <typography variant="p"
+      >Use the prop <code>leftPositioned</code> to display the descriptions on
+      the left sides.</typography
+    >
+    <GroupBox>
+      <Timeline :events="['Eat', 'Code', 'Sleep']" leftPositioned></Timeline
+    ></GroupBox>
+    <typography variant="p"
+      >Use the prop <code>alternating</code> to display the descriptions on
+      alternating sides.</typography
+    >
+    <GroupBox>
+      <Timeline
+        :events="['Eat', 'Code', 'Run', 'Drink', 'Sleep']"
+        alternating
+      ></Timeline
+    ></GroupBox>
+
     <GroupBox block>
       <GroupRow><Timeline></Timeline></GroupRow>
     </GroupBox>
