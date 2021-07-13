@@ -76,6 +76,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    clickable: {
+      type: Boolean,
+      default: true,
+    },
     dev: {
       type: Boolean,
       default: false,
@@ -210,6 +214,8 @@ export default {
       this.hoveringValue = this.selectedUnit;
     },
     handleDoneSelect(e, rating) {
+      //todo forbidden click
+      if (!this.clickable) return;
       e.preventDefault();
       if (this.disabled || this.readonly) return;
       let newValue = null;

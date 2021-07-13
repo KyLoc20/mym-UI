@@ -263,7 +263,7 @@ export default {
 //   background-color: #fff;
 // }
 .chip {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   box-sizing: border-box;
   position: relative;

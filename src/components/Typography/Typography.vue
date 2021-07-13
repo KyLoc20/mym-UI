@@ -49,6 +49,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .typography {
+  overflow: auto;
   /deep/ code {
     font-family: Consolas;
     font-size: 0.85em;

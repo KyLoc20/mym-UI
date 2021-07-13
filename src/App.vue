@@ -3,7 +3,7 @@
     <section class="header">
       <AppBar>
         <Drawer
-          :style="{...computedDrawerMargin}"
+          :style="{ ...computedDrawerMargin }"
           icon="menu"
           :active="isDrawerActive"
           @ready="handleReadyToOpenDrawer"
@@ -92,7 +92,13 @@ const getDrawerItems = () => [
           { content: { label: "breadcrumbs", text: "Breadcrumbs🚧" } },
           { content: { label: "drawer", text: "Drawer🚧" } },
           { content: { label: "menu", text: "Menu🚧" } },
-          { content: { label: "timeline", text: "Timeline⚡", link: "timeline" } },
+          {
+            content: {
+              label: "timeline",
+              text: "Timeline⚡",
+              link: "timeline",
+            },
+          },
           { content: { label: "stepper", text: "Stepper", link: "stepper" } },
           { content: { label: "tabs", text: "Tabs🚧" } },
         ],
@@ -123,6 +129,10 @@ const getDrawerItems = () => [
   },
   {
     content: { label: "playground", text: "Playground" },
+    children: [],
+  },
+  {
+    content: { label: "aboutme", text: "About Me👋", link: "aboutme" },
     children: [],
   },
 ];

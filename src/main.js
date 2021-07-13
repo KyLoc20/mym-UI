@@ -23,6 +23,7 @@ import ChipExample from "./examples/ChipExample"
 import CheckboxExample from "./examples/CheckboxExample"
 import SelectExample from "./examples/SelectExample";
 import RatingExample from "./examples/RatingExample";
+import AboutMeExample from "./examples/AboutMeExample";
 const genRouteWithCatalog = (path, vNode) => ({
     components: {
         default: vNode,
@@ -47,6 +48,7 @@ const routes = [
     { path: '/autocomplete', ...genRouteWithCatalog('/autocomplete', AutocompleteExample), },
     { path: '/rating', ...genRouteWithCatalog('/rating', RatingExample), },
     { path: '/timeline', ...genRouteWithCatalog('/timeline', TimelineExample), },
+    { path: '/aboutme', ...genRouteWithCatalog('/aboutme', AboutMeExample), },
 ]
 
 const router = new VueRouter({
