@@ -58,7 +58,7 @@
     <GroupBox block>
       <GroupRow
         ><div class="skill-info">
-          <span class="title">Level Example</span>
+          <span class="title"><i>Level Example</i></span>
           <Rating
             :value="levelExample"
             :precision="0.5"
@@ -93,7 +93,7 @@
       >
       <GroupRow
         ><div class="skill-info">
-          <span class="title">Vue</span>
+          <span class="title">Vue2</span>
           <Rating
             size="md"
             :value="levelVue"
@@ -117,7 +117,7 @@
       >
       <GroupRow
         ><div class="skill-info">
-          <span class="title">EmotionJs</span>
+          <span class="title">EmotionJS</span>
           <Rating
             size="md"
             :value="levelEmotion"
@@ -127,6 +127,13 @@
           <span class="description">{{
             getSkillDescription(levelEmotion)
           }}</span>
+        </div></GroupRow
+      >
+      <GroupRow
+        ><div class="skill-info">
+          <span class="title">Typescript</span>
+          <Rating size="md" :value="levelTS" :precision="0.5" readonly></Rating>
+          <span class="description">{{ getSkillDescription(levelTS) }}</span>
         </div></GroupRow
       >
       <GroupRow
@@ -172,107 +179,65 @@
     </GroupBox>
 
     <typography variant="h2" id="ac-timeline">Timeline</typography>
+    <GroupBox> <Timeline outlined :events="timeline"></Timeline></GroupBox>
+
     <typography variant="h2" id="ac-my-story"
       >My Story About Material-UI</typography
     >
-    <pre>
-      <code>
-        <span>['Eat','Code','Sleep']</span>
-      </code>
-    </pre>
-    <GroupBox>
-      <Timeline :events="['Eat', 'Code', 'Sleep']"></Timeline
-    ></GroupBox>
     <typography variant="p"
-      >You can specify the positions of descriptions or have two descriptions on
-      the both sides with the following
-      <code>events</code> structures.</typography
-    >
-    <pre>
-      <code>
-        <span>['Eat', {left:'Code',right:'10:00 am'}, {right:'Run'}, {left:'18:00 pm',right:'Drink'}, 'Sleep']</span>
-      </code>
-    </pre>
-    <GroupBox>
-      <Timeline
-        :events="[
-          'Eat',
-          { left: 'Code', right: '10:00 am' },
-          { right: 'Run' },
-          { left: '18:00 pm', right: 'Drink' },
-          'Sleep',
-        ]"
-      ></Timeline
-    ></GroupBox>
-
-    <typography variant="h2" id="ac-position">Position</typography>
-    <typography variant="p"
-      >The descriptions of the events can be positioned in the different
-      positions (by default they are on the right side) relative to the time
-      axis.</typography
-    >
-    <typography variant="quote">
-      <strong>Note:</strong> the events with two descriptions aren't
-      affected.</typography
+      ><i
+        >Material-UI is my guide to the front-end engineering no doubt.</i
+      ></typography
     >
     <typography variant="p"
-      >Use the prop <code>leftPositioned</code> to display the descriptions on
-      the left sides.</typography
+      >Back to 2021.02, I decided to <strong>make a UI-lib from the scratch</strong> as a
+      learn-by-doing challenge when my study abroad plan was blocked by the
+      virus.</typography
     >
-    <GroupBox>
-      <Timeline :events="['Eat', 'Code', 'Sleep']" leftPositioned></Timeline
-    ></GroupBox>
     <typography variant="p"
-      >Use the prop <code>alternating</code> to display the descriptions on
-      alternating sides.</typography
+      >I found Material-UI then I learned it is using React Hooks & EmotionJS
+      mainly. After I looked through its fresh docs and cool design system, I
+      was attracted and ready to set off.</typography
     >
-    <GroupBox>
-      <Timeline
-        :events="['Eat', 'Code', 'Run', 'Drink', 'Sleep']"
-        alternating
-      ></Timeline
-    ></GroupBox>
-
-    <typography variant="h2" id="ac-color">Color</typography>
-    <ul>
-      <li>
-        Use the prop <code>color</code> to set the color of the
-        <strong>event dot</strong>.
-      </li>
-      <li>
-        Use the prop <code>textColor</code> to set the color of the
-        <strong>event description</strong> text.
-      </li>
-      <li>
-        Use the prop <code>barColor</code> to set the color of the
-        <strong>event bar</strong>.
-      </li>
-    </ul>
-    <GroupBox>
-      <Timeline
-        :events="['Eat', 'Code', 'Sleep']"
-        color="rgb(76, 175, 80)"
-        textColor="rgb(25, 118, 210)"
-        barColor="rgb(156, 39, 176)"
-      ></Timeline
-    ></GroupBox>
-
-    <typography variant="h2" id="ac-outlined">Outlined</typography>
     <typography variant="p"
-      >Use the prop <code>outlined</code> to alter the <code>event dot</code> to
-      outlined-style.</typography
-    >
-    <GroupBox>
-      <Timeline
-        outlined
-        :events="[
-          'Eat',
-          { left: 'Code', color: 'rgb(25, 118, 210)' },
-          'Sleep',
-          { left: 'Repeat', color: 'rgb(156, 39, 176)' },
-        ]"
-      ></Timeline>
-    </GroupBox>
+      >Suddenly a bold idea came to my mind that I needn't just make a copy
+      instead <strong>I could make it with another framework</strong>. Not leaving React Hooks &
+      EmotionJS aside, I planned to make Vuetify with the React ecosystem later.
+    </typography>
+    <typography variant="p"
+      >In the next 2 months, I picked up my knowledge on front-end and make
+      My-Material-UI components one by one. At that time I have <strong>only one target</strong>:
+      if they look alike, behave alike, they are the same. I advanced very fast
+      with an acquaintance of many design details.
+    </typography>
+    <typography variant="p"
+      >In May, I felt the code I wrote before to be a mess so I began to make a
+      codereview. I studied the docs of Vue and the source code of Vuetify and I
+      did <strong>get a better understand of Vue good practices</strong>. I went on meanwhile I
+      <strong>checked the issues</strong> from the Material-UI to keep track of their progress.
+    </typography>
+    <typography variant="p"
+      >In June, I began to <strong>rewrite my code</strong> to put my components into display
+      containers. That's why I read the docs of Material-Ui carefully on their
+      design philosophy. I benefited a lot from rewriting so that I could
+      display my components in the pages with helpful docs. At that time <strong>I
+      realized it's a must to maintain good docs.</strong>
+    </typography>
+    <typography variant="p"
+      >Another thing important In June, I started to make Vuetify with React as
+      my second project, Ruetify-UI. I learned React Hooks & EmotionJS & nextjs
+      which were new to me. Basically what I need to do is to rewrite my
+      components from My-Material-UI with Vuetify style. Vuetify is also a nice
+      UI-lib while its docs are not as good as Material-UI's.
+    </typography>
+    <typography variant="p"
+      >In July, I <strong>focused on some challenging components</strong> like [Slider] and
+      [Autocomplete] etc. Given there are 2 different-frameworks projects going
+      on, I had to take some time to <strong>fill the gap between React&Vue</strong>. Also I
+      decided to build some simple demos to check the effectiveness of my
+      components.
+    </typography>
+    <typography variant="p"><i>To Be Continue</i></typography>
   </section>
 </template>
 <script>
@@ -308,13 +273,43 @@ export default {
     return {
       levelExample: 0,
       levelJS: 3,
+      levetHTMLCSS: 2.5,
       levelVue: 3.5,
       levelReact: 3,
       levelEmotion: 2.5,
+      levelTS: 1.5,
       levelPython: 3.5,
       levelMongoDB: 2.5,
       levelCpp: 2,
-      levetHTMLCSS: 2.5,
+      timeline: [
+        {
+          left: "2016",
+          right: "Entered the college",
+          color: "rgb(76, 175, 80)",
+        },
+        {
+          left: "2019",
+          right:
+            "Started a startup about AI data processing. Made an image annotation tool with React&Python",
+          color: "rgb(156, 39, 176)",
+        },
+        {
+          left: "2020.07",
+          right: "Graduated from the college",
+          color: "rgb(76, 175, 80)",
+        },
+        {
+          left: "2021.03",
+          right:
+            "Started the project My-Material-UI to make Material-UI with Vue",
+          color: "rgb(25, 118, 210)",
+        },
+        {
+          left: "2021.06",
+          right: "Started the project Ruetify-UI to make vuetify with React",
+          color: "rgb(25, 118, 210)",
+        },
+      ],
     };
   },
   methods: {
