@@ -190,9 +190,9 @@
       ></typography
     >
     <typography variant="p"
-      >Back to 2021.02, I decided to <strong>make a UI-lib from the scratch</strong> as a
-      learn-by-doing challenge when my study abroad plan was blocked by the
-      virus.</typography
+      >Back to 2021.02, I decided to
+      <strong>make a UI-lib from the scratch</strong> as a learn-by-doing
+      challenge when my study abroad plan was blocked by the virus.</typography
     >
     <typography variant="p"
       >I found Material-UI then I learned it is using React Hooks & EmotionJS
@@ -201,27 +201,30 @@
     >
     <typography variant="p"
       >Suddenly a bold idea came to my mind that I needn't just make a copy
-      instead <strong>I could make it with another framework</strong>. Not leaving React Hooks &
-      EmotionJS aside, I planned to make Vuetify with the React ecosystem later.
+      instead <strong>I could make it with another framework</strong>. Not
+      leaving React Hooks & EmotionJS aside, I planned to make Vuetify with the
+      React ecosystem later.
     </typography>
     <typography variant="p"
       >In the next 2 months, I picked up my knowledge on front-end and make
-      My-Material-UI components one by one. At that time I have <strong>only one target</strong>:
-      if they look alike, behave alike, they are the same. I advanced very fast
-      with an acquaintance of many design details.
+      My-Material-UI components one by one. At that time I have
+      <strong>only one target</strong>: if they look alike, behave alike, they
+      are the same. I advanced very fast with an acquaintance of many design
+      details.
     </typography>
     <typography variant="p"
       >In May, I felt the code I wrote before to be a mess so I began to make a
       codereview. I studied the docs of Vue and the source code of Vuetify and I
-      did <strong>get a better understand of Vue good practices</strong>. I went on meanwhile I
-      <strong>checked the issues</strong> from the Material-UI to keep track of their progress.
+      did <strong>get a better understand of Vue good practices</strong>. I went
+      on meanwhile I <strong>checked the issues</strong> from the Material-UI to
+      keep track of their progress.
     </typography>
     <typography variant="p"
-      >In June, I began to <strong>rewrite my code</strong> to put my components into display
-      containers. That's why I read the docs of Material-Ui carefully on their
-      design philosophy. I benefited a lot from rewriting so that I could
-      display my components in the pages with helpful docs. At that time <strong>I
-      realized it's a must to maintain good docs.</strong>
+      >In June, I began to <strong>rewrite my code</strong> to put my components
+      into display containers. That's why I read the docs of Material-Ui
+      carefully on their design philosophy. I benefited a lot from rewriting so
+      that I could display my components in the pages with helpful docs. At that
+      time <strong>I realized it's a must to maintain good docs.</strong>
     </typography>
     <typography variant="p"
       >Another thing important In June, I started to make Vuetify with React as
@@ -231,16 +234,25 @@
       UI-lib while its docs are not as good as Material-UI's.
     </typography>
     <typography variant="p"
-      >In July, I <strong>focused on some challenging components</strong> like [Slider] and
-      [Autocomplete] etc. Given there are 2 different-frameworks projects going
-      on, I had to take some time to <strong>fill the gap between React&Vue</strong>. Also I
-      decided to build some simple demos to check the effectiveness of my
-      components.
+      >In July, I <strong>focused on some challenging components</strong> like
+      [Slider] and [Autocomplete] etc. Given there are 2 different-frameworks
+      projects going on, I had to take some time to
+      <strong>fill the gap between React&Vue</strong>. Also I decided to build
+      some simple demos to check the effectiveness of my components.
     </typography>
     <typography variant="p"><i>To Be Continue</i></typography>
+    <div class="fixed-container">
+      <float-action-button
+        icon="github"
+        color="default"
+        size="lg"
+        @click="handleGoToGithub"
+      ></float-action-button>
+    </div>
   </section>
 </template>
 <script>
+import FloatActionButton from "../components/Button/FloatActionButton";
 import GroupBox from "../components/Layout/GroupBox.vue";
 import GroupRow from "../components/Layout/GroupRow.vue";
 import Timeline from "../components/Timeline/Timeline.vue";
@@ -262,7 +274,15 @@ const SkillLevelMap = {
 };
 export default {
   name: "AboutMeExample",
-  components: { Typography, Timeline, GroupBox, GroupRow, Chip, Rating },
+  components: {
+    Typography,
+    Timeline,
+    GroupBox,
+    GroupRow,
+    Chip,
+    Rating,
+    FloatActionButton,
+  },
   anchors: [
     { anchor: "ac-basic-information", text: "Basic Information" },
     { anchor: "ac-skills", text: "Skills" },
@@ -323,12 +343,22 @@ export default {
     getSkillDescription(rating) {
       return SkillLevelMap[rating];
     },
+    handleGoToGithub() {
+      setTimeout(() => {
+        window.open("https://github.com/KyLoc20");
+      }, 200);
+    },
   },
   computed: {},
 };
 </script>
 <style scoped lang="less">
 .about-me-example {
+  .fixed-container {
+    position: fixed;
+    bottom: 36px;
+    right: 16px;
+  }
   .col {
     flex: 1;
     display: flex;
