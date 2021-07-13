@@ -222,9 +222,11 @@
     <typography variant="p"
       >In June, I began to <strong>rewrite my code</strong> to put my components
       into display containers. That's why I read the docs of Material-Ui
-      carefully on their design philosophy. I benefited a lot from rewriting so
-      that I could display my components in the pages with helpful docs. At that
-      time <strong>I realized it's a must to maintain good docs.</strong>
+      carefully on their design philosophy. I benefited a lot from rewriting
+      this time so that I could
+      <strong>design more user-friendly and consistent props interface</strong>
+      then display my components in the pages with helpful docs. At that time
+      <strong>I realized it's a must to maintain good docs.</strong>
     </typography>
     <typography variant="p"
       >Another thing important In June, I started to make Vuetify with React as
