@@ -10,7 +10,7 @@
 <script>
 import Rippleable from "../../mixins/rippleable";
 export default {
-  name: "VSwitch",
+  name: "Switch",
   mixins: [Rippleable],
   props: {
     color: {

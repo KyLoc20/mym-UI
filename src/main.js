@@ -23,6 +23,7 @@ import ChipExample from "./examples/ChipExample"
 import CheckboxExample from "./examples/CheckboxExample"
 import SelectExample from "./examples/SelectExample";
 import RatingExample from "./examples/RatingExample";
+import SwitchExample from "./examples/SwitchExample";
 import AboutMeExample from "./examples/AboutMeExample";
 const genRouteWithCatalog = (path, vNode) => ({
     components: {
@@ -48,6 +49,7 @@ const routes = [
     { path: '/autocomplete', ...genRouteWithCatalog('/autocomplete', AutocompleteExample), },
     { path: '/rating', ...genRouteWithCatalog('/rating', RatingExample), },
     { path: '/timeline', ...genRouteWithCatalog('/timeline', TimelineExample), },
+    { path: '/switch', ...genRouteWithCatalog('/switch', SwitchExample), },
     { path: '/aboutme', ...genRouteWithCatalog('/aboutme', AboutMeExample), },
 ]
 

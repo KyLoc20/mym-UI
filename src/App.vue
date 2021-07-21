@@ -75,6 +75,7 @@ const getDrawerItems = () => [
             },
           },
           { content: { label: "rating", text: "Rating⚡", link: "rating" } },
+          { content: { label: "switch", text: "Switch", link: "switch" } },
           { content: { label: "select", text: "Select", link: "select" } },
           { content: { label: "slider", text: "Slider", link: "slider" } },
           { content: { label: "textfield", text: "Text Field🚧" } },
