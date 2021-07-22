@@ -4,18 +4,35 @@
       class="switch-wrapper"
       @mouseenter="handleHoverEnter"
       @mouseleave="handleHoverLeave"
+      :style="{
+        width: computedSwitchWidth,
+        height: computedSwitchHeight,
+        padding: computedSwitchPadding,
+      }"
     >
       <div
         class="thumb-wrapper"
         :style="{
           background: computedHaloColor,
           transform: computeThumbTransform,
+          padding: computedThumbHaloRadius,
+          top:computedThumbTop,
         }"
         @mousedown="handleClickThumb"
       >
-        <div class="thumb" :style="{ background: computedThumbColor }"></div>
+        <div
+          class="thumb"
+          :style="{
+            background: computedThumbColor,
+            width: computedThumbSize,
+            height: computedThumbSize,
+          }"
+        ></div>
       </div>
-      <div class="track" :style="{ ...computedTrackColor }"></div>
+      <div
+        class="track"
+        :style="{ ...computedTrackColor, borderRadius: computedTrackRadius }"
+      ></div>
     </div>
     <div class="label-wrapper">
       <span :style="{ color: computedLabelText }">{{ label }}</span>
@@ -26,6 +43,7 @@
 import Rippleable from "../../mixins/rippleable";
 import { requireOneOf } from "../common/validator";
 import { getColor } from "./color";
+import { getSize } from "./size";
 export default {
   name: "VSwitch",
   mixins: [Rippleable],
@@ -53,10 +71,30 @@ export default {
       },
     },
     color: {
-      required: "primary",
+      default: "primary",
       validator: (v) => {
         return [requireOneOf(["primary", "secondary"])].some((test) => test(v));
       },
+    },
+    //custom size
+    width: {
+      //track length
+      type: Number,
+      required: false,
+    },
+    height: {
+      //track thickness
+      type: Number,
+      required: false,
+    },
+    thumbSize: {
+      type: Number,
+      required: false,
+    },
+    thumbHaloSize: {
+      //thumb wrapper
+      type: Number,
+      required: false,
     },
   },
   data() {
@@ -93,10 +131,6 @@ export default {
     classes() {
       return ["switch", this.disabled ? "disabled" : ""];
     },
-    computeThumbTransform() {
-      if (this.selected) return "translateX(20px)";
-      else return null;
-    },
     computedTrackColor() {
       if (this.selected)
         return {
@@ -132,23 +166,76 @@ export default {
       if (this.disabled) return getColor("disabled", "label");
       else return getColor(this.color, "label");
     },
-    classColor() {
-      let color = this.color;
-      if (this.selected) {
-        return color + "-switch";
-      } else {
-        return "default-switch";
-      }
+    calcSwitchPadding() {
+      return this.padding || getSize(this.size, "padding");
+    },
+    calcTrackWidth() {
+      return this.width || getSize(this.size, "width");
+    },
+    calcTrackHeight() {
+      return this.height || getSize(this.size, "height");
+    },
+    computedSwitchWidth() {
+      //padding+trackWidth+padding
+      return `${this.calcTrackWidth + 2 * this.calcSwitchPadding}px`;
+    },
+    computedSwitchHeight() {
+      //padding+trackHeight+padding
+      return `${this.calcTrackHeight + 2 * this.calcSwitchPadding}px`;
+    },
+    computedSwitchPadding() {
+      return `${this.calcSwitchPadding}px`;
+    },
+    calcThumbSize() {
+      return this.thumbSize || getSize(this.size, "thumb");
+    },
+    calcThumbHaloSize() {
+      return this.thumbHaloSize || getSize(this.size, "halo");
+    },
+    calcThumbPadding() {
+      //padding=(thumbHaloSize- thumbSize)/2
+      return (this.calcThumbHaloSize - this.calcThumbSize) / 2;
+    },
+    computedThumbSize() {
+      return `${this.calcThumbSize}px`;
+    },
+    computedThumbHaloRadius() {
+      return `${this.calcThumbPadding}px`;
+    },
+    calcTrackRadius() {
+      return this.calcTrackHeight / 2;
+    },
+    computedTrackRadius() {
+      return `${this.calcTrackRadius}px`;
+    },
+    //two positions responding to two states
+    calcThumbStartPosition() {
+      const shouldStartX = this.calcSwitchPadding + this.calcTrackRadius;
+      const centerX = this.calcThumbHaloSize / 2;
+      return shouldStartX - centerX;
+    },
+    calcThumbEndPosition() {
+      const shouldEndX =
+        this.calcSwitchPadding + this.calcTrackWidth - this.calcTrackRadius;
+      const centerX = this.calcThumbHaloSize / 2;
+      return shouldEndX - centerX;
+    },
+    computeThumbTransform() {
+      if (this.selected) return `translateX(${this.calcThumbEndPosition}px)`;
+      else return `translateX(${this.calcThumbStartPosition}px)`;
+    },
+    calcThumbTop() {
+      const shouldY = this.calcSwitchPadding + this.calcTrackRadius;
+      const centerY = this.calcThumbHaloSize / 2;
+      return shouldY - centerY;
+    },
+    computedThumbTop() {
+      return `${this.calcThumbTop}px`;
     },
   },
 };
 </script>
-
 <style lang="less" scoped>
-@md-size: 20px;
-@default-color: #000;
-@primary-color: #1976d2;
-@secondary-color: #dc004e;
 .switch {
   display: inline-flex;
   cursor: pointer;
@@ -156,32 +243,23 @@ export default {
     cursor: default;
   }
   .switch-wrapper {
-    width: 58px;
-    height: 38px;
-    padding: 12px;
     box-sizing: border-box;
     z-index: 0;
-    overflow: hidden;
     position: relative;
     flex-shrink: 0;
     .track {
-      border-radius: 7px;
       width: 100%;
       height: 100%;
     }
     .thumb-wrapper {
       position: absolute;
-      top: 0;
       left: 0;
       z-index: 1;
-      padding: 9px; //outer-radius
       border-radius: 50%;
       transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
       //ripple z-index: 2;
       .thumb {
         z-index: 3;
-        width: 20px;
-        height: 20px;
         border-radius: 50%;
         box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
           0px 1px 1px 0px rgba(0, 0, 0, 0.14),
