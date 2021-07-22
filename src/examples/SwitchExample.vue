@@ -65,6 +65,20 @@
         ></Vswitch
       ></span>
     </GroupBox>
+
+    <typography variant="h2" id="ac-label-placement">
+      Label placement
+    </typography>
+    <typography variant="p">
+      You can change the placement of the label with the prop
+      <code>labelPlacement</code>.
+    </typography>
+    <GroupBox>
+      <Vswitch labelPlacement="top" label="Top"></Vswitch>
+      <Vswitch labelPlacement="left" label="Left"></Vswitch>
+      <Vswitch labelPlacement="bottom" label="Bottom"></Vswitch>
+      <Vswitch labelPlacement="right" label="Right"></Vswitch>
+    </GroupBox>
   </section>
 </template>
 <script>

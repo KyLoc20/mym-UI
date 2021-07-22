@@ -1,5 +1,9 @@
 <template>
-  <section :class="classes" @mousedown="handleSwitch">
+  <section
+    :class="classes"
+    @mousedown="handleSwitch"
+    :style="{ ...computedFlexPosition }"
+  >
     <div
       class="switch-wrapper"
       @mouseenter="handleHoverEnter"
@@ -40,6 +44,12 @@
   </section>
 </template>
 <script>
+const FlexDirectionMap = {
+  left: "row-reverse",
+  right: "row",
+  top: "column-reverse",
+  bottom: "column",
+};
 import Rippleable from "../../mixins/rippleable";
 import { requireOneOf } from "../common/validator";
 import { getColor } from "./color";
@@ -60,10 +70,14 @@ export default {
       type: Boolean,
       default: false,
     },
-    //set min-width by label length
     label: {
       type: String,
       required: false,
+    },
+    //todo set min-width by label length
+    labelNoWrap: {
+      type: Boolean,
+      default: false,
     },
     size: {
       default: "md",
@@ -75,6 +89,14 @@ export default {
       default: "primary",
       validator: (v) => {
         return [requireOneOf(["primary", "secondary"])].some((test) => test(v));
+      },
+    },
+    labelPlacement: {
+      default: "right",
+      validator: (v) => {
+        return [requireOneOf(["top", "left", "bottom", "right"])].some((test) =>
+          test(v)
+        );
       },
     },
     //custom size
@@ -233,6 +255,9 @@ export default {
     computedThumbTop() {
       return `${this.calcThumbTop}px`;
     },
+    computedFlexPosition() {
+      return { flexDirection: FlexDirectionMap[this.labelPlacement] || "row" };
+    },
   },
 };
 </script>
@@ -271,6 +296,7 @@ export default {
   .label-wrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
     span {
       user-select: none;
       font-size: 1rem;
