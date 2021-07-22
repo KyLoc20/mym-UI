@@ -1,18 +1,43 @@
 <template>
-  <section class="switch" @click="handleSwitch">
-    <div class="thumb-outer" :class="selected ? 'selected' : ''">
-      <div class="thumb" :class="classColor"></div>
-      <div class="base" :class="classColor"></div>
+  <section :class="classes" @mousedown="handleSwitch">
+    <div
+      class="switch-wrapper"
+      @mouseenter="handleHoverEnter"
+      @mouseleave="handleHoverLeave"
+    >
+      <div
+        class="thumb-wrapper"
+        :style="{
+          background: computedHaloColor,
+          transform: computeThumbTransform,
+        }"
+        @mousedown="handleClickThumb"
+      >
+        <div class="thumb" :style="{ background: computedThumbColor }"></div>
+      </div>
+      <div class="track" :style="{ ...computedTrackColor }"></div>
     </div>
-    <div class="track" :class="classColor"></div>
+    <div class="label-wrapper"></div>
   </section>
 </template>
 <script>
 import Rippleable from "../../mixins/rippleable";
 export default {
-  name: "Switch",
+  name: "VSwitch",
   mixins: [Rippleable],
   props: {
+    checked: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    rippleDisabled: {
+      type: Boolean,
+      default: false,
+    },
     color: {
       default: "primary",
       validator: (v) => {
@@ -22,16 +47,61 @@ export default {
   },
   data() {
     return {
-      selected: false,
+      selected: this.checked,
+      isHovering: false,
     };
   },
+  watch: {
+    selected: function(newValue) {
+      this.$emit("change", { value: newValue });
+    },
+  },
   methods: {
+    handleHoverEnter() {
+      if (this.disabled) return;
+      this.isHovering = true;
+    },
+    handleHoverLeave() {
+      if (this.disabled) return;
+      this.isHovering = false;
+    },
     handleSwitch() {
+      if (this.disabled) return;
       this.selected = !this.selected;
-      this.$emit("select", { state: this.selected });
+    },
+    handleClickThumb(e) {
+      //todo create when clicking the switch wrapper
+      if (this.disabled) return;
+      this.createRipple(e, true, this.computedRippleColor);
     },
   },
   computed: {
+    classes() {
+      return ["switch", this.disabled ? "disabled" : ""];
+    },
+    computeThumbTransform() {
+      if (this.selected) return "translateX(20px)";
+      else return null;
+    },
+    computedTrackColor() {
+      if (this.selected)
+        return { opacity: this.disabled ? 0.12 : 0.5, background: "#1976d2" };
+      else return { opacity: this.disabled ? 0.12 : 0.38, background: "#000" };
+    },
+    computedThumbColor() {
+      if (this.disabled)
+        return this.selected ? "rgba(167, 202, 237,1)" : "#f5f5f5";
+      if (this.selected) return "#1976d2";
+      else return "#fff";
+    },
+    computedHaloColor() {
+      if (this.isHovering) return "rgba(0,0,0,0.04)";
+      else return "rgba(0,0,0,0)";
+    },
+    computedRippleColor() {
+      if (this.selected) return "rgba(255,255,255,0.3)";
+      else return "primary";
+    },
     classColor() {
       let color = this.color;
       if (this.selected) {
@@ -50,72 +120,44 @@ export default {
 @primary-color: #1976d2;
 @secondary-color: #dc004e;
 .switch {
-  width: 58px;
-  height: 38px;
-  padding: 12px;
-  box-sizing: border-box;
-  z-index: 0;
-  overflow: hidden;
-  position: relative;
-  flex-shrink: 0;
+  display: flex;
   cursor: pointer;
-
-  .track {
-    border-radius: 7px;
-    z-index: -1;
-    opacity: 0.5;
-    width: 100%;
-    height: 100%;
+  &.disabled {
+    cursor: default;
   }
-  .thumb-outer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    padding: 9px;
-    border-radius: 50%;
-    transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    cursor: pointer;
-    .thumb {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-        0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  .switch-wrapper {
+    width: 58px;
+    height: 38px;
+    padding: 12px;
+    box-sizing: border-box;
+    z-index: 0;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    .track {
+      border-radius: 7px;
+      width: 100%;
+      height: 100%;
     }
-    .base {
+    .thumb-wrapper {
       position: absolute;
-      z-index: -1;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
+      z-index: 1;
+      padding: 9px; //outer-radius
       border-radius: 50%;
-      opacity: 0;
+      transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      //ripple z-index: 2;
+      .thumb {
+        z-index: 3;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+          0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+      }
     }
   }
-  .thumb-outer:hover {
-    .base {
-      opacity: 0.04;
-    }
-  }
-  .thumb-outer.selected {
-    transform: translateX(20px);
-  }
-}
-.default-switch.track {
-  opacity: 0.38;
-}
-.default-switch.thumb {
-  background-color: #fff;
-}
-.default-switch {
-  background-color: @default-color;
-}
-.primary-switch {
-  background-color: @primary-color;
-}
-.secondary-switch {
-  background-color: @secondary-color;
 }
 </style>

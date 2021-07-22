@@ -10,33 +10,38 @@
       clear from the corresponding inline label.</typography
     >
     <typography variant="h2" id="ac-basic-switch">Basic switch</typography>
-    <GroupBox> <Vswitch></Vswitch></GroupBox>
+    <GroupBox>
+      <Vswitch></Vswitch>
+      <Vswitch checked></Vswitch>
+      <Vswitch checked disabled></Vswitch>
+      <Vswitch disabled></Vswitch
+    ></GroupBox>
 
     <typography variant="h2" id="ac-label">Label</typography>
     <typography variant="p"
-      >You can provide a label using the prop <code>label</code></typography
+      >You can provide a label using the prop <code>label</code>.</typography
     >
     <GroupBox> <Vswitch></Vswitch></GroupBox>
 
     <typography variant="h2" id="ac-size">Size</typography>
     <typography variant="p"
       >You can change the size of the switch using the prop
-      <code>size</code></typography
+      <code>size</code>.</typography
     >
     <GroupBox> <Vswitch></Vswitch></GroupBox>
 
     <typography variant="h2" id="ac-color">Color</typography>
     <typography variant="p"
       >You can change the size of the switch using the prop
-      <code>color</code></typography
+      <code>color</code>.</typography
     >
     <GroupBox> <Vswitch></Vswitch></GroupBox>
 
     <typography variant="h2" id="ac-controlled">Controlled</typography>
-    <Typography type="p">
+    <typography variant="p">
       You can control the switch with the <code>checked</code> and
       <code>onChange</code> props.
-    </Typography>
+    </typography>
     <GroupBox> <Vswitch></Vswitch></GroupBox>
   </section>
 </template>

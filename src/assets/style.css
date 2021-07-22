@@ -7,7 +7,7 @@ body {
 .ripple {
     position: absolute;
     border-radius: 50%;
-    animation: ripple 800ms ease-out;
+    animation: ripple 800ms ease-in;
     transform: scale(0);
 }
 

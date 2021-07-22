@@ -14,7 +14,8 @@ export default {
         // console.log('mount ripple', this.$el, window.getComputedStyle(this.$el).position)
     },
     methods: {
-        generateRipple(target, e, isPositionFixed, color, duration) {
+        generateRipple(target, e, isPositionFixed, color, duration, zIndex) {
+            //todo z-index support
             let ripple = document.createElement("span");
             let radius = 21;
             let left = 0;
@@ -36,6 +37,7 @@ export default {
             ripple.style.top = `${top}px`;
             ripple.style.background = ColorMap[color] || color
             ripple.style.animationDuration = `${duration?duration:'800'}ms`
+            if (zIndex) ripple.style.zIndex = zIndex
             ripple.classList.add("ripple");
             return ripple
         },
@@ -52,7 +54,7 @@ export default {
             outer.classList.add("ripple-outer");
             return outer
         },
-        createRippleByAddingLayer(e, isFixed = false, color = 'default', duration = 800) {
+        createRippleByAddingLayer(e, isFixed = false, color = 'default', duration = 800, zIndex) {
             //todo using an outer layer
             let target = e.currentTarget;
             //config the father component
@@ -62,7 +64,7 @@ export default {
                 //generate an outer el
             let outer = this.generateOuter()
                 //generate a ripple
-            let ripple = this.generateRipple(target, e, isFixed, color, duration)
+            let ripple = this.generateRipple(target, e, isFixed, color, duration, zIndex)
 
             //romove the former ripple
             const formerRipple = target.getElementsByClassName("ripple-outer")[0];
@@ -72,7 +74,7 @@ export default {
             //mount the outer
             target.appendChild(outer);
         },
-        createRipple(e, isFixed = false, color = 'default', duration = 800) {
+        createRipple(e, isFixed = false, color = 'default', duration = 800, zIndex) {
             let target = e.currentTarget;
             //config the father component
             if (['absolute', 'fixed'].indexOf(window.getComputedStyle(target).position) === -1) target.style.position = 'relative'
@@ -80,7 +82,7 @@ export default {
                 // this.setColor(target, color)
                 // this.setVelocity(target, velocity)
                 //generate a ripple
-            let ripple = this.generateRipple(target, e, isFixed, color, duration)
+            let ripple = this.generateRipple(target, e, isFixed, color, duration, zIndex)
                 //romove the former ripple
             const formerRipple = target.getElementsByClassName("ripple")[0];
             if (formerRipple) formerRipple.remove();
