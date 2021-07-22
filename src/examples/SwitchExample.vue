@@ -42,7 +42,10 @@
       >You can change the size of the switch using the prop
       <code>color</code>.</typography
     >
-    <GroupBox> <Vswitch></Vswitch></GroupBox>
+    <GroupBox>
+      <Vswitch checked></Vswitch>
+      <Vswitch color="secondary" checked></Vswitch
+    ></GroupBox>
 
     <typography variant="h2" id="ac-controlled">Controlled</typography>
     <typography variant="p">

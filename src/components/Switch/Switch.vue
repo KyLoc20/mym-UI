@@ -24,6 +24,8 @@
 </template>
 <script>
 import Rippleable from "../../mixins/rippleable";
+import { requireOneOf } from "../common/validator";
+import { getColor } from "./color";
 export default {
   name: "VSwitch",
   mixins: [Rippleable],
@@ -44,10 +46,16 @@ export default {
       type: String,
       required: false,
     },
-    color: {
-      default: "primary",
+    size: {
+      default: "md",
       validator: (v) => {
-        return ["primary", "secondary"].indexOf(v) !== -1;
+        return [requireOneOf(["sm", "md", "lg"])].some((test) => test(v));
+      },
+    },
+    color: {
+      required: "primary",
+      validator: (v) => {
+        return [requireOneOf(["primary", "secondary"])].some((test) => test(v));
       },
     },
   },
@@ -91,26 +99,38 @@ export default {
     },
     computedTrackColor() {
       if (this.selected)
-        return { opacity: this.disabled ? 0.12 : 0.5, background: "#1976d2" };
-      else return { opacity: this.disabled ? 0.12 : 0.38, background: "#000" };
+        return {
+          opacity: this.disabled ? 0.12 : 0.5,
+          background: getColor(this.color, "trackCheckd"),
+        };
+      else
+        return {
+          opacity: this.disabled ? 0.12 : 0.38,
+          background: getColor(this.color, "track"),
+        };
     },
     computedThumbColor() {
       if (this.disabled)
-        return this.selected ? "rgba(167, 202, 237,1)" : "#f5f5f5";
-      if (this.selected) return "#1976d2";
-      else return "#fff";
+        return this.selected
+          ? getColor(this.color, "thumbDisabled")
+          : getColor("disabled", "thumb");
+      if (this.selected) return getColor(this.color, "thumbChecked");
+      else return getColor(this.color, "thumb");
     },
     computedHaloColor() {
-      if (this.isHovering) return "rgba(0,0,0,0.04)";
-      else return "rgba(0,0,0,0)";
+      if (this.isHovering)
+        return this.selected
+          ? getColor(this.color, "haloChecked")
+          : getColor(this.color, "halo");
+      else return "transparent";
     },
     computedRippleColor() {
-      if (this.selected) return "rgba(255,255,255,0.3)";
-      else return "primary";
+      if (this.selected) return getColor(this.color, "rippleChecked");
+      else return getColor(this.color, "ripple");
     },
     computedLabelText() {
-      if (this.disabled) return "rgba(0, 0, 0, 0.38)";
-      else return "rgba(0, 0, 0, 0.87)";
+      if (this.disabled) return getColor("disabled", "label");
+      else return getColor(this.color, "label");
     },
     classColor() {
       let color = this.color;
