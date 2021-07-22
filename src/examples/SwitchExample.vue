@@ -50,6 +50,11 @@
       <Vswitch checked></Vswitch>
       <Vswitch color="secondary" checked></Vswitch
     ></GroupBox>
+    <typography variant="p"
+      >To custom the details, the component accepts the following options
+      structures as the prop <code>colorOptions</code>.</typography
+    >
+    <typography variant="pre">[{label: String}]</typography>
 
     <typography variant="h2" id="ac-controlled">Controlled</typography>
     <typography variant="p">

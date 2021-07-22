@@ -11,6 +11,7 @@ const mapType = {
   p: "Paragraph",
   span: "Span",
   quote: "Quote",
+  pre:"Preformatted"
 };
 import Heading1 from "./types/Heading1";
 import Heading2 from "./types/Heading2";
@@ -18,6 +19,7 @@ import Heading3 from "./types/Heading3";
 import Paragraph from "./types/Paragraph";
 import Quote from "./types/Quote";
 import Span from "./types/Span";
+import Preformatted from "./types/Preformatted.vue";
 export default {
   name: "Typography",
   components: {
@@ -27,6 +29,7 @@ export default {
     CptParagraph: Paragraph,
     CptSpan: Span,
     CptQuote: Quote,
+    CptPreformatted: Preformatted,
   },
   props: {
     variant: {
