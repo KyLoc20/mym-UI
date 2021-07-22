@@ -21,7 +21,14 @@
     <typography variant="p"
       >You can provide a label using the prop <code>label</code>.</typography
     >
-    <GroupBox> <Vswitch></Vswitch></GroupBox>
+    <GroupBox block>
+      <GroupRow
+        ><span class="wrapper"><Vswitch label="Label" checked></Vswitch></span
+      ></GroupRow>
+      <GroupRow
+        ><span class="wrapper"
+          ><Vswitch label="Disabled" disabled></Vswitch></span></GroupRow
+    ></GroupBox>
 
     <typography variant="h2" id="ac-size">Size</typography>
     <typography variant="p"
@@ -47,12 +54,13 @@
 </template>
 <script>
 import GroupBox from "../components/Layout/GroupBox.vue";
+import GroupRow from "../components/Layout/GroupRow.vue";
 import Vswitch from "../components/Switch/Switch.vue";
 import Typography from "../components/Typography/Typography";
 
 export default {
   name: "SwitchExample",
-  components: { Typography, Vswitch, GroupBox },
+  components: { Typography, Vswitch, GroupBox, GroupRow },
   anchors: [
     { anchor: "ac-basic-switch", text: "Basic switch" },
     { anchor: "ac-label", text: "Label" },
@@ -69,5 +77,8 @@ export default {
 </script>
 <style scoped lang="less">
 .switch-example {
+  .wrapper {
+    min-width: 200px;
+  }
 }
 </style>

@@ -17,7 +17,9 @@
       </div>
       <div class="track" :style="{ ...computedTrackColor }"></div>
     </div>
-    <div class="label-wrapper"></div>
+    <div class="label-wrapper">
+      <span :style="{ color: computedLabelText }">{{ label }}</span>
+    </div>
   </section>
 </template>
 <script>
@@ -37,6 +39,10 @@ export default {
     rippleDisabled: {
       type: Boolean,
       default: false,
+    },
+    label: {
+      type: String,
+      required: false,
     },
     color: {
       default: "primary",
@@ -102,6 +108,10 @@ export default {
       if (this.selected) return "rgba(255,255,255,0.3)";
       else return "primary";
     },
+    computedLabelText() {
+      if (this.disabled) return "rgba(0, 0, 0, 0.38)";
+      else return "rgba(0, 0, 0, 0.87)";
+    },
     classColor() {
       let color = this.color;
       if (this.selected) {
@@ -120,7 +130,7 @@ export default {
 @primary-color: #1976d2;
 @secondary-color: #dc004e;
 .switch {
-  display: flex;
+  display: inline-flex;
   cursor: pointer;
   &.disabled {
     cursor: default;
@@ -157,6 +167,16 @@ export default {
           0px 1px 1px 0px rgba(0, 0, 0, 0.14),
           0px 1px 3px 0px rgba(0, 0, 0, 0.12);
       }
+    }
+  }
+  .label-wrapper {
+    display: flex;
+    align-items: center;
+    span {
+      user-select: none;
+      font-size: 1rem;
+      line-height: 1.5;
+      letter-spacing: 0.00938em;
     }
   }
 }
