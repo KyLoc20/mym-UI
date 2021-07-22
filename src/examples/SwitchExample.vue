@@ -35,7 +35,11 @@
       >You can change the size of the switch using the prop
       <code>size</code>.</typography
     >
-    <GroupBox> <Vswitch></Vswitch></GroupBox>
+    <GroupBox>
+      <Vswitch size="sm"></Vswitch>
+      <Vswitch size="md"></Vswitch>
+      <Vswitch size="lg"></Vswitch
+    ></GroupBox>
 
     <typography variant="h2" id="ac-color">Color</typography>
     <typography variant="p"

@@ -1,11 +1,10 @@
 const SizeMap = {
-    sm: { checkbox: 36, icon: 20 },
-    md: { checkbox: 40, icon: 24 },
-    lg: { checkbox: 44, icon: 28 },
+    sm: { width: 26, height: 10, padding: 7, thumb: 16, halo: 24 },
+    md: { width: 34, height: 14, padding: 12, thumb: 20, halo: 38 },
+    lg: { width: 42, height: 18, padding: 15, thumb: 24, halo: 52 },
 };
 
 function getSize(size, type) {
-    if (typeof size === "number") return type === "icon" ? size - 16 : size // icon is smaller than checkbox
     const sizeSet = SizeMap[size] || SizeMap["md"];
     return sizeSet[type]
 }
