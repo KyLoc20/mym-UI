@@ -16,7 +16,7 @@
           background: computedHaloColor,
           transform: computeThumbTransform,
           padding: computedThumbHaloRadius,
-          top:computedThumbTop,
+          top: computedThumbTop,
         }"
         @mousedown="handleClickThumb"
       >
@@ -60,6 +60,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    //set min-width by label length
     label: {
       type: String,
       required: false,

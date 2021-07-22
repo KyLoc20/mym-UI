@@ -56,7 +56,15 @@
       You can control the switch with the <code>checked</code> and
       <code>onChange</code> props.
     </typography>
-    <GroupBox> <Vswitch></Vswitch></GroupBox>
+    <GroupBox>
+      <span class="wrapper">
+        <Vswitch
+          :label="controlledValue ? 'Checked' : 'Unchecked'"
+          :checked="controlledValue"
+          @change="handleCheck"
+        ></Vswitch
+      ></span>
+    </GroupBox>
   </section>
 </template>
 <script>
@@ -76,16 +84,23 @@ export default {
     { anchor: "ac-controlled", text: "Controlled" },
   ],
   data() {
-    return {};
+    return {
+      controlledValue: true,
+    };
   },
-  methods: {},
+  methods: {
+    handleCheck(e) {
+      this.controlledValue = e.value;
+    },
+  },
   computed: {},
 };
 </script>
 <style scoped lang="less">
 .switch-example {
   .wrapper {
-    min-width: 200px;
+    display: flex;
+    min-width: 150px;
   }
 }
 </style>
