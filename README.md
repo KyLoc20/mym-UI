@@ -13,9 +13,10 @@ So I decided to make a "Material-UI" with vue and a "vuetify" with react.
 
 ## The Components I Have Done🏆
 
+- [x] [Switch](https://mym-ui-git-master-kyloc.vercel.app/switch)⚡
 - [x] [Timeline](https://mym-ui-git-master-kyloc.vercel.app/timeline)⚡
 - [x] [Rating](https://mym-ui-git-master-kyloc.vercel.app/rating)⚡
-- [x] [Autocomplete](https://mym-ui-git-master-kyloc.vercel.app/autocomplete)⚡
+- [x] [Autocomplete](https://mym-ui-git-master-kyloc.vercel.app/autocomplete)
 - [x] [Slider](https://mym-ui-git-master-kyloc.vercel.app/slider)
 - [x] [Select](https://mym-ui-git-master-kyloc.vercel.app/select)
 - [x] [Checkbox](https://mym-ui-git-master-kyloc.vercel.app/checkbox)

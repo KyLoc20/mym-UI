@@ -176,6 +176,7 @@ export default {
     { anchor: "ac-size", text: "Size" },
     { anchor: "ac-color", text: "Color" },
     { anchor: "ac-controlled", text: "Controlled" },
+    { anchor: "ac-label-placement", text: "Label placement" },
   ],
   data() {
     return {
