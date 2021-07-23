@@ -54,7 +54,82 @@
       >To custom the details, the component accepts the following options
       structures as the prop <code>colorOptions</code>.</typography
     >
-    <typography variant="pre">[{label: String}]</typography>
+    <typography variant="pre"
+      >[{track: String, trackCheckd: String, thumb: String, thumbChecked:
+      String, thumbDisabled: String, halo: String, haloChecked: String, ripple:
+      String, rippleChecked: String, label: String, }]</typography
+    >
+    <GroupBox block>
+      <GroupRow
+        ><span class="wrapper-large">
+          <Vswitch
+            label="Track Color"
+            :colorOptions="{
+              track: 'rgb(237, 108, 2)',
+              trackCheckd: 'rgb(216, 27, 96)',
+            }"
+          >
+          </Vswitch
+        ></span>
+      </GroupRow>
+      <GroupRow
+        ><span class="wrapper-large">
+          <Vswitch
+            label="Thumb Color"
+            :colorOptions="{
+              thumb: 'rgb(237, 108, 2)',
+              thumbChecked: 'rgb(216, 27, 96)',
+              thumbDisabled: 'rgba(0, 0, 0,0.64)',
+            }"
+          >
+          </Vswitch
+          ><Vswitch
+            label="Thumb Color"
+            disabled
+            checked
+            :colorOptions="{
+              thumb: 'rgb(237, 108, 2)',
+              thumbChecked: 'rgb(216, 27, 96)',
+              thumbDisabled: 'rgba(0, 0, 0,0.64)',
+            }"
+          >
+          </Vswitch
+        ></span>
+      </GroupRow>
+      <GroupRow
+        ><span class="wrapper-large">
+          <Vswitch
+            label="Thumb Halo Color"
+            :colorOptions="{
+              halo: 'rgba(237, 108, 2,0.3)',
+              haloChecked: 'rgba(216, 27, 96,0.3)',
+            }"
+          >
+          </Vswitch
+        ></span>
+      </GroupRow>
+      <GroupRow
+        ><span class="wrapper-large">
+          <Vswitch
+            label="Ripple Color"
+            :colorOptions="{
+              ripple: 'rgba(237, 108, 2,0.3)',
+              rippleChecked: 'rgba(216, 27, 96,0.1)',
+            }"
+          >
+          </Vswitch
+        ></span>
+      </GroupRow>
+      <GroupRow
+        ><span class="wrapper-large">
+          <Vswitch
+            label="Label Text Color"
+            :colorOptions="{ label: 'rgba(217, 172, 224, 1)' }"
+          >
+          </Vswitch
+        ></span>
+      </GroupRow>
+    </GroupBox>
 
     <typography variant="h2" id="ac-controlled">Controlled</typography>
     <typography variant="p">
@@ -120,6 +195,10 @@ export default {
   .wrapper {
     display: flex;
     min-width: 150px;
+  }
+  .wrapper-large {
+    display: flex;
+    min-width: 360px;
   }
 }
 </style>

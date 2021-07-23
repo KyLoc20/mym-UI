@@ -99,6 +99,11 @@ export default {
         );
       },
     },
+    //custom color
+    colorOptions: {
+      type: Object,
+      default: () => {},
+    },
     //custom size
     width: {
       //track length
@@ -132,6 +137,9 @@ export default {
     },
   },
   methods: {
+    getCustomColor(type) {
+      return this.colorOptions?.[type];
+    },
     handleHoverEnter() {
       if (this.disabled) return;
       this.isHovering = true;
@@ -158,36 +166,36 @@ export default {
       if (this.selected)
         return {
           opacity: this.disabled ? 0.12 : 0.5,
-          background: getColor(this.color, "trackCheckd"),
+          background: this.getCustomColor("trackCheckd")||getColor(this.color, "trackCheckd"),
         };
       else
         return {
           opacity: this.disabled ? 0.12 : 0.38,
-          background: getColor(this.color, "track"),
+          background: this.getCustomColor("track")||getColor(this.color, "track"),
         };
     },
     computedThumbColor() {
       if (this.disabled)
         return this.selected
-          ? getColor(this.color, "thumbDisabled")
+          ? this.getCustomColor("thumbDisabled")||getColor(this.color, "thumbDisabled")
           : getColor("disabled", "thumb");
-      if (this.selected) return getColor(this.color, "thumbChecked");
-      else return getColor(this.color, "thumb");
+      if (this.selected) return this.getCustomColor("thumbChecked")||getColor(this.color, "thumbChecked");
+      else return this.getCustomColor("thumb")||getColor(this.color, "thumb");
     },
     computedHaloColor() {
       if (this.isHovering)
         return this.selected
-          ? getColor(this.color, "haloChecked")
-          : getColor(this.color, "halo");
+          ? this.getCustomColor("haloChecked")||getColor(this.color, "haloChecked")
+          : this.getCustomColor("halo")||getColor(this.color, "halo");
       else return "transparent";
     },
     computedRippleColor() {
-      if (this.selected) return getColor(this.color, "rippleChecked");
-      else return getColor(this.color, "ripple");
+      if (this.selected) return this.getCustomColor("rippleChecked")||getColor(this.color, "rippleChecked");
+      else return this.getCustomColor("ripple")||getColor(this.color, "ripple");
     },
     computedLabelText() {
       if (this.disabled) return getColor("disabled", "label");
-      else return getColor(this.color, "label");
+      else return this.getCustomColor("label") || getColor(this.color, "label");
     },
     calcSwitchPadding() {
       return this.padding || getSize(this.size, "padding");
