@@ -242,7 +242,7 @@
       <strong>fill the gap between React&Vue</strong>. Also I decided to build
       some simple demos to check the effectiveness of my components.
     </typography>
-    <typography variant="p"><i>To Be Continue</i></typography>
+    <typography variant="p"><i>To Be Continued</i></typography>
     <div class="fixed-container">
       <float-action-button
         icon="github"
