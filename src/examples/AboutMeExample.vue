@@ -239,8 +239,20 @@
       >In July, I <strong>focused on some challenging components</strong> like
       [Slider] and [Autocomplete] etc. Given there are 2 different-frameworks
       projects going on, I had to take some time to
-      <strong>fill the gap between React&Vue</strong>. Also I decided to build
-      some simple demos to check the effectiveness of my components.
+      <strong>fill the gap between React&Vue</strong>. Later this month I
+      started <strong>Product-Hunter</strong> which is a clone of ProjectHub to
+      <strong>put my components into practice</strong>. ProjectHub is a proper
+      target of Material Design practices then I would make another clone again
+      with Material-UI.
+    </typography>
+    <typography variant="p"
+      >In Early August, I participated in some issues from
+      <em>mui-org/material-ui</em> then I created a repo
+      <em>mui-playground</em> to
+      <strong>test features and reproduce bugs</strong>. To accelerate the
+      progress of <em>Product-Hunter</em> I built some
+      <strong>custom hooks</strong> like [useButton] and [useSlider] which are
+      quite useful.
     </typography>
     <typography variant="p"><i>To Be Continued</i></typography>
     <div class="fixed-container">
@@ -297,7 +309,7 @@ export default {
       levelJS: 3,
       levetHTMLCSS: 2.5,
       levelVue: 3.5,
-      levelReact: 3,
+      levelReact: 3.5,
       levelEmotion: 2.5,
       levelTS: 1.5,
       levelPython: 3.5,
@@ -329,6 +341,11 @@ export default {
         {
           left: "2021.06",
           right: "Started the project Ruetify-UI to make vuetify with React",
+          color: "rgb(25, 118, 210)",
+        },
+        {
+          left: "2021.07",
+          right: "Started the project Product-Hunter to apply Ruetify-UI",
           color: "rgb(25, 118, 210)",
         },
       ],
