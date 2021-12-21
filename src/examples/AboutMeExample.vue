@@ -117,20 +117,6 @@
       >
       <GroupRow
         ><div class="skill-info">
-          <span class="title">EmotionJS</span>
-          <Rating
-            size="md"
-            :value="levelEmotion"
-            :precision="0.5"
-            readonly
-          ></Rating>
-          <span class="description">{{
-            getSkillDescription(levelEmotion)
-          }}</span>
-        </div></GroupRow
-      >
-      <GroupRow
-        ><div class="skill-info">
           <span class="title">Typescript</span>
           <Rating size="md" :value="levelTS" :precision="0.5" readonly></Rating>
           <span class="description">{{ getSkillDescription(levelTS) }}</span>
@@ -179,7 +165,7 @@
     </GroupBox>
 
     <typography variant="h2" id="ac-timeline">Timeline</typography>
-    <GroupBox> <Timeline outlined :events="timeline"></Timeline></GroupBox>
+    <GroupBox> <Timeline outlined :events="timeline"/></GroupBox>
 
     <typography variant="h2" id="ac-my-story"
       >My Story About Material-UI</typography
@@ -278,13 +264,13 @@ const SkillLevelMap = {
   0.5: "Know more than nothing",
   1: "Know some basic concepts",
   1.5: "Undestand simple examples",
-  2: "Make something with it",
-  2.5: "Finish projects with doc",
-  3: "Experienced most features",
-  3.5: "Handle most common issues",
-  4: "Understand most principles",
-  4.5: "Optimize performance",
-  5: "Improve even implement it on my own",
+  2: "Make something simple with it",
+  2.5: "Experienced >50% features",
+  3: "Fulfill intermediate modules with doc",
+  3.5: "Practices in Applications",
+  4: "Handle most common issues independently",
+  4.5: "Understand most principles Figure out challenges",
+  5: "Optimize even implement it on my own",
 };
 export default {
   name: "AboutMeExample",
@@ -307,13 +293,12 @@ export default {
     return {
       levelExample: 0,
       levelJS: 3,
-      levetHTMLCSS: 2.5,
+      levetHTMLCSS: 3,
       levelVue: 3.5,
-      levelReact: 3.5,
-      levelEmotion: 2.5,
-      levelTS: 1.5,
+      levelReact: 4,
+      levelTS: 3,
       levelPython: 3.5,
-      levelMongoDB: 2.5,
+      levelMongoDB: 2,
       levelCpp: 2,
       timeline: [
         {
@@ -346,6 +331,16 @@ export default {
         {
           left: "2021.07",
           right: "Started the project Product-Hunter to apply Ruetify-UI",
+          color: "rgb(25, 118, 210)",
+        },
+        {
+          left: "2021.09",
+          right: "Started the project next-shadow to practice Typescript",
+          color: "rgb(25, 118, 210)",
+        },
+        {
+          left: "2021.11",
+          right: "Started the project twitter-shadow to practice Typescript",
           color: "rgb(25, 118, 210)",
         },
       ],
