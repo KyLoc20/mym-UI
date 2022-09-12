@@ -1,13 +1,8 @@
 <template>
   <section class="about-me-example">
     <typography variant="h1">About Me</typography>
-    <typography variant="p" :classes="['description']"
-      >Hi there, I used the mym-UI components to make a self-introduction as a
-      resume.😀</typography
-    >
-    <typography variant="h2" id="ac-basic-information"
-      >Basic Information</typography
-    >
+    <typography variant="p" :classes="['description']">Hi there, I used the mym-UI components to make a self-introduction as a resume.😀</typography>
+    <typography variant="h2" id="ac-basic-information">Basic Information</typography>
     <GroupBox>
       <div class="col">
         <div class="info-line">
@@ -20,18 +15,8 @@
         </div>
         <div class="info-line">
           <strong>Languages</strong>
-          <chip
-            :icon="{ name: 'create', size: 20 }"
-            variant="outlined"
-            color="default"
-            text="English"
-          ></chip>
-          <chip
-            icon="face"
-            variant="outlined"
-            color="default"
-            text="Chinese"
-          ></chip>
+          <chip :icon="{ name: 'create', size: 20 }" variant="outlined" color="default" text="English"></chip>
+          <chip icon="face" variant="outlined" color="default" text="Chinese"></chip>
         </div>
       </div>
       <div class="col">
@@ -41,11 +26,7 @@
         </div>
         <div class="info-line">
           <strong>Email</strong>
-          <chip
-            variant="outlined"
-            color="default"
-            text="liuzeduo1234@gmail.com"
-          ></chip>
+          <chip variant="outlined" color="default" text="liuzeduo1234@gmail.com"></chip>
         </div>
         <div class="info-line">
           <strong>Education</strong>
@@ -59,107 +40,57 @@
       <GroupRow
         ><div class="skill-info">
           <span class="title"><i>Level Example</i></span>
-          <Rating
-            :value="levelExample"
-            :precision="0.5"
-            @hoverchange="handleHoverChange"
-            :clickable="false"
-          ></Rating>
-          <span class="description">{{
-            getSkillDescription(levelExample)
-          }}</span>
+          <Rating :value="levelExample" :precision="0.5" @hoverchange="handleHoverChange" :clickable="false"></Rating>
+          <span class="description">{{ getSkillDescription(levelExample) }}</span>
         </div></GroupRow
       >
       <GroupRow
         ><div class="skill-info">
-          <span class="title">Javascript(ES6)</span>
+          <span class="title">HTML&CSS</span>
+          <Rating size="md" :value="levetHTMLCSS" :precision="0.5" readonly></Rating>
+          <span class="description">{{ getSkillDescription(levetHTMLCSS) }}</span>
+        </div></GroupRow
+      >
+      <GroupRow
+        ><div class="skill-info">
+          <span class="title">JS&TS</span>
           <Rating size="md" :value="levelJS" :precision="0.5" readonly></Rating>
           <span class="description">{{ getSkillDescription(levelJS) }}</span>
         </div></GroupRow
       >
       <GroupRow
         ><div class="skill-info">
-          <span class="title">HTML&CSS</span>
-          <Rating
-            size="md"
-            :value="levetHTMLCSS"
-            :precision="0.5"
-            readonly
-          ></Rating>
-          <span class="description">{{
-            getSkillDescription(levetHTMLCSS)
-          }}</span>
-        </div></GroupRow
-      >
-      <GroupRow
-        ><div class="skill-info">
-          <span class="title">Vue2</span>
-          <Rating
-            size="md"
-            :value="levelVue"
-            :precision="0.5"
-            readonly
-          ></Rating>
-          <span class="description">{{ getSkillDescription(levelVue) }}</span>
-        </div></GroupRow
-      >
-      <GroupRow
-        ><div class="skill-info">
           <span class="title">React</span>
-          <Rating
-            size="md"
-            :value="levelReact"
-            :precision="0.5"
-            readonly
-          ></Rating>
+          <Rating size="md" :value="levelReact" :precision="0.5" readonly></Rating>
           <span class="description">{{ getSkillDescription(levelReact) }}</span>
         </div></GroupRow
       >
       <GroupRow
         ><div class="skill-info">
-          <span class="title">Typescript</span>
-          <Rating size="md" :value="levelTS" :precision="0.5" readonly></Rating>
-          <span class="description">{{ getSkillDescription(levelTS) }}</span>
+          <span class="title">NextJS</span>
+          <Rating size="md" :value="levelNext" :precision="0.5" readonly></Rating>
+          <span class="description">{{ getSkillDescription(levelNext) }}</span>
+        </div></GroupRow
+      >
+      <GroupRow
+        ><div class="skill-info">
+          <span class="title">Vue2</span>
+          <Rating size="md" :value="levelVue" :precision="0.5" readonly></Rating>
+          <span class="description">{{ getSkillDescription(levelVue) }}</span>
         </div></GroupRow
       >
       <GroupRow
         ><div class="skill-info">
           <span class="title">Python</span>
-          <Rating
-            size="md"
-            :value="levelPython"
-            :precision="0.5"
-            readonly
-          ></Rating>
-          <span class="description">{{
-            getSkillDescription(levelPython)
-          }}</span>
+          <Rating size="md" :value="levelPython" :precision="0.5" readonly></Rating>
+          <span class="description">{{ getSkillDescription(levelPython) }}</span>
         </div></GroupRow
       >
       <GroupRow
         ><div class="skill-info">
           <span class="title">MongoDB</span>
-          <Rating
-            size="md"
-            :value="levelMongoDB"
-            :precision="0.5"
-            readonly
-          ></Rating>
-          <span class="description">{{
-            getSkillDescription(levelMongoDB)
-          }}</span>
-        </div></GroupRow
-      >
-      <GroupRow
-        ><div class="skill-info">
-          <span class="title">CPP</span>
-          <Rating
-            size="md"
-            :value="levelCpp"
-            :precision="0.5"
-            readonly
-          ></Rating>
-          <span class="description">{{ getSkillDescription(levelCpp) }}</span>
+          <Rating size="md" :value="levelMongoDB" :precision="0.5" readonly></Rating>
+          <span class="description">{{ getSkillDescription(levelMongoDB) }}</span>
         </div></GroupRow
       >
     </GroupBox>
@@ -167,87 +98,55 @@
     <typography variant="h2" id="ac-timeline">Timeline</typography>
     <GroupBox> <Timeline outlined :events="timeline"/></GroupBox>
 
-    <typography variant="h2" id="ac-my-story"
-      >My Story About Material-UI</typography
+    <!-- <typography variant="h2" id="ac-my-story">My Story About Material-UI</typography>
+    <typography variant="p"><i>Material-UI is my guide to the front-end engineering no doubt.</i></typography>
+    <typography variant="p"
+      >Back to 2021.02, I decided to <strong>make a UI-lib from the scratch</strong> as a learn-by-doing challenge when my study abroad plan was blocked by the
+      virus.</typography
     >
     <typography variant="p"
-      ><i
-        >Material-UI is my guide to the front-end engineering no doubt.</i
-      ></typography
+      >I found Material-UI then I learned it is using React Hooks & EmotionJS mainly. After I looked through its fresh docs and cool design system, I was
+      attracted and ready to set off.</typography
     >
     <typography variant="p"
-      >Back to 2021.02, I decided to
-      <strong>make a UI-lib from the scratch</strong> as a learn-by-doing
-      challenge when my study abroad plan was blocked by the virus.</typography
-    >
-    <typography variant="p"
-      >I found Material-UI then I learned it is using React Hooks & EmotionJS
-      mainly. After I looked through its fresh docs and cool design system, I
-      was attracted and ready to set off.</typography
-    >
-    <typography variant="p"
-      >Suddenly a bold idea came to my mind that I needn't just make a copy
-      instead <strong>I could make it with another framework</strong>. Not
-      leaving React Hooks & EmotionJS aside, I planned to make Vuetify with the
-      React ecosystem later.
+      >Suddenly a bold idea came to my mind that I needn't just make a copy instead <strong>I could make it with another framework</strong>. Not leaving React
+      Hooks & EmotionJS aside, I planned to make Vuetify with the React ecosystem later.
     </typography>
     <typography variant="p"
-      >In the next 2 months, I picked up my knowledge on front-end and make
-      My-Material-UI components one by one. At that time I have
-      <strong>only one target</strong>: if they look alike, behave alike, they
-      are the same. I advanced very fast with an acquaintance of many design
-      details.
+      >In the next 2 months, I picked up my knowledge on front-end and make My-Material-UI components one by one. At that time I have
+      <strong>only one target</strong>: if they look alike, behave alike, they are the same. I advanced very fast with an acquaintance of many design details.
     </typography>
     <typography variant="p"
-      >In May, I felt the code I wrote before to be a mess so I began to make a
-      codereview. I studied the docs of Vue and the source code of Vuetify and I
-      did <strong>get a better understand of Vue good practices</strong>. I went
-      on meanwhile I <strong>checked the issues</strong> from the Material-UI to
-      keep track of their progress.
+      >In May, I felt the code I wrote before to be a mess so I began to make a codereview. I studied the docs of Vue and the source code of Vuetify and I did
+      <strong>get a better understand of Vue good practices</strong>. I went on meanwhile I <strong>checked the issues</strong> from the Material-UI to keep
+      track of their progress.
     </typography>
     <typography variant="p"
-      >In June, I began to <strong>rewrite my code</strong> to put my components
-      into display containers. That's why I read the docs of Material-Ui
-      carefully on their design philosophy. I benefited a lot from rewriting
-      this time so that I could
+      >In June, I began to <strong>rewrite my code</strong> to put my components into display containers. That's why I read the docs of Material-Ui carefully on
+      their design philosophy. I benefited a lot from rewriting this time so that I could
       <strong>design more user-friendly and consistent props interface</strong>
       then display my components in the pages with helpful docs. At that time
       <strong>I realized it's a must to maintain good docs.</strong>
     </typography>
     <typography variant="p"
-      >Another thing important In June, I started to make Vuetify with React as
-      my second project, Ruetify-UI. I learned React Hooks & EmotionJS & nextjs
-      which were new to me. Basically what I need to do is to rewrite my
-      components from My-Material-UI with Vuetify style. Vuetify is also a nice
-      UI-lib while its docs are not as good as Material-UI's.
+      >Another thing important In June, I started to make Vuetify with React as my second project, Ruetify-UI. I learned React Hooks & EmotionJS & nextjs which
+      were new to me. Basically what I need to do is to rewrite my components from My-Material-UI with Vuetify style. Vuetify is also a nice UI-lib while its
+      docs are not as good as Material-UI's.
     </typography>
     <typography variant="p"
-      >In July, I <strong>focused on some challenging components</strong> like
-      [Slider] and [Autocomplete] etc. Given there are 2 different-frameworks
-      projects going on, I had to take some time to
-      <strong>fill the gap between React&Vue</strong>. Later this month I
-      started <strong>Product-Hunter</strong> which is a clone of ProjectHub to
-      <strong>put my components into practice</strong>. ProjectHub is a proper
-      target of Material Design practices then I would make another clone again
-      with Material-UI.
+      >In July, I <strong>focused on some challenging components</strong> like [Slider] and [Autocomplete] etc. Given there are 2 different-frameworks projects
+      going on, I had to take some time to <strong>fill the gap between React&Vue</strong>. Later this month I started <strong>Product-Hunter</strong> which is
+      a clone of ProjectHub to <strong>put my components into practice</strong>. ProjectHub is a proper target of Material Design practices then I would make
+      another clone again with Material-UI.
     </typography>
     <typography variant="p"
-      >In Early August, I participated in some issues from
-      <em>mui-org/material-ui</em> then I created a repo
-      <em>mui-playground</em> to
-      <strong>test features and reproduce bugs</strong>. To accelerate the
-      progress of <em>Product-Hunter</em> I built some
-      <strong>custom hooks</strong> like [useButton] and [useSlider] which are
-      quite useful.
+      >In Early August, I participated in some issues from <em>mui-org/material-ui</em> then I created a repo <em>mui-playground</em> to
+      <strong>test features and reproduce bugs</strong>. To accelerate the progress of <em>Product-Hunter</em> I built some <strong>custom hooks</strong> like
+      [useButton] and [useSlider] which are quite useful.
     </typography>
-    <typography variant="p"><i>To Be Continued</i></typography>
+    <typography variant="p"><i>To Be Continued</i></typography> -->
     <div class="fixed-container">
-      <float-action-button
-        icon="github"
-        color="default"
-        size="lg"
-        @click="handleGoToGithub"
-      ></float-action-button>
+      <float-action-button icon="github" color="default" size="lg" @click="handleGoToGithub"></float-action-button>
     </div>
   </section>
 </template>
@@ -261,16 +160,16 @@ import Chip from "../components/Chip/Chip";
 import Rating from "../components/Rating/Rating";
 const SkillLevelMap = {
   0: "Know nothing",
-  0.5: "Know more than nothing",
-  1: "Know some basic concepts",
-  1.5: "Undestand simple examples",
-  2: "Make something simple with it",
-  2.5: "Experienced >50% features",
-  3: "Fulfill intermediate modules with doc",
-  3.5: "Practices in Applications",
-  4: "Handle most common issues independently",
-  4.5: "Understand most principles Figure out challenges",
-  5: "Optimize even implement it on my own",
+  0.5: "Know basic concepts",
+  1: "Read examples",
+  1.5: "Write snippets",
+  2: "Write small projects",
+  2.5: "Practice >50% features",
+  3: "Build available applications",
+  3.5: "Explore better practices",
+  4: "Handle >80% issues independently",
+  4.5: "Utilize regarding ecosystem smoothly",
+  5: "Contribute to source code",
 };
 export default {
   name: "AboutMeExample",
@@ -292,14 +191,13 @@ export default {
   data() {
     return {
       levelExample: 0,
-      levelJS: 3,
+      levelJS: 3.5,
       levetHTMLCSS: 3,
-      levelVue: 3.5,
+      levelVue: 3,
       levelReact: 4,
-      levelTS: 3,
-      levelPython: 3.5,
+      levelNext: 3.5,
+      levelPython: 3,
       levelMongoDB: 2,
-      levelCpp: 2,
       timeline: [
         {
           left: "2016",
@@ -308,8 +206,7 @@ export default {
         },
         {
           left: "2019",
-          right:
-            "Started a startup about AI data processing. Made an image annotation tool with React&Python",
+          right: "Started a startup about AI data processing. Made an image annotation tool with React&Python",
           color: "rgb(156, 39, 176)",
         },
         {
@@ -318,29 +215,28 @@ export default {
           color: "rgb(76, 175, 80)",
         },
         {
+          left: "2020.08 - 2021.12",
+          right: "Wrote projects in public to learn how to code",
+          color: "rgb(25, 118, 210)",
+        },
+        {
           left: "2021.03",
-          right:
-            "Started the project My-Material-UI to make Material-UI with Vue",
+          right: "Started the project mymui to build a UI lib with Vue",
           color: "rgb(25, 118, 210)",
         },
         {
-          left: "2021.06",
-          right: "Started the project Ruetify-UI to make vuetify with React",
+          left: "2021.11 - 2021.12",
+          right: "Made the project twitter-shadow to practice JAMstack",
           color: "rgb(25, 118, 210)",
         },
         {
-          left: "2021.07",
-          right: "Started the project Product-Hunter to apply Ruetify-UI",
-          color: "rgb(25, 118, 210)",
+          left: "2022.01 - 2022.06",
+          right: "Worked as an FE in RSS3 making a Feed DApp",
+          color: "rgb(156, 39, 176)",
         },
         {
-          left: "2021.09",
-          right: "Started the project next-shadow to practice Typescript",
-          color: "rgb(25, 118, 210)",
-        },
-        {
-          left: "2021.11",
-          right: "Started the project twitter-shadow to practice Typescript",
+          left: "2022.08",
+          right: "Joined to build an OSS snoopForms. Made snoopForms-labrotory",
           color: "rgb(25, 118, 210)",
         },
       ],

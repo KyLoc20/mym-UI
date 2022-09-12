@@ -11,7 +11,7 @@ const mapType = {
   p: "Paragraph",
   span: "Span",
   quote: "Quote",
-  pre:"Preformatted"
+  pre: "Preformatted",
 };
 import Heading1 from "./types/Heading1";
 import Heading2 from "./types/Heading2";
@@ -71,7 +71,7 @@ export default {
 }
 .description {
   font-size: 1.5rem;
-  margin: 0 0 40px;
+  margin: 24px 0;
 }
 .typography {
   .font-roboto();
