@@ -186,7 +186,7 @@ export default {
     { anchor: "ac-basic-information", text: "Basic Information" },
     { anchor: "ac-skills", text: "Skills" },
     { anchor: "ac-timeline", text: "Timeline" },
-    { anchor: "ac-my-story", text: "My Story About Material-UI" },
+    // { anchor: "ac-my-story", text: "My Story About Material-UI" },
   ],
   data() {
     return {
